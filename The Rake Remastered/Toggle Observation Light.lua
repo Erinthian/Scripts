@@ -1,0 +1,1 @@
+workspace.Map.ObservationTower.Lights.RemoteEvent:FireServer("Light")

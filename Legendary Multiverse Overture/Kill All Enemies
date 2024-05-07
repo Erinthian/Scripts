@@ -1,0 +1,53 @@
+local Players = game:GetService("Players")
+local Character = Players.LocalPlayer.Character
+
+local function kill(enemy)
+	if enemy.Name == "Jintenzo" then return end
+	local ohInstance1 = enemy.Humanoid
+	local ohCFrame2 = Character.HumanoidRootPart.CFrame
+	local ohNumber3 = 250
+	local ohNumber4 = 0.1
+	local ohVector35 = Vector3.new(0,0,0)
+	local ohString6 = "rbxassetid://5568119031"
+	local ohNumber7 = 0.075
+	local ohColor38 = Color3.new(1, 0, 0)
+	local ohString9 = "rbxassetid://7072652156"
+	local ohNumber10 = 1.1
+	local ohNumber11 = 2
+	
+	game:GetService("ReplicatedStorage").RedDiarmuidDamage:FireServer(ohInstance1, ohCFrame2, ohNumber3, ohNumber4, ohVector35, ohString6, ohNumber7, ohColor38, ohString9, ohNumber10, ohNumber11)
+end
+
+for _,v in pairs(workspace:GetChildren()) do
+	if v:FindFirstChild("Humanoid") and v.Name ~= "Jintenzo" then
+		for b = 1,math.round((v.Humanoid.Health/250)+.5) do
+    		kill(v)
+		end
+	end
+end
+
+
+
+
+
+
+
+
+
+
+--[[
+for _,v in ipairs(workspace:GetChildren()) do
+	if v:FindFirstChild("Humanoid") then
+		for _,b in pairs(game:GetService("Players"):GetPlayers()) do
+			if v.Name == b.Name then
+				return
+			end
+		end
+
+		local Target = v.Humanoid
+		local Damage = 69420
+
+		game:GetService("ReplicatedStorage").SNAKEMANDMG:FireServer(Target, CFrame.new(), Damage)
+	end
+end
+]]

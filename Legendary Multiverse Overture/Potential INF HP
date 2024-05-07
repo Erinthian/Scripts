@@ -1,0 +1,13 @@
+local Character = game:GetService("Players").LocalPlayer.Character
+local health = 69420
+
+if Character:FindFirstChild("h") then Character.h:Destroy() end
+Character.Humanoid.MaxHealth = health
+local DummyCFrame = CFrame.new()
+local Damage
+if Character.Humanoid.Health > value then
+	Damage = math.round(Character.Humanoid.Health - value)
+else
+	Damage = math.round(-value + Character.Humanoid.Health)
+end
+game:GetService("ReplicatedStorage").SNAKEMANDMG:FireServer(Character.Humanoid, DummyCFrame, Damage)

@@ -1,0 +1,13 @@
+local use = {"LegendaryCoin", "Diamond", "Ruby", "Cirno", "2VortexCrystals", "5VortexCrystals", "20VortexCrystals"}
+
+for _,v in ipairs(game:GetService("Players").LocalPlayer.Backpack:GetChildren()) do
+	for current = 1, #use do
+		if v.Name == use[current] then
+			v.Equipped:Connect(function()
+				v:Activate()
+			end)
+			
+			game:GetService("Players").LocalPlayer.Character.Humanoid:EquipTool(v)
+		end
+	end
+end

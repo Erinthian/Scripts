@@ -1,0 +1,9 @@
+local delete = {"Rokakaka", "Arrow", "Bandages", "Water", "ReadMe", "SharinganEye", "EmptyPotential", "SoundBreathingPotential", "FlameBreathingPotential", "ThunderBreathingPotential"}
+
+for _,v in ipairs(game:GetService("Players").LocalPlayer.Backpack:GetChildren()) do
+	for current = 1, #delete do
+		if v.Name == delete[current] then
+			v:Destroy()
+		end
+	end
+end

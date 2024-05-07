@@ -1,0 +1,12 @@
+local hum = game.Players.LocalPlayer.Character.Humanoid
+
+hum:GetPropertyChangedSignal("Health"):Connect(function()
+	if hum.Health < 75 then
+		local A_1 = hum
+		local A_2 = -hum.MaxHealth
+		local A_3 = 0.25
+		local A_4 = Vector3.new(0, 0, 0)
+		local Event = game:GetService("ReplicatedStorage").AnubisDamage
+		Event:FireServer(A_1, A_2, A_3, A_4)
+	end
+end)

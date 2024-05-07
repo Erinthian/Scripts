@@ -1,0 +1,6 @@
+for _,v in pairs(workspace:GetChildren()) do
+	if v:IsA("Tool") and v.Name ~= "No" then
+		firetouchinterest(game:GetService("Players").LocalPlayer.Character.HumanoidRootPart, v.Handle, 1)
+		firetouchinterest(game:GetService("Players").LocalPlayer.Character.HumanoidRootPart, v.Handle, 0)
+	end
+end

@@ -1,0 +1,11 @@
+-- Teleport Locations
+local Domain = game:GetService("Workspace").Map.Domain.FirstDomainTP
+
+-- Current Location
+
+-- Teleport Function
+local function Teleport(part)
+	game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = CFrame.new(part.CFrame.p) + Vector3.new(0, 5, 0)
+end
+
+Teleport(Domain)

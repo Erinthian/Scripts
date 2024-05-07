@@ -1,0 +1,66 @@
+local delete = {"Rokakaka", "Arrow", "Bandages", "Water", "ReadMe", "SharinganEye", "Soup", "GomuGomuNoMi", "SukeSukeNoMi", "EmptyPotential", "WaterBreathingPotential", "SoundBreathingPotential", "FlameBreathingPotential", "ThunderBreathingPotential", "SteelBall", "FireDemonOrb"}
+local use = {"LegendaryCoin", "Diamond", "Ruby", "GoldenMoai", "Cirno", "2VortexCrystals", "5VortexCrystals", "10VortexCrystals", "20VortexCrystals"}
+local LocalPlayer = game:GetService("Players").LocalPlayer
+local HRP = LocalPlayer.Character.HumanoidRootPart
+local map = workspace.Map
+
+firetouchinterest(map.Domain.FirstDomain.DUNGEONZONETOUCH, HRP, 0)
+firetouchinterest(map.Domain.FirstDomain.DUNGEONZONETOUCH, HRP, 1)
+firetouchinterest(map.SAMURAIZONETOUCH, HRP, 0)
+firetouchinterest(map.SAMURAIZONETOUCH, HRP, 1)
+firetouchinterest(map.SAMURAIZONETOUCH2, HRP, 0)
+firetouchinterest(map.SAMURAIZONETOUCH2, HRP, 1)
+firetouchinterest(map.SAMURAIZONETOUCH3, HRP, 0)
+firetouchinterest(map.SAMURAIZONETOUCH3, HRP, 1)
+firetouchinterest(map.WolfZone, HRP, 0)
+firetouchinterest(map.WolfZone, HRP, 1)
+print("Spawned Domain Enemies")
+wait(0.1)
+for _,v in pairs(workspace:GetChildren()) do
+	if v.Name == "RandomChest" then
+		fireclickdetector(v.Chest.ClickDetector)
+		workspace.RandomChest:Destroy()
+	end
+end
+print("Opened Chests")
+wait(0.1)
+for _,v in ipairs(workspace:GetChildren()) do
+	if v:FindFirstChild("Humanoid") and v.Name ~= game.Players.LocalPlayer.Name and v.Name ~= "endo_alt3" then
+		local Target = v.Humanoid
+		local DummyCFrame = CFrame.new()
+		local Damage = 69420
+
+		game:GetService("ReplicatedStorage").SNAKEMANDMG:FireServer(Target, DummyCFrame, Damage)
+	end
+end
+print("Killed Enemies")
+wait(0.1)
+for _,v in pairs(workspace:GetChildren()) do
+	if v:IsA("Tool") and v.Name ~= "No" then
+		firetouchinterest(HRP, v.Handle, 1)
+		firetouchinterest(HRP, v.Handle, 0)
+	end
+end
+print("Picked Up Items")
+wait(0.5)
+for _,v in ipairs(LocalPlayer.Backpack:GetChildren()) do
+	for current = 1, #use do
+		if v.Name == use[current] then
+			v.Equipped:Connect(function()
+				v:Activate()
+			end)
+			
+			LocalPlayer.Character.Humanoid:EquipTool(v)
+		end
+	end
+end
+print("Used Items")
+wait(0.1)
+for _, v in ipairs(LocalPlayer.Backpack:GetChildren()) do
+	for current = 1, #delete do
+		if v.Name == delete[current] then
+			v:Destroy()
+		end
+	end
+end
+print("Deleted Junk")

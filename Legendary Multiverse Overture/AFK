@@ -1,0 +1,124 @@
+-- Variables
+local delete = {"Arrow", "Bandages", "Water", "ReadMe", "Soup", "GomuGomuNoMi", "SukeSukeNoMi", "EmptyPotential", "WaterBreathingPotential", "SoundBreathingPotential", "FlameBreathingPotential", "ThunderBreathingPotential", "SteelBall", "FireDemonOrb", "Rokakaka", "SharinganEye"}
+local use = {"LegendaryCoin", "Diamond", "Ruby", "GoldenMoai", "Cirno", "2VortexCrystals", "5VortexCrystals", "10VortexCrystals", "20VortexCrystals"}
+local LocalPlayer = game:GetService("Players").LocalPlayer
+local HRP = LocalPlayer.Character.HumanoidRootPart
+local map = workspace.Map
+
+-- Functions
+local function SpawnEnemies()
+	firetouchinterest(map.Domain.FirstDomain.DUNGEONZONETOUCH, HRP, 0)
+	firetouchinterest(map.Domain.FirstDomain.DUNGEONZONETOUCH, HRP, 1)
+	firetouchinterest(map.SAMURAIZONETOUCH, HRP, 0)
+	firetouchinterest(map.SAMURAIZONETOUCH, HRP, 1)
+	firetouchinterest(map.SAMURAIZONETOUCH2, HRP, 0)
+	firetouchinterest(map.SAMURAIZONETOUCH2, HRP, 1)
+	firetouchinterest(map.SAMURAIZONETOUCH3, HRP, 0)
+	firetouchinterest(map.SAMURAIZONETOUCH3, HRP, 1)
+	firetouchinterest(map.WolfZone, HRP, 0)
+	firetouchinterest(map.WolfZone, HRP, 1)
+	--print("Attempted to Spawn Enemies")
+end
+
+local function OpenChest(RandomChest)
+	fireclickdetector(RandomChest:WaitForChild("Chest").ClickDetector)
+	RandomChest:Destroy()
+	--print("Opened Chest")
+end
+
+local function Kill(Target)
+	local Humanoid = Target.Humanoid
+	local Damage = 69420
+
+	game:GetService("ReplicatedStorage").SNAKEMANDMG:FireServer(Humanoid, CFrame.new(), Damage)
+	--print("Killed Enemy: "..Target.Name)
+end
+
+local function Pickup(Item)
+	firetouchinterest(HRP, Item:WaitForChild("Handle"), 1)
+	firetouchinterest(HRP, Item:WaitForChild("Handle"), 0)
+	--print("Picked Up Item: "..Item.Name)
+end
+
+-- Logic
+workspace.ChildAdded:Connect(function(child)
+	task.wait(0.1)
+	if child.Name == "RandomChest" then
+		OpenChest(child)
+	end
+	if child:FindFirstChild("Humanoid") then
+		for _,v in pairs(game:GetService("Players"):GetPlayers()) do
+			if child.Name == v.Name then
+				return
+			end
+		end
+		Kill(child)
+	end
+	if child:IsA("Tool") and child.Name ~= "No" then
+		Pickup(child)
+	end
+end)
+
+LocalPlayer.Backpack.ChildAdded:Connect(function(newitem)
+	task.wait()
+	for current = 1, #delete do
+		if newitem.Name == delete[current] then
+			newitem:Destroy()
+			--print("Deleted Junk: "..newitem.Name)
+			return
+		end
+	end
+	
+	for current = 1, #use do
+		if newitem.Name == use[current] then
+			newitem.Equipped:Connect(function()
+				newitem:Activate()
+				newitem.Activated:Connect(function()
+					--print("Used: "..newitem.Name)
+				end)
+			end)
+			
+			LocalPlayer.Character.Humanoid:EquipTool(newitem)
+		end
+	end
+end)
+
+SpawnEnemies()
+
+for _,v in pairs(workspace:GetChildren()) do
+	if v.Name == "RandomChest" then
+		OpenChest(v)
+	end
+	if v:FindFirstChild("Humanoid") then
+		for _,v in pairs(game:GetService("Players"):GetPlayers()) do
+			if v.Name == v.Name then
+				return
+			end
+		end
+		Kill(v)
+	end
+	if v:IsA("Tool") and v.Name ~= "No" then
+		Pickup(v)
+	end
+end
+
+while task.wait(10) do
+	SpawnEnemies()
+	for _,v in pairs(workspace:GetChildren()) do
+		if v.Name == "RandomChest" then
+			OpenChest(v)
+		end
+		if v:FindFirstChild("Humanoid") then
+			for _,b in pairs(game:GetService("Players"):GetPlayers()) do
+				if v.Name == b.Name then
+					return
+				end
+			end
+			
+			Kill(v)
+		end
+		if v:IsA("Tool") and v.Name ~= "No" then
+			Pickup(v)
+		end
+	end
+end

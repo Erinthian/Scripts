@@ -1,3 +1,4 @@
+print("Loadadeded")
 --// Variables \\--
 local UserInputService = game:GetService("UserInputService")
 local player = game:GetService("Players").LocalPlayer

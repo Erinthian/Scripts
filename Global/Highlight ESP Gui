@@ -1,0 +1,273 @@
+--// Variables \\--
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+local RunService = game:GetService("RunService")
+local CoreGui = game:GetService("CoreGui")
+
+--// Library \\--
+local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
+
+--// Initialization \\--
+local window = Rayfield:CreateWindow({
+   Name = "Untitled Highlight ESP",
+   LoadingTitle = "Loading Highlight ESP",
+   LoadingSubtitle = "by Jintenzo",
+   ConfigurationSaving = {
+      Enabled = false,
+      FolderName = nil, -- Create a custom folder for your hub/game
+      FileName = "Big Hub"
+   },
+   Discord = {
+      Enabled = false,
+      Invite = "noinvitelink", -- The Discord invite code, do not include discord.gg/. E.g. discord.gg/ABCD would be ABCD
+      RememberJoins = true -- Set this to false to make them join the discord every time they load it up
+   },
+   KeySystem = false, -- Set this to true to use our key system
+   KeySettings = {
+      Title = "Untitled",
+      Subtitle = "Key System",
+      Note = "No method of obtaining the key is provided",
+      FileName = "Key", -- It is recommended to use something unique as other scripts using Rayfield may overwrite your key file
+      SaveKey = true, -- The user's key will be saved, but if you change the key, they will be unable to use your script
+      GrabKeyFromSite = false, -- If this is true, set Key below to the RAW site you would like Rayfield to get the key from
+      Key = {"Hello"} -- List of keys that will be accepted by the system, can be RAW file links (pastebin, github etc) or simple strings ("hello","key22")
+   }
+})
+
+local mainTab = window:CreateTab("Main", 4483362458) -- Title, Image
+
+local enabledToggle = mainTab:CreateToggle({
+	Name = "Enabled",
+	CurrentValue = true,
+	Flag = "enabledFlag",
+	Callback = function(Value)
+	end,
+})
+
+local localplayerToggle = mainTab:CreateToggle({
+	Name = "Use Local Player",
+	CurrentValue = false,
+	Flag = "localplayerFlag",
+	Callback = function(Value)
+	end,
+})
+
+local wallcheckToggle = mainTab:CreateToggle({
+	Name = "Wallcheck",
+	CurrentValue = false,
+	Flag = "wallcheckFlag",
+	Callback = function(Value)
+	end,
+})
+
+local maxdistanceSlider = mainTab:CreateSlider({
+	Name = "Max Distance",
+	Range = {1, 2000},
+	Increment = 1,
+	Suffix = "Studs",
+	CurrentValue = 400,
+	Flag = "maxdistanceFlag",
+	Callback = function(Value)
+	end
+})
+
+local filltransparencySlider = mainTab:CreateSlider({
+	Name = "Fill Transparency",
+	Range = {0, 1},
+	Increment = 0.05,
+	Suffix = "Transparency",
+	CurrentValue = 0.5,
+	Flag = "filltransparencyFlag",
+	Callback = function(Value)
+	end
+})
+
+local outlinetransparencySlider = mainTab:CreateSlider({
+	Name = "Outline Transparency",
+	Range = {0, 1},
+	Increment = 0.05,
+	Suffix = "Transparency",
+	CurrentValue = 0,
+	Flag = "outlinetransparencyFlag",
+	Callback = function(Value)
+	end
+})
+
+local fillcolorPicker = mainTab:CreateColorPicker({
+	Name = "Fill Color",
+	Color = Color3.fromRGB(255, 255, 255),
+	Flag = "fillcolorFlag",
+	Callback = function(Value)
+	end
+})
+
+local outlinecolorPicker = mainTab:CreateColorPicker({
+	Name = "Outline Color",
+	Color = Color3.fromRGB(255, 255, 255),
+	Flag = "outlinecolorFlag",
+	Callback = function(Value)
+	end
+})
+
+local teamTab = window:CreateTab("Team", 4483362458) -- Title, Image
+
+local teamcheckToggle = teamTab:CreateToggle({
+	Name = "Team Check",
+	CurrentValue = true,
+	Flag = "teamcheckFlag",
+	Callback = function(Value)
+	end,
+})
+
+local teamfillToggle = teamTab:CreateToggle({
+	Name = "Team Fill",
+	CurrentValue = true,
+	Flag = "teamfillFlag",
+	Callback = function(Value)
+	end,
+})
+
+local teamoutlineToggle = teamTab:CreateToggle({
+	Name = "Team Outline",
+	CurrentValue = true,
+	Flag = "teamoutlineFlag",
+	Callback = function(Value)
+	end,
+})
+
+local hidefriendlyToggle = teamTab:CreateToggle({
+	Name = "Hide Friendlies",
+	CurrentValue = false,
+	Flag = "hidefriendlyFlag",
+	Callback = function(Value)
+	end,
+})
+
+local hideenemyToggle = teamTab:CreateToggle({
+	Name = "Hide Enemies",
+	CurrentValue = false,
+	Flag = "hideenemyFlag",
+	Callback = function(Value)
+	end,
+})
+
+local friendlyfillPicker = teamTab:CreateColorPicker({
+	Name = "Friendly Fill Color",
+	Color = Color3.fromRGB(47, 211, 61),
+	Flag = "friendlyfillFlag",
+	Callback = function(Value)
+	end
+})
+
+local friendlyoutlinePicker = teamTab:CreateColorPicker({
+	Name = "Friendly Outline Color",
+	Color = Color3.fromRGB(17, 181, 31),
+	Flag = "friendlyoutlineFlag",
+	Callback = function(Value)
+	end
+})
+
+local enemyfillPicker = teamTab:CreateColorPicker({
+	Name = "Enemy Fill Color",
+	Color = Color3.fromRGB(211, 47, 47),
+	Flag = "enemyfillFlag",
+	Callback = function(Value)
+	end
+})
+
+local enemyoutlinePicker = teamTab:CreateColorPicker({
+	Name = "Enemy Outline Color",
+	Color = Color3.fromRGB(181, 17, 17),
+	Flag = "enemyoutlineFlag",
+	Callback = function(Value)
+	end
+})
+
+local destroyButton mainTab:CreateButton({
+	Name = "Destroy Gui",
+	Callback = function()
+		Rayfield:Destroy()
+	end
+})
+
+--// Logic \\--
+Storage = Instance.new("Folder", CoreGui)
+
+local function CreateHighlight(plr)
+	task.wait(0.1)
+	local NewHighlight = Instance.new("Highlight", Storage)
+	NewHighlight.Adornee = plr.Character
+
+	local plrEnemy = (plr.Team ~= LocalPlayer.Team)
+
+	local loop = RunService.Heartbeat:Connect(function()
+		NewHighlight.Enabled = enabledToggle.CurrentValue
+		if not enabledToggle.CurrentValue then return end
+		NewHighlight.FillTransparency = filltransparencySlider.CurrentValue
+		NewHighlight.OutlineTransparency = outlinetransparencySlider.CurrentValue
+
+		if wallcheckToggle.CurrentValue then
+			NewHighlight.DepthMode = Enum.HighlightDepthMode.Occluded
+		else
+			NewHighlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
+		end
+
+		if plr.Character:FindFirstChild("HumanoidRootPart") then
+			if (LocalPlayer.Character.HumanoidRootPart.Position - plr.Character.HumanoidRootPart.Position).magnitude >= maxdistanceSlider.CurrentValue then
+                NewHighlight.Enabled = false
+            else
+                NewHighlight.Enabled = true
+            end
+        end
+
+		if (not localplayerToggle.CurrentValue) and plr == LocalPlayer then
+			NewHighlight.Enabled = false
+		end
+		
+		if teamcheckToggle.CurrentValue and plr.Team then
+			local TeamColor = plr.Team.TeamColor.Color
+			if plrEnemy then
+				if hideenemyToggle.CurrentValue then
+					NewHighlight.Enabled = false
+				end
+				NewHighlight.FillColor = enemyfillPicker.Color
+				NewHighlight.OutlineColor = enemyoutlinePicker.Color
+			else
+				if hidefriendlyToggle.CurrentValue then
+					NewHighlight.Enabled = false
+				end
+				NewHighlight.FillColor = friendlyfillPicker.Color
+				NewHighlight.OutlineColor = friendlyoutlinePicker.Color
+			end
+			if teamfillToggle.CurrentValue then
+				NewHighlight.FillColor = TeamColor
+			end
+			if teamoutlineToggle.CurrentValue then
+				NewHighlight.OutlineColor = TeamColor
+			end
+		else
+			NewHighlight.FillColor = fillcolorPicker.Color
+			NewHighlight.OutlineColor = outlinecolorPicker.Color
+		end
+	end)
+
+	plr.CharacterRemoving:Connect(function()
+		NewHighlight:Destroy()
+		loop:Disconnect()
+	end)
+end
+
+local function CreateHighlightForPlayer(player)
+    if player.Character then
+        CreateHighlight(player)
+    end
+    player.CharacterAdded:Connect(function()
+        CreateHighlight(player)
+    end)
+end
+
+for _, player in ipairs(Players:GetPlayers()) do
+    CreateHighlightForPlayer(player)
+end
+
+Players.PlayerAdded:Connect(CreateHighlightForPlayer)

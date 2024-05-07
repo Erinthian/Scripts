@@ -7,6 +7,4 @@ local settings = {
 	TextColor3 = Color3.fromRGB(250, 250, 250)
 }
 
-pcall(function()
-	ChatService:SetBubbleChatSettings(settings)
-end)
+ChatService:SetBubbleChatSettings(settings)

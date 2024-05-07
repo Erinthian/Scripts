@@ -1,0 +1,12 @@
+repeat wait() until game:IsLoaded()
+
+local ChatService = game:GetService("Chat")
+
+local settings = {		
+	BackgroundColor3 = Color3.fromRGB(0, 0, 0),
+	TextColor3 = Color3.fromRGB(250, 250, 250)
+}
+
+pcall(function()
+	ChatService:SetBubbleChatSettings(settings)
+end)

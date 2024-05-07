@@ -1,0 +1,7 @@
+getgenv().InstantPrompt = true -- // true or false
+
+game:GetService("ProximityPromptService").PromptButtonHoldBegan:Connect(function(prompt)
+if getgenv().InstantPrompt then
+fireproximityprompt(prompt)
+end
+end)

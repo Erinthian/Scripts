@@ -1,0 +1,127 @@
+if game:GetService("CoreGui"):FindFirstChild("Pathfinder") then game:GetService("CoreGui").Pathfinder:Destroy() end
+--// Variables --\\--
+local CurrentMouse = game:GetService("Players").LocalPlayer:GetMouse()
+local Selecting
+local Target
+local Font = Font.new("rbxasset://fonts/families/SourceSansPro.json", Enum.FontWeight.SemiBold, Enum.FontStyle.Normal)
+
+--// Initialization \\--
+local Pathfinder = Instance.new("ScreenGui")
+Pathfinder.Name = "Pathfinder"
+
+local Mainframe = Instance.new("Frame", Pathfinder)
+Mainframe.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+Mainframe.BorderColor3 = Color3.fromRGB(50, 50, 50)
+Mainframe.BorderSizePixel = 2
+Mainframe.Position = UDim2.fromScale(0.637, 0.675)
+Mainframe.Size = UDim2.fromScale(0.237, 0.129)
+
+local UIAspectRatioConstraint = Instance.new("UIAspectRatioConstraint", Mainframe)
+UIAspectRatioConstraint.AspectRatio = 2.5
+
+local PathContainer = Instance.new("TextButton", Mainframe)
+PathContainer.FontFace = Font
+PathContainer.Text = "Path will appear here, click to copy"
+PathContainer.TextColor3 = Color3.fromRGB(250, 250, 250)
+PathContainer.TextSize = 20
+PathContainer.TextTruncate = Enum.TextTruncate.AtEnd
+PathContainer.TextWrapped = false
+PathContainer.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+PathContainer.BorderColor3 = Color3.fromRGB(50, 50, 50)
+PathContainer.Position = UDim2.fromScale(0.0317, 0.0909)
+PathContainer.Size = UDim2.fromScale(0.937, 0.455)
+
+local StartSelection = Instance.new("TextButton", Mainframe)
+StartSelection.FontFace = Font
+StartSelection.Text = "Start Selection"
+StartSelection.TextColor3 = Color3.fromRGB(250, 250, 250)
+StartSelection.TextSize = 17
+StartSelection.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+StartSelection.BorderColor3 = Color3.fromRGB(50, 50, 50)
+StartSelection.Position = UDim2.fromScale(0.0317, 0.591)
+StartSelection.Size = UDim2.fromScale(0.46, 0.318)
+
+local RemoveHighlight = Instance.new("TextButton", Mainframe)
+RemoveHighlight.FontFace = Font
+RemoveHighlight.Text = "Remove Selection"
+RemoveHighlight.TextColor3 = Color3.fromRGB(250, 250, 250)
+RemoveHighlight.TextSize = 17
+RemoveHighlight.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+RemoveHighlight.BorderColor3 = Color3.fromRGB(50, 50, 50)
+RemoveHighlight.Position = UDim2.fromScale(0.508, 0.591)
+RemoveHighlight.Size = UDim2.fromScale(0.46, 0.318)
+
+Pathfinder.Parent = game:GetService("CoreGui")
+
+--// Functions \\--
+local function Select(part)
+    local Select = Instance.new("Highlight")
+	Select.Name = part.Name
+    Select.DepthMode = Enum.HighlightDepthMode.Occluded
+	Select.OutlineColor = Color3.fromRGB(122, 178, 255)
+	Select.FillColor = Color3.fromRGB(122, 178, 255)
+    Select.FillTransparency = 0.5
+    Select.OutlineTransparency = 0
+	Select.Parent = Pathfinder
+	Select.Adornee = part
+end
+
+local function RemoveSelection(part)
+	if Pathfinder:FindFirstChild(part.Name) then
+		Pathfinder[part.Name]:Destroy()
+	end
+end
+
+--// Logic \\--
+PathContainer.MouseButton1Click:Connect(function()
+	setclipboard(PathContainer.Text)
+end)
+
+StartSelection.MouseButton1Click:Connect(function()
+	Selecting = not Selecting
+	if Selecting then
+		StartSelection.Text = "Stop Selection"
+	else
+		StartSelection.Text = "Start Selection"
+	end
+end)
+
+RemoveHighlight.MouseButton1Click:Connect(function()
+	RemoveSelection(Target)
+end)
+
+CurrentMouse.Button1Down:Connect(function()
+	if Selecting and CurrentMouse.Target then
+		if Target then RemoveSelection(Target) end
+		Target = CurrentMouse.Target
+		PathContainer.Text = Target:GetFullName()
+		if not Target:FindFirstChild("Selection") then
+			Select(CurrentMouse.Target)
+		end
+	end
+end)
+
+--// Drag \\--
+local isDragging = false
+local mouseOffset = Vector2.new(0, 0)
+
+Mainframe.InputBegan:Connect(function(inputObject)
+	if inputObject.UserInputType == Enum.UserInputType.MouseButton1 then
+		isDragging = true
+		local position = inputObject.Position
+		mouseOffset = Vector2.new(position.X, position.Y) - Mainframe.AbsolutePosition
+	end
+end)
+
+Mainframe.InputEnded:Connect(function(inputObject)
+	if inputObject.UserInputType == Enum.UserInputType.MouseButton1 then
+		isDragging = false
+	end
+end)
+
+game:GetService("UserInputService").InputChanged:Connect(function(inputObject)
+	if isDragging and inputObject.UserInputType == Enum.UserInputType.MouseMovement then
+		local position = inputObject.Position
+		Mainframe.Position = UDim2.new(0, Vector2.new(position.X, position.Y).X - mouseOffset.X, 0, Vector2.new(position.X, position.Y).Y - mouseOffset.Y)
+	end
+end)

@@ -1,0 +1,22 @@
+local AntiDisplayName = loadstring(game:HttpGet('https://pastebin.com/raw/hCMXnKWa'))(function()
+    getgenv().Preferences = {}
+end)
+
+Preferences = {
+    RetroNaming = true,
+    ShowOriginalName = true,
+    ApplyToLeaderboard = true,
+    IdentifyFriends = {Toggle = false, Identifier = '[Friend]'},
+    IdentifyBlocked = {Toggle = false, Identifier = '[Blocked]'},
+    IdentifyPremium = {Toggle = false, Identifier = '[Premium]'},
+    IdentifyDeveloper = {Toggle = false, Identifier = '[Game Dev]'},
+    SpoofLocalPlayer = {Toggle = false, UseRandomName = true, NewName = 'Random Name Lol'},
+    Orientation = 'Horizontal'
+}
+
+--[[
+    -- Terms of Service
+     - Credit me at all times, please: mothra#4150 or https://v3rmillion.net/member.php?action...e&uid=2988.
+     - Don't sell this script.
+     - Don't steal credit for this script.
+]]

@@ -1,0 +1,7 @@
+while wait(.4) do
+pcall(function()
+for i,v in pairs(game.Workspace.Crates:GetChildren()) do
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.Part.CFrame
+end
+end)
+end

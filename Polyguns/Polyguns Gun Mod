@@ -1,0 +1,14 @@
+game.Players.LocalPlayer.Character:WaitForChild("Humanoid"):UnequipTools()
+local wep = game:GetService("Players").LocalPlayer.Backpack:FindFirstChildOfClass("Tool")
+local gunModule = require(wep.Config)
+gunModule.MagazineSize = math.huge
+--gunModule.Damage = math.huge
+gunModule.FireRate = math.huge
+gunModule.Recoil = 0
+gunModule.Spread = 0
+gunModule.Range = 999999
+gunModule.BulletsPerShot = 1
+gunModule.ReloadTime = 0
+gunModule.Automatic = true
+gunModule.Scope = false
+game.Players.LocalPlayer.Character.Humanoid:EquipTool(wep)

@@ -1,0 +1,9 @@
+local mod = require(game:GetService("ReplicatedStorage").Utility.GlobalVariables)
+
+for i,v in pairs(mod) do
+  if type(v) == "table" then
+     for k,n in pairs(v) do
+        v["RUN_SPEED"] = 30
+     end
+  end
+end

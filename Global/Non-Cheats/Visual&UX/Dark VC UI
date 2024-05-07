@@ -1,0 +1,27 @@
+repeat task.wait() until game:IsLoaded()
+
+local BubbleChat = game:GetService("CoreGui"):WaitForChild("BubbleChat")
+local BubbleColor = Color3.new(0,0,0)
+
+local function updateBubble(bubble)
+	task.wait()
+	local parent = bubble.Parent.Parent
+	parent.BackgroundColor3 = BubbleColor
+	parent.Parent:FindFirstChild("Carat", true).ImageColor3 = BubbleColor
+	bubble.Image = string.gsub(bubble.Image, "Dark", "Light")
+	bubble:GetPropertyChangedSignal("Image"):Connect(function()
+		bubble.Image = string.gsub(bubble.Image, "Dark", "Light")
+	end)
+end
+
+for _,v in pairs(BubbleChat:GetDescendants()) do
+	if v.Name == "Insert" then
+		updateBubble(v)
+	end
+end
+
+BubbleChat.DescendantAdded:Connect(function(v)
+	if v.Name == "Insert" then
+		updateBubble(v)
+	end
+end)

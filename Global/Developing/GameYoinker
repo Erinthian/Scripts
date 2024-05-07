@@ -1,0 +1,5 @@
+saveinstance(game, "gameName", {
+	Decompile = false,
+	RemovePlayerCharacters = false,
+	SavePlayers = true
+})

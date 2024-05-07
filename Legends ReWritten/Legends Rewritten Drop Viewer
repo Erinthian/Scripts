@@ -1,0 +1,214 @@
+-- Gui to Lua
+-- Version: 3.2
+
+-- Instances:
+
+local DropViewer = Instance.new("ScreenGui")
+local Title = Instance.new("TextLabel")
+local Minimize = Instance.new("TextButton")
+local Close = Instance.new("TextButton")
+local Refresh = Instance.new("ImageButton")
+local MainFrame = Instance.new("Frame")
+local UIListLayout = Instance.new("UIListLayout")
+
+--Properties:
+
+DropViewer.Name = "DropViewer"
+DropViewer.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+DropViewer.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+
+Title.Name = "Title"
+Title.Parent = DropViewer
+Title.BackgroundColor3 = Color3.fromRGB(35, 39, 42)
+Title.Position = UDim2.new(0.472369403, 0, 0.307017565, 0)
+Title.Size = UDim2.new(0.0757002234, 0, 0.0292397663, 0)
+Title.Font = Enum.Font.SourceSansBold
+Title.Text = "Drop Viewer"
+Title.TextColor3 = Color3.fromRGB(255, 255, 255)
+Title.TextSize = 20.000
+
+Minimize.Name = "Minimize"
+Minimize.Parent = DropViewer
+Minimize.BackgroundColor3 = Color3.fromRGB(35, 39, 42)
+Minimize.Position = UDim2.new(0.566994667, 0, 0.307017565, 0)
+Minimize.Size = UDim2.new(0.0189250559, 0, 0.0292397663, 0)
+Minimize.Font = Enum.Font.SourceSansBold
+Minimize.Text = "-"
+Minimize.TextColor3 = Color3.fromRGB(255, 255, 255)
+Minimize.TextSize = 25.000
+
+Close.Name = "Close"
+Close.Parent = DropViewer
+Close.BackgroundColor3 = Color3.fromRGB(35, 39, 42)
+Close.Position = UDim2.new(0.585919738, 0, 0.307017565, 0)
+Close.Size = UDim2.new(0.0189250559, 0, 0.0292397663, 0)
+Close.Font = Enum.Font.SourceSans
+Close.Text = "X"
+Close.TextColor3 = Color3.fromRGB(255, 255, 255)
+Close.TextSize = 25.000
+
+Refresh.Name = "Refresh"
+Refresh.Parent = DropViewer
+Refresh.BackgroundColor3 = Color3.fromRGB(35, 39, 42)
+Refresh.Position = UDim2.new(0.547691166, 0, 0.307017565, 0)
+Refresh.Size = UDim2.new(0.0189250559, 0, 0.0292397663, 0)
+Refresh.ZIndex = 2
+Refresh.Image = "rbxassetid://3926307971"
+Refresh.ImageRectOffset = Vector2.new(404, 84)
+Refresh.ImageRectSize = Vector2.new(36, 36)
+
+MainFrame.Name = "MainFrame"
+MainFrame.Parent = DropViewer
+MainFrame.BackgroundColor3 = Color3.fromRGB(35, 39, 42)
+MainFrame.Position = UDim2.new(0.472369403, 0, 0.33684212, 0)
+MainFrame.Size = UDim2.new(0.132475391, 0, 0.263157904, 0)
+
+UIListLayout.Parent = MainFrame
+UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+
+-- Scripts:
+
+local function IQEAFTL_fake_script() -- Minimize.Minimize 
+	local script = Instance.new('LocalScript', Minimize)
+
+	script.Parent.MouseButton1Click:Connect(function()
+		script.Parent.Parent.MainFrame.Visible = not script.Parent.Parent.MainFrame.Visible
+	end)
+end
+coroutine.wrap(IQEAFTL_fake_script)()
+local function YGEXI_fake_script() -- Close.Close 
+	local script = Instance.new('LocalScript', Close)
+
+	script.Parent.MouseButton1Click:Connect(function()
+		script.Parent.Parent:Destroy()
+	end)
+end
+coroutine.wrap(YGEXI_fake_script)()
+local function VGBVOZ_fake_script() -- Refresh.Refresh 
+	local script = Instance.new('LocalScript', Refresh)
+
+	script.Parent.MouseButton1Click:Connect(function()
+		for _,v in ipairs(script.Parent.Parent.MainFrame:GetChildren()) do
+			if v.Name == "Item" then
+				v:Destroy()
+			end
+		end
+		
+		local Drops = game:GetService("Workspace").Drops
+		for _,v in ipairs(Drops:GetChildren()) do
+			if v:FindFirstChild("ItemID") then
+				local Item = Instance.new("TextButton")
+				Item.Parent = script.Parent
+				Item.Name = "Item"
+				Item.Text = v.ItemID.Value
+				Item.BackgroundColor3 = Color3.new(0.117647, 0.133333, 0.145098)
+				Item.Font = Enum.Font.SourceSansBold
+				Item.TextScaled = true
+				Item.TextXAlignment = Enum.TextXAlignment.Left
+				Item.Size = UDim2.new(0,175,0,20)
+				if v.Touched.TouchInterest then
+					Item.TextColor3 = Color3.new(0,1,0)
+				else
+					Item.TextColor3 = Color3.new(1,0,0)
+				end
+				Item.MouseButton1Click:Connect(function()
+					firetouchinterest(game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart"), v.Touched.TouchInterest, 0)
+				end)
+			end
+		end
+	end)
+end
+coroutine.wrap(VGBVOZ_fake_script)()
+local function QKTN_fake_script() -- MainFrame.StartSearch 
+	local script = Instance.new('LocalScript', MainFrame)
+
+	local Drops = game:GetService("Workspace").Drops
+	for _,v in ipairs(Drops:GetChildren()) do
+		if v:FindFirstChild("ItemID") then
+			local Item = Instance.new("TextButton")
+			Item.Parent = script.Parent
+			Item.Name = "Item"
+			Item.Text = v.ItemID.Value
+			Item.BackgroundColor3 = Color3.new(0.117647, 0.133333, 0.145098)
+			Item.Font = Enum.Font.SourceSansBold
+			Item.TextScaled = true
+			Item.TextXAlignment = Enum.TextXAlignment.Left
+			Item.Size = UDim2.new(0,175,0,20)
+			if v.Touched.TouchInterest then
+				Item.TextColor3 = Color3.new(0,1,0)
+			else
+				Item.TextColor3 = Color3.new(1,0,0)
+			end
+			Item.MouseButton1Click:Connect(function()
+				firetouchinterest(game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart"), v.Touched.TouchInterest, 0)
+			end)
+		end
+	end
+end
+coroutine.wrap(QKTN_fake_script)()
+local function GQUTZWO_fake_script() -- DropViewer.Drag 
+	local script = Instance.new('LocalScript', DropViewer)
+
+	local UserInputService = game:GetService("UserInputService")
+	
+	local gui = script.Parent.Title
+	local gui2 = script.Parent.MainFrame
+	local gui3 = script.Parent.Refresh
+	local gui4 = script.Parent.Close
+	local gui5 = script.Parent.Minimize
+	
+	local dragging
+	local dragInput
+	local dragStart
+	local startPos
+	local startPos2
+	local startPos3
+	local startPos4
+	local startPos5
+	
+	local function update(input)
+		local delta = input.Position - dragStart
+		gui.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+		gui2.Position = UDim2.new(startPos2.X.Scale, startPos2.X.Offset + delta.X, startPos2.Y.Scale, startPos2.Y.Offset + delta.Y)
+		gui3.Position = UDim2.new(startPos3.X.Scale, startPos3.X.Offset + delta.X, startPos3.Y.Scale, startPos3.Y.Offset + delta.Y)
+		gui4.Position = UDim2.new(startPos4.X.Scale, startPos4.X.Offset + delta.X, startPos4.Y.Scale, startPos4.Y.Offset + delta.Y)
+		gui5.Position = UDim2.new(startPos5.X.Scale, startPos5.X.Offset + delta.X, startPos5.Y.Scale, startPos5.Y.Offset + delta.Y)
+	end
+	
+	gui.InputBegan:Connect(function(input)
+		if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+			dragging = true
+			dragStart = input.Position
+			startPos = gui.Position
+			startPos2 = gui2.Position
+			startPos3 = gui3.Position
+			startPos4 = gui4.Position
+			startPos5 = gui5.Position
+	
+			input.Changed:Connect(function()
+				if input.UserInputState == Enum.UserInputState.End then
+					dragging = false
+				end
+			end)
+		end
+	end)
+	
+	gui.InputChanged:Connect(function(input)
+		if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
+			dragInput = input
+		end
+	end)
+	
+	gui2.InputChanged:Connect(function(input)
+		if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
+			dragInput = input
+		end
+	end)
+	
+	UserInputService.InputChanged:Connect(function(input)
+		if input == dragInput and dragging then
+			update(input)
+		end
+	end)
+end
+coroutine.wrap(GQUTZWO_fake_script)()

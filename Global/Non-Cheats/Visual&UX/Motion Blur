@@ -1,0 +1,17 @@
+local camera = workspace.CurrentCamera
+local blurAmount = 10
+local blurAmplifier = 5
+local lastLookVector = camera.CFrame.LookVector
+local motionProfile = Instance.new("BlurEffect", camera)
+local runService = game:GetService("RunService")
+local TweenService = game:GetService("TweenService")
+local blurFactor = blurAmount * blurAmplifier / 2
+
+runService.Heartbeat:Connect(function()
+	local magnitude = (camera.CFrame.LookVector - lastLookVector).magnitude
+	local targetSize = math.abs(magnitude)*blurFactor
+    local tweenInfo = TweenInfo.new(0.1, Enum.EasingStyle.Linear, Enum.EasingDirection.Out)
+	local sizeTween = TweenService:Create(motionProfile, tweenInfo, {Size = targetSize})
+    sizeTween:Play()
+    lastLookVector = camera.CFrame.LookVector
+end)

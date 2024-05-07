@@ -1,0 +1,10 @@
+game.ReplicatedStorage.Data[game.Players.LocalPlayer.Name].Banned.Value = false
+
+local bangui = game.ReplicatedStorage.BannedGui
+local menugui = game.ReplicatedStorage.MenuGui
+local plrgui = game.Players.LocalPlayer.PlayerGui
+
+bangui.ScreenGui:Destroy()
+menugui.ScreenGui:Clone().Parent = bangui
+plrgui.ScreenGui:Destroy()
+menugui.ScreenGui:Clone().Parent = plrgui

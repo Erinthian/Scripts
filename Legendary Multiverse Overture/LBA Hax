@@ -1,0 +1,388 @@
+-- Gui to Lua
+-- Version: 3.2
+
+-- Instances:
+
+local LBACheat = Instance.new("ScreenGui")
+local Mainframe = Instance.new("Frame")
+local KillPlayer = Instance.new("TextButton")
+local ToggleVisiblity = Instance.new("TextButton")
+local TeleporttoPlayer = Instance.new("TextButton")
+local KnockPlayer = Instance.new("TextButton")
+local KillType = Instance.new("TextButton")
+local PlayerName = Instance.new("TextBox")
+local MaxHP = Instance.new("TextButton")
+local Godmode = Instance.new("TextButton")
+local AutoDeleteMoneyItems = Instance.new("TextButton")
+local AutoDeleteUselessItems = Instance.new("TextButton")
+local AutoPickUpItems = Instance.new("TextButton")
+local AutoKillEnemies = Instance.new("TextButton")
+
+--Properties:
+
+LBACheat.Name = "LBACheat"
+LBACheat.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+LBACheat.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+LBACheat.ResetOnSpawn = false
+
+Mainframe.Name = "Mainframe"
+Mainframe.Parent = LBACheat
+Mainframe.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+Mainframe.BackgroundTransparency = 0.600
+Mainframe.BorderSizePixel = 0
+Mainframe.Position = UDim2.new(0.84984982, 0, 0.501754403, 0)
+Mainframe.Size = UDim2.new(0.15015015, 0, 0.415204763, 0)
+
+KillPlayer.Name = "Kill Player"
+KillPlayer.Parent = Mainframe
+KillPlayer.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+KillPlayer.BackgroundTransparency = 0.300
+KillPlayer.BorderSizePixel = 0
+KillPlayer.Position = UDim2.new(0, 0, 0.760563254, 0)
+KillPlayer.Size = UDim2.new(1, 0, 0.0704225227, 0)
+KillPlayer.Font = Enum.Font.SourceSansBold
+KillPlayer.Text = "Kill"
+KillPlayer.TextColor3 = Color3.fromRGB(255, 255, 255)
+KillPlayer.TextSize = 14.000
+
+ToggleVisiblity.Name = "ToggleVisiblity"
+ToggleVisiblity.Parent = Mainframe
+ToggleVisiblity.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+ToggleVisiblity.BackgroundTransparency = 0.300
+ToggleVisiblity.BorderSizePixel = 0
+ToggleVisiblity.Position = UDim2.new(0, 0, 0.50704217, 0)
+ToggleVisiblity.Size = UDim2.new(1, 0, 0.0704225227, 0)
+ToggleVisiblity.Font = Enum.Font.SourceSansBold
+ToggleVisiblity.Text = "Toggle Visiblity"
+ToggleVisiblity.TextColor3 = Color3.fromRGB(255, 255, 255)
+ToggleVisiblity.TextSize = 14.000
+
+TeleporttoPlayer.Name = "Teleport to Player"
+TeleporttoPlayer.Parent = Mainframe
+TeleporttoPlayer.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+TeleporttoPlayer.BackgroundTransparency = 0.300
+TeleporttoPlayer.BorderSizePixel = 0
+TeleporttoPlayer.Position = UDim2.new(0, 0, 0.591549218, 0)
+TeleporttoPlayer.Size = UDim2.new(1, 0, 0.0704225227, 0)
+TeleporttoPlayer.Font = Enum.Font.SourceSansBold
+TeleporttoPlayer.Text = "Teleport To Player"
+TeleporttoPlayer.TextColor3 = Color3.fromRGB(255, 255, 255)
+TeleporttoPlayer.TextSize = 14.000
+
+KnockPlayer.Name = "Knock Player"
+KnockPlayer.Parent = Mainframe
+KnockPlayer.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+KnockPlayer.BackgroundTransparency = 0.300
+KnockPlayer.BorderSizePixel = 0
+KnockPlayer.Position = UDim2.new(0, 0, 0.676056206, 0)
+KnockPlayer.Size = UDim2.new(1, 0, 0.0704225227, 0)
+KnockPlayer.Font = Enum.Font.SourceSansBold
+KnockPlayer.Text = "Knock"
+KnockPlayer.TextColor3 = Color3.fromRGB(255, 255, 255)
+KnockPlayer.TextSize = 14.000
+
+KillType.Name = "KillType"
+KillType.Parent = Mainframe
+KillType.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+KillType.BackgroundTransparency = 0.300
+KillType.BorderSizePixel = 0
+KillType.Position = UDim2.new(0, 0, 0.845070302, 0)
+KillType.Size = UDim2.new(1, 0, 0.0704225227, 0)
+KillType.Font = Enum.Font.SourceSansBold
+KillType.Text = "Kill Type: Instant"
+KillType.TextColor3 = Color3.fromRGB(255, 255, 255)
+KillType.TextSize = 14.000
+
+PlayerName.Name = "PlayerName"
+PlayerName.Parent = Mainframe
+PlayerName.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+PlayerName.BackgroundTransparency = 0.300
+PlayerName.BorderSizePixel = 0
+PlayerName.Position = UDim2.new(0, 0, 0.929577291, 0)
+PlayerName.Size = UDim2.new(1, 0, 0.0704225227, 0)
+PlayerName.Font = Enum.Font.SourceSansBold
+PlayerName.PlaceholderText = "Player Name"
+PlayerName.Text = ""
+PlayerName.TextColor3 = Color3.fromRGB(255, 255, 255)
+PlayerName.TextScaled = true
+PlayerName.TextSize = 14.000
+PlayerName.TextWrapped = true
+
+MaxHP.Name = "MaxHP"
+MaxHP.Parent = Mainframe
+MaxHP.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+MaxHP.BackgroundTransparency = 0.300
+MaxHP.BorderSizePixel = 0
+MaxHP.Position = UDim2.new(0, 0, 0.422535151, 0)
+MaxHP.Size = UDim2.new(1, 0, 0.0704225227, 0)
+MaxHP.Font = Enum.Font.SourceSansBold
+MaxHP.Text = "Max HP"
+MaxHP.TextColor3 = Color3.fromRGB(255, 255, 255)
+MaxHP.TextSize = 14.000
+
+Godmode.Name = "Godmode"
+Godmode.Parent = Mainframe
+Godmode.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+Godmode.BackgroundTransparency = 0.300
+Godmode.BorderSizePixel = 0
+Godmode.Position = UDim2.new(0, 0, 0.338028103, 0)
+Godmode.Size = UDim2.new(1, 0, 0.0704225227, 0)
+Godmode.Font = Enum.Font.SourceSansBold
+Godmode.Text = "Janky Godmode"
+Godmode.TextColor3 = Color3.fromRGB(255, 255, 255)
+Godmode.TextSize = 14.000
+
+AutoDeleteMoneyItems.Name = "AutoDeleteMoneyItems"
+AutoDeleteMoneyItems.Parent = Mainframe
+AutoDeleteMoneyItems.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+AutoDeleteMoneyItems.BackgroundTransparency = 0.300
+AutoDeleteMoneyItems.BorderSizePixel = 0
+AutoDeleteMoneyItems.Position = UDim2.new(0, 0, 0.253521085, 0)
+AutoDeleteMoneyItems.Size = UDim2.new(1, 0, 0.0704225227, 0)
+AutoDeleteMoneyItems.Font = Enum.Font.SourceSansBold
+AutoDeleteMoneyItems.Text = "Toggle Auto Delete Money Items"
+AutoDeleteMoneyItems.TextColor3 = Color3.fromRGB(255, 255, 255)
+AutoDeleteMoneyItems.TextSize = 14.000
+
+AutoDeleteUselessItems.Name = "AutoDeleteUselessItems"
+AutoDeleteUselessItems.Parent = Mainframe
+AutoDeleteUselessItems.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+AutoDeleteUselessItems.BackgroundTransparency = 0.300
+AutoDeleteUselessItems.BorderSizePixel = 0
+AutoDeleteUselessItems.Position = UDim2.new(0, 0, 0.169014052, 0)
+AutoDeleteUselessItems.Size = UDim2.new(1, 0, 0.0704225227, 0)
+AutoDeleteUselessItems.Font = Enum.Font.SourceSansBold
+AutoDeleteUselessItems.Text = "Toggle Auto Delete Useless Items"
+AutoDeleteUselessItems.TextColor3 = Color3.fromRGB(255, 255, 255)
+AutoDeleteUselessItems.TextSize = 14.000
+
+AutoPickUpItems.Name = "AutoPickUpItems"
+AutoPickUpItems.Parent = Mainframe
+AutoPickUpItems.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+AutoPickUpItems.BackgroundTransparency = 0.300
+AutoPickUpItems.BorderSizePixel = 0
+AutoPickUpItems.Position = UDim2.new(0, 0, 0.0845070258, 0)
+AutoPickUpItems.Size = UDim2.new(1, 0, 0.0704225227, 0)
+AutoPickUpItems.Font = Enum.Font.SourceSansBold
+AutoPickUpItems.Text = "Toggle Auto Pick Up Items"
+AutoPickUpItems.TextColor3 = Color3.fromRGB(255, 255, 255)
+AutoPickUpItems.TextSize = 14.000
+
+AutoKillEnemies.Name = "AutoKillEnemies"
+AutoKillEnemies.Parent = Mainframe
+AutoKillEnemies.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+AutoKillEnemies.BackgroundTransparency = 0.300
+AutoKillEnemies.BorderSizePixel = 0
+AutoKillEnemies.Size = UDim2.new(1, 0, 0.0704225227, 0)
+AutoKillEnemies.Font = Enum.Font.SourceSansBold
+AutoKillEnemies.Text = "Toggle Auto Kill Enemies"
+AutoKillEnemies.TextColor3 = Color3.fromRGB(255, 255, 255)
+AutoKillEnemies.TextSize = 14.000
+
+-- Scripts:
+
+local function BAMQ_fake_script() -- LBACheat.DeleteGUI 
+	local script = Instance.new('LocalScript', LBACheat)
+
+	local UIS = game:GetService("UserInputService")
+	
+	UIS.InputBegan:Connect(function(input)
+		if input.KeyCode == Enum.KeyCode.BackSlash then
+			script.Parent:Destroy()
+		end
+	end)
+end
+coroutine.wrap(BAMQ_fake_script)()
+local function NBQTYJ_fake_script() -- KillPlayer.KillScript 
+	local script = Instance.new('LocalScript', KillPlayer)
+
+	local KillType = false
+	--local Player = script.Parent.Parent.PlayerName.Text
+	
+	script.Parent.Parent.KillType.MouseButton1Click:Connect(function()
+		KillType = not KillType
+		if KillType == true then
+			script.Parent.Parent.KillType.Text = "KillType: Increment"
+		else
+			script.Parent.Parent.KillType.Text = "KillType: Instant"
+		end
+	end)
+	
+	script.Parent.MouseButton1Click:Connect(function()
+		if KillType == true then
+			for v = 0,game.Players[script.Parent.Parent.PlayerName.Text].Character.Humanoid.Health, 1 do
+				local A_1 = game.Players[script.Parent.Parent.PlayerName.Text].Character.Humanoid
+				local A_2 = CFrame.new(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+				local A_3 = 1
+				local A_4 = 0.1
+				local A_5 = Vector3.new(0, 0, 0)
+				local A_6 = "rbxassetid://4863336093"
+				local A_7 = 0.5
+				local A_8 = Color3.new(1, 1, 1)
+				local A_9 = "rbxassetid://3932141920"
+				local A_10 = 1
+				local A_11 = 2
+				local Event = game:GetService("ReplicatedStorage").SNAKEMANDMG
+				Event:FireServer(A_1, A_2, A_3, A_4, A_5, A_6, A_7, A_8, A_9, A_10, A_11)
+			end
+		else
+			local A_1 = game:GetService("Players")[script.Parent.Parent.PlayerName.Text].Character.Humanoid
+			local A_2 = CFrame.new(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+			local A_3 = 12000
+			local A_4 = 0.1
+			local A_5 = Vector3.new(0, 0, 0)
+			local A_6 = "rbxassetid://4863336093"
+			local A_7 = 0.5
+			local A_8 = Color3.new(1, 1, 1)
+			local A_9 = "rbxassetid://3932141920"
+			local A_10 = 1
+			local A_11 = 2
+			local Event = game:GetService("ReplicatedStorage").SNAKEMANDMG
+			Event:FireServer(A_1, A_2, A_3, A_4, A_5, A_6, A_7, A_8, A_9, A_10, A_11)
+		end
+	end)
+end
+coroutine.wrap(NBQTYJ_fake_script)()
+local function JHJNIX_fake_script() -- ToggleVisiblity.InvisScript 
+	local script = Instance.new('LocalScript', ToggleVisiblity)
+
+	local Invisible = false
+	
+	script.Parent.MouseButton1Click:Connect(function()
+		Invisible = not Invisible
+		if Invisible then
+			local Event = game:GetService("ReplicatedStorage").invisible
+			Event:FireServer()
+		else
+			local Event = game:GetService("ReplicatedStorage").visiblebody
+			Event:FireServer()
+		end
+	end)
+end
+coroutine.wrap(JHJNIX_fake_script)()
+local function XTFRV_fake_script() -- TeleporttoPlayer.TeleportScript 
+	local script = Instance.new('LocalScript', TeleporttoPlayer)
+
+	script.Parent.MouseButton1Click:Connect(function()
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Players[script.Parent.Parent.PlayerName.Text].Character.HumanoidRootPart.CFrame
+	end)
+end
+coroutine.wrap(XTFRV_fake_script)()
+local function NBONTJ_fake_script() -- KnockPlayer.KnockScript 
+	local script = Instance.new('LocalScript', KnockPlayer)
+
+	script.Parent.MouseButton1Click:Connect(function()
+		local A_1 = game:GetService("Workspace")[script.Parent.Parent.PlayerName.Text].Humanoid
+		local Event = game:GetService("ReplicatedStorage").Knock
+		Event:FireServer(A_1)
+	end)
+end
+coroutine.wrap(NBONTJ_fake_script)()
+local function IYKXL_fake_script() -- MaxHP.GiveMaxHP 
+	local script = Instance.new('LocalScript', MaxHP)
+
+	script.Parent.MouseButton1Click:Connect(function()
+		local Event = game:GetService("ReplicatedStorage").KenHakiMochi
+		Event:FireServer()
+	end)
+end
+coroutine.wrap(IYKXL_fake_script)()
+local function SBOXAMT_fake_script() -- Godmode.Godmode 
+	local script = Instance.new('LocalScript', Godmode)
+
+	script.Parent.MouseButton1Click:Connect(function()
+		local Event = game:GetService("ReplicatedStorage").MIHDodge
+		Event:FireServer()
+	end)
+end
+coroutine.wrap(SBOXAMT_fake_script)()
+local function DKMFYA_fake_script() -- AutoDeleteMoneyItems.AutoDeleteMoneyItems 
+	local script = Instance.new('LocalScript', AutoDeleteMoneyItems)
+
+	local DeleteMoney = false
+	
+	script.Parent.MouseButton1Click:Connect(function()
+		DeleteMoney = not DeleteMoney
+		
+		while DeleteMoney do
+			wait(1)
+			for _,v in ipairs(game:GetService("Players").LocalPlayer.Backpack:GetChildren()) do
+				if v.Name == "Ruby" or v.Name == "Diamond" or v.Name == "LegendaryCoin" then
+					v:Destroy()
+				end
+			end
+		end
+	end)
+end
+coroutine.wrap(DKMFYA_fake_script)()
+local function YHLTQ_fake_script() -- AutoDeleteUselessItems.AutoDeleteUselessItems 
+	local script = Instance.new('LocalScript', AutoDeleteUselessItems)
+
+	local DeleteUseless = false
+	
+	script.Parent.MouseButton1Click:Connect(function()
+		DeleteUseless = not DeleteUseless
+		
+		while DeleteUseless do
+			wait(1)
+			for _,v in ipairs(game:GetService("Players").LocalPlayer.Backpack:GetChildren()) do
+				if v.Name == "Arrow" or v.Name == "Rokakaka" or v.Name == "Bandages" or v.Name == "Water" then
+					v:Destroy()
+				end
+			end
+		end
+	end)
+end
+coroutine.wrap(YHLTQ_fake_script)()
+local function FFKR_fake_script() -- AutoPickUpItems.AutoPickUpItems 
+	local script = Instance.new('LocalScript', AutoPickUpItems)
+
+	local Pickup = false
+	
+	script.Parent.MouseButton1Click:Connect(function()
+		Pickup = not Pickup
+		
+		while Pickup do
+			wait(1)
+			local hum = game.Players.LocalPlayer.Character.HumanoidRootPart
+			table.foreach(workspace:GetChildren(), function(_, v)
+				if v:IsA("Tool") then
+					firetouchinterest(hum, v.Handle, 1)
+					firetouchinterest(hum, v.Handle, 0)
+				end
+			end)
+		end
+	end)
+end
+coroutine.wrap(FFKR_fake_script)()
+local function BGTQWAR_fake_script() -- AutoKillEnemies.AutoKillEnemies 
+	local script = Instance.new('LocalScript', AutoKillEnemies)
+
+	local Kill = false
+	
+	script.Parent.MouseButton1Click:Connect(function()
+		Kill = not Kill
+		
+		while Kill do
+			wait(1)
+			for _,v in ipairs(game:GetService("Workspace"):GetChildren()) do
+				if v:FindFirstChild("Humanoid") and v.Name ~= game.Players.LocalPlayer.Name and  v.Name ~= "endo_alt3" then
+					local A_1 = game:GetService("Workspace")[v.Name].Humanoid
+					local A_2 = CFrame.new(-11416.2676, 1866.6698, 671.755005, -0.902615368, -2.01556039e-09, -0.430447966, 1.43230752e-08, 1, -3.47168267e-08, 0.430447966, -3.75012803e-08, -0.902615368)
+					local A_3 = 12000
+					local A_4 = 0.1
+					local A_5 = Vector3.new(21.522397994995, 1.7358413515467e-06, 45.130767822266)
+					local A_6 = "rbxassetid://4863336093"
+					local A_7 = 0.5
+					local A_8 = Color3.new(1, 1, 1)
+					local A_9 = "rbxassetid://3932141920"
+					local A_10 = 1
+					local A_11 = 2
+					local Event = game:GetService("ReplicatedStorage").SNAKEMANDMG
+					Event:FireServer(A_1, A_2, A_3, A_4, A_5, A_6, A_7, A_8, A_9, A_10, A_11)
+				end
+			end
+		end
+	end)
+end
+coroutine.wrap(BGTQWAR_fake_script)()

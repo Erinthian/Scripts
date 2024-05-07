@@ -1,0 +1,263 @@
+-- Gui to Lua
+-- Version: 3.2
+
+-- Instances:
+
+local NotHacks30 = Instance.new("ScreenGui")
+local Base = Instance.new("Frame")
+local UICorner = Instance.new("UICorner")
+local Home = Instance.new("Frame")
+local UIGradient = Instance.new("UIGradient")
+local UICorner_2 = Instance.new("UICorner")
+local UIGridLayout = Instance.new("UIGridLayout")
+local Autofarm = Instance.new("ImageButton")
+local UICorner_3 = Instance.new("UICorner")
+local AutoFarm = Instance.new("Frame")
+local UICorner_4 = Instance.new("UICorner")
+local UIGridLayout_2 = Instance.new("UIGridLayout")
+local AutoTeleport = Instance.new("TextButton")
+local UICorner_5 = Instance.new("UICorner")
+local AutoSwing = Instance.new("TextButton")
+local UICorner_6 = Instance.new("UICorner")
+local AutoSell = Instance.new("TextButton")
+local UICorner_7 = Instance.new("UICorner")
+local BackButton = Instance.new("TextButton")
+local UICorner_8 = Instance.new("UICorner")
+
+--Properties:
+
+NotHacks30.Name = "NotHacks3.0"
+NotHacks30.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+NotHacks30.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+
+Base.Name = "Base"
+Base.Parent = NotHacks30
+Base.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+Base.BorderSizePixel = 0
+Base.Position = UDim2.new(0.394103944, 0, 0.285551757, 0)
+Base.Size = UDim2.new(0, 280, 0, 390)
+
+UICorner.Parent = Base
+
+Home.Name = "Home"
+Home.Parent = Base
+Home.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Home.BorderSizePixel = 0
+Home.Position = UDim2.new(0.0179393888, 0, 0.0121559054, 0)
+Home.Size = UDim2.new(0, 270, 0, 380)
+
+UIGradient.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 0, 255)), ColorSequenceKeypoint.new(0.50, Color3.fromRGB(155, 0, 255)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(0, 0, 255))}
+UIGradient.Parent = Home
+
+UICorner_2.Parent = Home
+
+UIGridLayout.Parent = Home
+UIGridLayout.SortOrder = Enum.SortOrder.LayoutOrder
+UIGridLayout.CellSize = UDim2.new(0, 50, 0, 50)
+
+Autofarm.Name = "Autofarm"
+Autofarm.Parent = Home
+Autofarm.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Autofarm.BorderSizePixel = 0
+Autofarm.Size = UDim2.new(0, 100, 0, 100)
+Autofarm.Image = "rbxassetid://6803144867"
+
+UICorner_3.Parent = Autofarm
+
+AutoFarm.Name = "AutoFarm"
+AutoFarm.Parent = Base
+AutoFarm.BackgroundColor3 = Color3.fromRGB(255, 155, 0)
+AutoFarm.BorderSizePixel = 0
+AutoFarm.Position = UDim2.new(0.0179393888, 0, 0.0121559054, 0)
+AutoFarm.Size = UDim2.new(0, 270, 0, 380)
+AutoFarm.Visible = false
+
+UICorner_4.Parent = AutoFarm
+
+UIGridLayout_2.Parent = AutoFarm
+UIGridLayout_2.SortOrder = Enum.SortOrder.LayoutOrder
+UIGridLayout_2.CellPadding = UDim2.new(0, 20, 0, 5)
+UIGridLayout_2.CellSize = UDim2.new(0, 125, 0, 50)
+
+AutoTeleport.Name = "AutoTeleport"
+AutoTeleport.Parent = AutoFarm
+AutoTeleport.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+AutoTeleport.Size = UDim2.new(0, 200, 0, 50)
+AutoTeleport.Font = Enum.Font.SourceSansBold
+AutoTeleport.Text = "Auto-TP"
+AutoTeleport.TextColor3 = Color3.fromRGB(255, 255, 255)
+AutoTeleport.TextSize = 25.000
+AutoTeleport.TextWrapped = true
+
+UICorner_5.Parent = AutoTeleport
+
+AutoSwing.Name = "AutoSwing"
+AutoSwing.Parent = AutoFarm
+AutoSwing.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+AutoSwing.Size = UDim2.new(0, 200, 0, 50)
+AutoSwing.Font = Enum.Font.SourceSansBold
+AutoSwing.Text = "Auto-Swing"
+AutoSwing.TextColor3 = Color3.fromRGB(255, 255, 255)
+AutoSwing.TextSize = 25.000
+AutoSwing.TextWrapped = true
+
+UICorner_6.Parent = AutoSwing
+
+AutoSell.Name = "AutoSell"
+AutoSell.Parent = AutoFarm
+AutoSell.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+AutoSell.Size = UDim2.new(0, 200, 0, 50)
+AutoSell.Font = Enum.Font.SourceSansBold
+AutoSell.Text = "Auto-Sell"
+AutoSell.TextColor3 = Color3.fromRGB(255, 255, 255)
+AutoSell.TextSize = 25.000
+AutoSell.TextWrapped = true
+
+UICorner_7.Parent = AutoSell
+
+BackButton.Name = "BackButton"
+BackButton.Parent = AutoFarm
+BackButton.BackgroundColor3 = Color3.fromRGB(255, 100, 0)
+BackButton.Size = UDim2.new(0, 200, 0, 50)
+BackButton.Font = Enum.Font.SourceSansBold
+BackButton.Text = "Back"
+BackButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+BackButton.TextSize = 25.000
+BackButton.TextWrapped = true
+
+UICorner_8.Parent = BackButton
+
+-- Scripts:
+
+local function GPEZ_fake_script() -- Base.DragSript 
+	local script = Instance.new('LocalScript', Base)
+
+	local UserInputService = game:GetService("UserInputService")
+	
+	local gui = script.Parent
+	
+	local dragging
+	local dragInput
+	local dragStart
+	local startPos
+	
+	local function update(input)
+		local delta = input.Position - dragStart
+		gui.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+	end
+	
+	gui.InputBegan:Connect(function(input)
+		if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+			dragging = true
+			dragStart = input.Position
+			startPos = gui.Position
+			
+			input.Changed:Connect(function()
+				if input.UserInputState == Enum.UserInputState.End then
+					dragging = false
+				end
+			end)
+		end
+	end)
+	
+	gui.InputChanged:Connect(function(input)
+		if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
+			dragInput = input
+		end
+	end)
+	
+	UserInputService.InputChanged:Connect(function(input)
+		if input == dragInput and dragging then
+			update(input)
+		end
+	end)
+end
+coroutine.wrap(GPEZ_fake_script)()
+local function PVLDKK_fake_script() -- Autofarm.Open 
+	local script = Instance.new('LocalScript', Autofarm)
+
+	script.Parent.MouseButton1Click:Connect(function()
+		script.Parent.Parent.Visible = false
+		script.Parent.Parent.Parent.AutoFarm.Visible = true
+	end)
+end
+coroutine.wrap(PVLDKK_fake_script)()
+local function LJVH_fake_script() -- AutoTeleport.Toggle 
+	local script = Instance.new('LocalScript', AutoTeleport)
+
+	local Teleporting = false
+	
+	script.Parent.MouseButton1Click:Connect(function()
+		Teleporting = not Teleporting
+		if Teleporting == true then
+			script.Parent.BackgroundColor3 = Color3.new(0,255,0)
+		else
+			script.Parent.BackgroundColor3 = Color3.new(255,0,0)
+		end
+	end)
+	
+	local Insects = game.Workspace['InsectFolder']
+	
+	while Teleporting do
+		wait()
+		for _,v in ipairs(Insects:GetChildren()) do
+			if v:FindFirstChild("Torso") then
+				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.Torso.CFrame + Vector3.new(0,0,0)
+			end
+		end
+	end
+end
+coroutine.wrap(LJVH_fake_script)()
+local function ETKTHG_fake_script() -- AutoSwing.Toggle 
+	local script = Instance.new('LocalScript', AutoSwing)
+
+	local Swinging = false
+	
+	script.Parent.MouseButton1Click:Connect(function()
+		Swinging = not Swinging
+		if Swinging == true then
+		script.Parent.BackgroundColor3 = Color3.new(0,255,0)
+	else
+		script.Parent.BackgroundColor3 = Color3.new(255,0,0)
+	end
+	end)
+	
+	while Swinging do
+		local A_1 = "MouseDown"
+		local A_2 = false
+		local Event = game:GetService("ReplicatedStorage").ServerCommunication.GameMechanics.Remotes.Events.SendMouseEvent
+		Event:FireServer(A_1, A_2)
+	end
+end
+coroutine.wrap(ETKTHG_fake_script)()
+local function YDVLYF_fake_script() -- AutoSell.Toggle 
+	local script = Instance.new('LocalScript', AutoSell)
+
+	local Selling = false
+	
+	script.Parent.MouseButton1Click:Connect(function()
+		Selling = not Selling
+		if Selling == true then
+		script.Parent.BackgroundColor3 = Color3.new(0,255,0)
+	else
+		script.Parent.BackgroundColor3 = Color3.new(255,0,0)
+	end
+	end)
+	
+	while Selling do
+		wait(0.01)
+		local A_1 = "Normal"
+		local Event = game:GetService("ReplicatedStorage").ServerCommunication.GameMechanics.Remotes.Events.SellInsects
+		Event:FireServer(A_1)
+	end
+end
+coroutine.wrap(YDVLYF_fake_script)()
+local function VFKSOYP_fake_script() -- BackButton.Back 
+	local script = Instance.new('LocalScript', BackButton)
+
+	script.Parent.MouseButton1Click:Connect(function()
+		script.Parent.Parent.Visible = false
+		script.Parent.Parent.Parent.Home.Visible = true
+	end)
+end
+coroutine.wrap(VFKSOYP_fake_script)()

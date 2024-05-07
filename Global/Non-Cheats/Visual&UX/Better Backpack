@@ -1,0 +1,39 @@
+repeat task.wait() until game:IsLoaded()
+
+for _,v in pairs(game:GetService("CoreGui").RobloxGui.Backpack.Hotbar:GetChildren()) do
+	if v:FindFirstChildOfClass("UICorner") then v:FindFirstChildOfClass("UICorner"):Destroy() end
+	local Corner = Instance.new("UICorner")
+	Corner.CornerRadius = UDim.new(0, 20)
+	Corner.Parent = v
+	v.Number.Visible = false
+
+	v.ChildAdded:Connect(function(b)
+		if b.Name == "Equipped" then
+			b.Visible = false
+			local uIStroke = Instance.new("UIStroke")
+			uIStroke.Name = "UIStroke"
+			uIStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+			uIStroke.Color = Color3.fromRGB(90, 142, 233)
+			uIStroke.Thickness = 3
+			uIStroke.Parent = v
+			v.ChildRemoved:Connect(function(n)
+				if n.Name == "Equipped" then
+					uIStroke:Destroy()
+				end
+			end)
+		end
+	end)
+end
+
+game:GetService("CoreGui").RobloxGui.Backpack.Inventory.ScrollingFrame.UIGridFrame.ChildAdded:Connect(function(v)
+	if v:FindFirstChildOfClass("UICorner") then v:FindFirstChildOfClass("UICorner"):Destroy() end
+	local Corner = Instance.new("UICorner")
+	Corner.CornerRadius = UDim.new(0, 20)
+	Corner.Parent = v
+end)
+
+local Corner = Instance.new("UICorner")
+Corner.CornerRadius = UDim.new(0, 20)
+Corner.Parent = game:GetService("CoreGui").RobloxGui.Backpack.Inventory
+local Corner2 = Corner:Clone()
+Corner2.Parent = game:GetService("CoreGui").RobloxGui.Backpack.Inventory.Search

@@ -1,0 +1,62 @@
+repeat task.wait() until game:IsLoaded()
+
+game:GetService("CoreGui").RobloxGui:WaitForChild("SettingsShield").SettingsShield.MenuContainer.BottomButtonFrame.ResumeButtonButton:Destroy()
+
+local RejoinButton = Instance.new("ImageButton")
+local RejoinTextLabel = Instance.new("TextLabel")
+local UITextSizeConstraint = Instance.new("UITextSizeConstraint")
+local RejoinHint = Instance.new("ImageLabel")
+
+RejoinButton.Name = "RejoinButton"
+RejoinButton.Parent = game:GetService("CoreGui"):WaitForChild("RobloxGui"):WaitForChild("SettingsShield"):WaitForChild("SettingsShield"):WaitForChild("MenuContainer"):WaitForChild("BottomButtonFrame")
+RejoinButton.BackgroundTransparency = 1
+RejoinButton.Position = UDim2.new(0.5, 85, 0.5, -25)
+RejoinButton.Size = UDim2.new(0, 235, 0, 70)
+RejoinButton.ZIndex = 2
+RejoinButton.AutoButtonColor = false
+RejoinButton.Image = "rbxasset://textures/ui/Settings/MenuBarAssets/MenuButton.png"
+RejoinButton.ScaleType = Enum.ScaleType.Slice
+RejoinButton.SliceCenter = Rect.new(8, 6, 46, 44)
+
+RejoinTextLabel.Name = "RejoinTextLabel"
+RejoinTextLabel.Parent = RejoinButton
+RejoinTextLabel.BackgroundTransparency = 1
+RejoinTextLabel.BorderSizePixel = 0
+RejoinTextLabel.Position = UDim2.new(0.25, 0, 0, 0)
+RejoinTextLabel.Size = UDim2.new(0.75, 0, 0.899999976, 0)
+RejoinTextLabel.ZIndex = 2
+RejoinTextLabel.Font = Enum.Font.SourceSansBold
+RejoinTextLabel.Text = "Rejoin"
+RejoinTextLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+RejoinTextLabel.TextScaled = true
+RejoinTextLabel.TextWrapped = true
+
+UITextSizeConstraint.Parent = RejoinTextLabel
+UITextSizeConstraint.MaxTextSize = 24
+
+RejoinHint.Name = "RejoinHint"
+RejoinHint.Parent = RejoinButton
+RejoinHint.AnchorPoint = Vector2.new(0.5, 0.5)
+RejoinHint.BackgroundTransparency = 1
+RejoinHint.Position = UDim2.new(0.150000006, 0, 0.474999994, 0)
+RejoinHint.Size = UDim2.new(0, 50, 0, 50)
+RejoinHint.ZIndex = 4
+RejoinHint.Image = "rbxasset://textures/ui/Settings/Help/RejoinIcon.png"
+
+RejoinButton.MouseEnter:Connect(function()
+	RejoinButton.Image = "rbxasset://textures/ui/Settings/MenuBarAssets/MenuButtonSelected.png"
+end)
+
+RejoinButton.MouseLeave:Connect(function()
+	RejoinButton.Image = "rbxasset://textures/ui/Settings/MenuBarAssets/MenuButton.png"
+end)
+
+RejoinButton.MouseButton1Click:Connect(function()
+	game:GetService("TeleportService"):Teleport(game.PlaceId)
+end)
+
+game:GetService("UserInputService").InputEnded:Connect(function(input)
+	if input.KeyCode == Enum.KeyCode.J and RejoinButton.Parent.Parent.Parent.Visible then
+		game:GetService("TeleportService"):Teleport(game.PlaceId)
+	end
+end)

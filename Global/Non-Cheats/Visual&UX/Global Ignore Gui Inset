@@ -1,0 +1,5 @@
+for i,v in pairs(game:GetService("Players").LocalPlayer.PlayerGui:GetChildren()) do
+	if v:IsA("ScreenGui") then
+		v.IgnoreGuiInset = true
+	end
+end

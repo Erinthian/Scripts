@@ -95,7 +95,7 @@ Searchbar.Size = UDim2.fromScale(1, 0.06)
 Searchbar.Parent = Mainframe
 
 Close.MouseButton1Click:Connect(function()
-	ScriptsGui:Destroy()
+    ScriptsGui:Destroy()
 end)
 
 ScriptsGui.Parent = game:GetService("CoreGui")
@@ -168,14 +168,15 @@ function Func:CreateButton(Name, Type, Code)
 	local Icon = Instance.new("ImageLabel")
 	Icon.BackgroundTransparency = 1
 	Icon.Position = UDim2.new(0, 3, 0, 1)
-	Icon.Size = UDim2.new(0, 16, 1, -2)
 	Icon.Parent = ScriptButton
 	
 	if Type == "Dir" then
 		ScriptButton.LayoutOrder = -1
 		Icon.Image = "rbxasset://textures/TagEditor/Folder.png"
+		Icon.Size = UDim2.new(0, 16, 1, -2)
 	else
 		Icon.Image = "rbxassetid://11295287500"
+		Icon.Size = UDim2.new(0, 18, 1, 0)
 	end
 
 	ScriptButton.MouseButton1Click:Connect(function()
@@ -204,8 +205,7 @@ function Search()
 		end
 	end
 end
---rbxassetid://11295287370 Folder
---rbxassetid://11295287500 File
+
 Searchbar.Changed:Connect(Search)
 
 Func:LoadDir(Repo, true)

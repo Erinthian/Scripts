@@ -1,0 +1,211 @@
+--// Variables \\--
+local UserInputService = game:GetService("UserInputService")
+local Http = game:GetService("HttpService")
+local Repo = "https://api.github.com/repos/Erinthian/Scripts/contents"
+
+--// Initialization \\--
+local ScriptsGui = Instance.new("ScreenGui")
+ScriptsGui.IgnoreGuiInset = true
+
+local Mainframe = Instance.new("ImageButton")
+Mainframe.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+Mainframe.BorderColor3 = Color3.fromRGB(50, 50, 50)
+Mainframe.BorderMode = Enum.BorderMode.Inset
+Mainframe.AutoButtonColor = false
+Mainframe.Position = UDim2.fromScale(0.337, 0.325)
+Mainframe.Size = UDim2.fromOffset(240, 300)
+Mainframe.Parent = ScriptsGui
+
+local MainframePadding = Instance.new("UIPadding")
+MainframePadding.PaddingBottom = UDim.new(0, 4)
+MainframePadding.PaddingLeft = UDim.new(0, 4)
+MainframePadding.PaddingRight = UDim.new(0, 4)
+MainframePadding.PaddingTop = UDim.new(0, 4)
+MainframePadding.Parent = Mainframe
+
+local MainframeStroke = Instance.new("UIStroke")
+MainframeStroke.Color = Color3.fromRGB(10, 10, 10)
+MainframeStroke.LineJoinMode = Enum.LineJoinMode.Miter
+MainframeStroke.Parent = Mainframe
+
+local Title = Instance.new("TextLabel")
+Title.FontFace = Font.new("rbxasset://fonts/families/Ubuntu.json")
+Title.Text = "Scripts"
+Title.TextColor3 = Color3.fromRGB(255, 255, 255)
+Title.TextSize = 14
+Title.TextYAlignment = Enum.TextYAlignment.Bottom
+Title.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Title.BackgroundTransparency = 1
+Title.BorderColor3 = Color3.fromRGB(0, 0, 0)
+Title.BorderSizePixel = 0
+Title.Size = UDim2.fromScale(1, 0.04)
+Title.Parent = Mainframe
+
+local TitlePadding = Instance.new("UIPadding")
+TitlePadding.PaddingBottom = UDim.new(0, 1)
+TitlePadding.Parent = Title
+
+local Close = Instance.new("TextButton")
+Close.FontFace = Font.new("rbxasset://fonts/families/SourceSansPro.json")
+Close.Text = "X"
+Close.TextColor3 = Color3.fromRGB(255, 255, 255)
+Close.TextScaled = true
+Close.BackgroundTransparency = 1
+Close.Position = UDim2.new(1, -10, 0, -4)
+Close.Size = UDim2.new(0, 14, 1, 4)
+Close.Parent = Title
+
+local CloseStroke = Instance.new("UIStroke")
+CloseStroke.Color = Color3.fromRGB(10, 10, 10)
+CloseStroke.Parent = Close
+
+local Holder = Instance.new("ScrollingFrame")
+Holder.AutomaticCanvasSize = Enum.AutomaticSize.Y
+Holder.CanvasSize = UDim2.new()
+Holder.ScrollBarThickness = 0
+Holder.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+Holder.BorderSizePixel = 0
+Holder.Position = UDim2.fromScale(0, 0.1)
+Holder.Size = UDim2.fromScale(1, 0.9)
+Holder.Parent = Mainframe
+
+local HolderPadding = Instance.new("UIPadding")
+HolderPadding.PaddingBottom = UDim.new(0, 3)
+HolderPadding.PaddingLeft = UDim.new(0, 3)
+HolderPadding.PaddingRight = UDim.new(0, 3)
+HolderPadding.PaddingTop = UDim.new(0, 3)
+HolderPadding.Parent = Holder
+
+local UIListLayout = Instance.new("UIListLayout")
+UIListLayout.Padding = UDim.new(0, 2)
+UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+UIListLayout.Parent = Holder
+
+local Searchbar = Instance.new("TextBox")
+Searchbar.FontFace = Font.new("rbxasset://fonts/families/Ubuntu.json")
+Searchbar.PlaceholderText = "Search ..."
+Searchbar.Text = ""
+Searchbar.TextColor3 = Color3.fromRGB(255, 255, 255)
+Searchbar.TextSize = 15
+Searchbar.TextYAlignment = Enum.TextYAlignment.Bottom
+Searchbar.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+Searchbar.BorderSizePixel = 0
+Searchbar.Position = UDim2.fromScale(0, 0.04)
+Searchbar.Size = UDim2.fromScale(1, 0.06)
+Searchbar.Parent = Mainframe
+
+Close.MouseButton1Click:Connect(function()
+	ScriptsGui:Destroy()
+end)
+
+ScriptsGui.Parent = game:GetService("CoreGui")
+
+--// Drag \\--
+local dragging = false
+local dragStart
+local startPos
+
+Mainframe.MouseButton1Down:Connect(function()
+	dragging = true
+	dragStart = UserInputService:GetMouseLocation()
+	startPos = Mainframe.Position
+end)
+
+UserInputService.InputChanged:Connect(function(input)
+	if dragging and input.UserInputType == Enum.UserInputType.MouseMovement then
+		local delta = UserInputService:GetMouseLocation() - dragStart
+		Mainframe.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+	end
+end)
+
+UserInputService.InputEnded:Connect(function(input)
+	if input.UserInputType == Enum.UserInputType.MouseButton1 then
+		dragging = false
+	end
+end)
+
+--// Logic \\--
+local Func = {}
+
+function Func:Clear()
+	for _,v in ipairs(Holder:GetChildren()) do
+		if v:IsA("TextButton") then v:Destroy() end
+	end
+end
+
+function Func:FindParent(dir)
+	local position = dir:reverse():find("/")
+	local result = dir:sub(1, #dir - position)
+	return result
+end
+
+function Func:LoadDir(dir, FirstRun)
+	Func:Clear()
+	if not FirstRun and Func:FindParent(dir) ~= Func:FindParent(Repo) then
+		Func:CreateButton("...", "Dir", Func:FindParent(dir))
+	end
+	for _, file in pairs(Http:JSONDecode(game:HttpGet(dir))) do
+		if file.type == "dir" then
+			Func:CreateButton(file.name, "Dir", file.url)
+		elseif file.type == "file" then
+			Func:CreateButton(file.name, "Script", file.download_url)
+		end
+	end
+end
+
+function Func:CreateButton(Name, Type, Code)
+	local ScriptButton = Instance.new("TextButton")
+	ScriptButton.FontFace = Font.new("rbxasset://fonts/families/Ubuntu.json")
+	ScriptButton.Text = Name
+	ScriptButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+	ScriptButton.TextSize = 14
+	ScriptButton.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+	ScriptButton.BorderColor3 = Color3.fromRGB(50, 50, 50)
+	ScriptButton.BorderMode = Enum.BorderMode.Inset
+	ScriptButton.Size = UDim2.new(1, 0, 0, 20)
+	ScriptButton.Parent = Holder
+	
+	local Icon = Instance.new("ImageLabel")
+	Icon.BackgroundTransparency = 1
+	Icon.Position = UDim2.new(0, 3, 0, 1)
+	Icon.Size = UDim2.new(0, 16, 1, -2)
+	Icon.Parent = ScriptButton
+	
+	if Type == "Dir" then
+		ScriptButton.LayoutOrder = -1
+		Icon.Image = "rbxasset://textures/TagEditor/Folder.png"
+	else
+		Icon.Image = "rbxassetid://11295287500"
+	end
+
+	ScriptButton.MouseButton1Click:Connect(function()
+		if Type == "Dir" then
+			Func:LoadDir(Code)
+		else
+			loadstring(game:HttpGet(Code))()
+		end
+	end)
+end
+
+function Search()
+	local search = string.lower(Searchbar.Text)
+	for _, v in	ipairs(Holder:GetChildren()) do
+		if v:IsA("GuiButton") then
+			if search ~= "" then
+				local item = string.lower(v.Text)
+				if string.find(item, search) then
+					v.Visible = true
+				else
+					v.Visible = false
+				end
+			else
+				v.Visible = true
+			end
+		end
+	end
+end
+--rbxassetid://11295287370 Folder
+--rbxassetid://11295287500 File
+Searchbar.Changed:Connect(Search)
+
+Func:LoadDir(Repo, true)

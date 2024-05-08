@@ -1,4 +1,3 @@
-
 local Weapons = {"M9", "Remington 870", "AK-47"}
 for _,v in pairs(workspace.Prison_ITEMS.giver:GetChildren()) do
 	for _, weapon in ipairs(Weapons) do

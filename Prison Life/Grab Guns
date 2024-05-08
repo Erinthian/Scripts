@@ -1,10 +1,9 @@
-script.Parent.MouseButton1Click:Connect(function()
-	local Weapons = {"M9", "Remington 870", "AK-47"}
-	for _,v in pairs(workspace.Prison_ITEMS.giver:GetChildren()) do
-		for _, weapon in ipairs(Weapons) do
-			if v.Name == weapon then
-				workspace.Remote.ItemHandler:InvokeServer(v.ITEMPICKUP)
-			end
+
+local Weapons = {"M9", "Remington 870", "AK-47"}
+for _,v in pairs(workspace.Prison_ITEMS.giver:GetChildren()) do
+	for _, weapon in ipairs(Weapons) do
+		if v.Name == weapon then
+			workspace.Remote.ItemHandler:InvokeServer(v.ITEMPICKUP)
 		end
 	end
-end)
+end

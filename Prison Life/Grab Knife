@@ -1,0 +1,2 @@
+local copy = game:GetService("ReplicatedStorage").Tools["Crude Knife"]:Clone()
+copy.Parent = game.Players.LocalPlayer.Backpack

@@ -1,0 +1,8 @@
+ModGun.MouseButton1Down:connect(function()
+	local m = require(game:GetService('Players').LocalPlayer.Character:FindFirstChildOfClass("Tool").GunStates)
+	m.Damage = 100
+	m.MaxAmmo = math.huge
+	m.CurrentAmmo = math.huge
+	m.AutoFire = true
+	m.FireRate = 0
+end)

@@ -1,10 +1,10 @@
-Library of scripts for ScriptGit, not all of them are made by me.
+Library of scripts for GitScripts, not all of them are made by me.
 
 ```Lua
-loadstring(game:HttpGet("https://raw.githubusercontent.com/Erinthian/Scripts/main/ScriptGit"))()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Erinthian/Scripts/main/GitScripts"))()
 ```
 
-# Planned features for ScriptGit:
+# Planned features for GitScripts:
 * Refresh Directory Button
 * Global Search
 * Support for viewing scripts

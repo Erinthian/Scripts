@@ -1,0 +1,19 @@
+local OldNameCall
+OldNameCall = hookmetamethod(game, "__namecall", function(...)
+    local Self,Args=...
+    if getnamecallmethod()=="FireServer" and Self and string.find(Self.Name,"GoodBoy") then
+        return
+    end
+    return OldNameCall(...)
+end)
+local walter = require(game:GetService("ReplicatedStorage").Modules.RemoteModule)
+local function kill(player)
+	if player.Character and player.Character:FindFirstChild("Head") then
+        walter.Fire("Hit",player.Character.Head)
+    end
+end
+while task.wait() and _G.KillAll do
+    for i,v in pairs(game.Players:GetPlayers()) do
+            kill(v)
+    end
+end

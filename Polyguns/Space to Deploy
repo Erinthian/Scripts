@@ -1,0 +1,16 @@
+local UserInputService = game:GetService("UserInputService")
+local Typing = false
+
+UserInputService.TextBoxFocused:Connect(function()
+	Typing = true
+end)
+
+UserInputService.TextBoxFocusReleased:Connect(function()
+	Typing = false
+end)
+
+game:GetService("UserInputService").InputBegan:connect(function(inputObject, gPE)
+    	if not gPE and inputObject.KeyCode == Enum.KeyCode.Space and Typing == false then
+			game:GetService("ReplicatedStorage").Remotes.Deploy:FireServer()
+		end
+end

@@ -154,6 +154,10 @@ function Func:LoadDir(dir, FirstRun)
 end
 
 function Func:CreateButton(Name, Type, Code)
+	if Type ~= "Dir" then
+		Code = game:HttpGet(Code)
+	end
+	
 	local ScriptButton = Instance.new("TextButton")
 	ScriptButton.FontFace = Font.new("rbxasset://fonts/families/Ubuntu.json")
 	ScriptButton.Text = Name
@@ -182,7 +186,7 @@ function Func:CreateButton(Name, Type, Code)
 		if Type == "Dir" then
 			Func:LoadDir(Code)
 		else
-			loadstring(game:HttpGet(Code))()
+			loadstring(Code)()
 		end
 	end)
 end

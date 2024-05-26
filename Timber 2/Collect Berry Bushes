@@ -1,0 +1,11 @@
+local Workspace = game:GetService("Workspace")
+local LocalPlayer = game:GetService("Players").LocalPlayer
+local Plot = Workspace.Plots[LocalPlayer.Name]
+
+for _, v in pairs(Plot.Land:GetChildren()) do
+	for _,b in pairs(v:GetChildren()) do
+		if b.Name == "BerryBush" then
+            game:GetService("ReplicatedStorage").Communication.CollectBerries:FireServer(b)
+		end
+	end
+end

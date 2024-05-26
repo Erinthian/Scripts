@@ -1,7 +1,12 @@
 --// Variables \\--
 local UserInputService = game:GetService("UserInputService")
 local Http = game:GetService("HttpService")
-local Repo = "https://api.github.com/repos/Erinthian/Scripts/contents"
+local Repository = "https://api.github.com/repos/Erinthian/Scripts/contents"
+local CachedRepo = {}
+
+local cache = {}
+local repo = {}
+local gui = {}
 
 --// Initialization \\--
 local ScriptsGui = Instance.new("ScreenGui")
@@ -125,35 +130,24 @@ UserInputService.InputEnded:Connect(function(input)
 end)
 
 --// Logic \\--
-local Func = {}
-
-function Func:Clear()
-	for _,v in ipairs(Holder:GetChildren()) do
-		if v:IsA("TextButton") then v:Destroy() end
-	end
+function cache:Save(file)
+	table.insert(CachedRepo, file)
 end
 
-function Func:FindParent(dir)
-	local position = dir:reverse():find("/")
-	local result = dir:sub(1, #dir - position)
-	return result
-end
-
-function Func:LoadDir(dir, FirstRun)
-	Func:Clear()
-	if not FirstRun and Func:FindParent(dir) ~= Func:FindParent(Repo) then
-		Func:CreateButton("...", "Dir", Func:FindParent(dir))
-	end
-	for _, file in pairs(Http:JSONDecode(game:HttpGet(dir))) do
-		if file.type == "dir" then
-			Func:CreateButton(file.name, "Dir", file.url)
-		elseif file.type == "file" then
-			Func:CreateButton(file.name, "Script", file.download_url)
+function cache:Search(parent)
+	local files = {}
+	for _, file in ipairs(CachedRepo) do
+		local file_url = file.url
+		local fileparent = string.gsub(string.sub(file_url, 1, string.find(file_url, "/[^/]*$") - 1), "?ref=main", "")
+		if fileparent == parent then
+			table.insert(files, file)
 		end
 	end
+	if files == {} then files = nil end
+	return files
 end
 
-function Func:CreateButton(Name, Type, Code)
+function gui:CreateButton(Name, Type, Code)
 	local ScriptButton = Instance.new("TextButton")
 	ScriptButton.FontFace = Font.new("rbxasset://fonts/families/Ubuntu.json")
 	ScriptButton.Text = Name
@@ -164,13 +158,13 @@ function Func:CreateButton(Name, Type, Code)
 	ScriptButton.BorderMode = Enum.BorderMode.Inset
 	ScriptButton.Size = UDim2.new(1, 0, 0, 20)
 	ScriptButton.Parent = Holder
-	
+
 	local Icon = Instance.new("ImageLabel")
 	Icon.BackgroundTransparency = 1
 	Icon.Position = UDim2.new(0, 3, 0, 1)
 	Icon.Size = UDim2.new(0, 16, 1, -2)
 	Icon.Parent = ScriptButton
-	
+
 	if Type == "Dir" then
 		ScriptButton.LayoutOrder = -1
 		Icon.Image = "rbxasset://textures/TagEditor/Folder.png"
@@ -181,7 +175,7 @@ function Func:CreateButton(Name, Type, Code)
 
 	ScriptButton.MouseButton1Click:Connect(function()
 		if Type == "Dir" then
-			Func:LoadDir(Code)
+			repo:LoadDir(Code)
 		else
 			loadstring(Code)()
 		end
@@ -195,11 +189,11 @@ function Func:CreateButton(Name, Type, Code)
 		ContextMenu.BorderMode = Enum.BorderMode.Inset
 		ContextMenu.Position = UDim2.fromOffset(UserInputService:GetMouseLocation().X, UserInputService:GetMouseLocation().Y)
 		ContextMenu.Size = UDim2.fromOffset(160, 20)
-		
+
 		local ListLayout = Instance.new("UIListLayout")
 		ListLayout.SortOrder = Enum.SortOrder.LayoutOrder
 		ListLayout.Parent = ContextMenu
-		
+
 		local ContextMenuUIStroke = Instance.new("UIStroke")
 		ContextMenuUIStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
 		ContextMenuUIStroke.Color = Color3.fromRGB(10, 10, 10)
@@ -256,6 +250,28 @@ function Func:CreateButton(Name, Type, Code)
 	end)
 end
 
+function repo:DisplayDir(dir)
+	for _, file in ipairs(dir) do
+		if file.type == "dir" then
+			gui:CreateButton(file.name, "Dir", file.url)
+		elseif file.type == "file" then
+			gui:CreateButton(file.name, "Script", file.download_url)
+		end
+	end
+end
+
+function repo:LoadDir(dir)
+	local cacheResult = cache:Search(dir)
+	if cacheResult then
+		repo:DisplayDir(cacheResult)
+	else
+		local response = game:HttpGet(dir)
+		for _, file in pairs(Http:JSONDecode(response)) do
+			cache:Save(file)
+		end
+	end
+end
+
 local function Search()
 	local search = string.lower(Searchbar.Text)
 	for _, v in	ipairs(Holder:GetChildren()) do
@@ -276,4 +292,4 @@ end
 
 Searchbar.Changed:Connect(Search)
 
-Func:LoadDir(Repo, true)
+repo:LoadDir(Repository)

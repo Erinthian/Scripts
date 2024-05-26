@@ -1,2 +1,2 @@
-game:GetService("ReplicatedStorage").Communication.FishCasted:InvokeServer()
+--game:GetService("ReplicatedStorage").Communication.FishCasted:InvokeServer()
 game:GetService("ReplicatedStorage").Communication.CollectFishingRewards:FireServer()

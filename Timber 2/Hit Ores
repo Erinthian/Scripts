@@ -1,7 +1,11 @@
 local Workspace = game:GetService("Workspace")
 local Ores = Workspace.Ores
 
+game:GetService("ReplicatedStorage").Communication.HitOre:FireServer(tonumber(Ores:FindFirstChildOfClass("Model").Name))
+
+--[[
 for _, v in pairs(Ores:GetChildren()) do
 	game:GetService("ReplicatedStorage").Communication.HitOre:FireServer(tonumber(v.Name))
     task.wait(1)
 end
+]]

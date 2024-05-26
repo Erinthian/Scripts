@@ -1,0 +1,3 @@
+for _, v in pairs(game:GetService("Workspace").Chests:GetChildren()) do
+    game:GetService("ReplicatedStorage").Communication.OpenChest:FireServer(v)
+end

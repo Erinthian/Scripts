@@ -2,6 +2,6 @@ local Workspace = game:GetService("Workspace")
 local Ores = Workspace.Ores
 
 for _, v in pairs(Ores:GetChildren()) do
-    task.wait(0.1)
 	game:GetService("ReplicatedStorage").Communication.HitOre:FireServer(tonumber(v.Name))
+    task.wait(0.2)
 end

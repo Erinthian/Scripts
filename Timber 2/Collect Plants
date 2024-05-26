@@ -7,7 +7,7 @@ for _, v in pairs(Plot.Land:GetChildren()) do
 		if b.Name == "HarvestBed" then
 			for _, n in pairs(b:GetChildren()) do
                 if n.Name == "BerryPlant" then
-                    firetouchinterest(LocalPlayer.Character.HumanoidRootPart, b["5"], 0)
+                    firetouchinterest(LocalPlayer.Character.HumanoidRootPart, n["5"], 0)
                 end
             end
 		end

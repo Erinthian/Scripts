@@ -1,4 +1,4 @@
-print("v1.2")
+print("v1.3")
 --// Variables \\--
 local UserInputService = game:GetService("UserInputService")
 local Http = game:GetService("HttpService")
@@ -264,9 +264,52 @@ function repo:DisplayDir(dir)
 	end
 end
 
+function printTable(tbl, settings)
+	local compact = settings and settings.compact
+	local showKey = settings and settings.showKey
+	local showBrackets = settings and settings.showBrackets
+	local showIndex = settings and settings.showIndex
+
+	local output = {}
+	if showBrackets then
+		table.insert(output, "{")
+	end
+
+	for i, v in ipairs(tbl) do
+		local keyString = showIndex and "[" .. i .. "]" or ""
+		table.insert(output, showKey and keyString .. " " or "")
+		table.insert(output, tostring(v))
+		table.insert(output, compact and "," or "\n")
+	end
+
+	for key, value in pairs(tbl) do
+		if type(key) ~= "number" or key < 1 or key > #tbl or math.floor(key) ~= key then
+			local keyString = showIndex and "[" .. tostring(key) .. "]" or ""
+			table.insert(output, showKey and keyString .. ": " or "")
+			table.insert(output, tostring(value))
+			table.insert(output, compact and "," or "\n")
+		end
+	end
+
+	output[#output] = compact and "" or "\n"
+	if showBrackets then
+		table.insert(output, "}")
+	end
+
+	return table.concat(output)
+end
+
+local options = {
+	compact = false,
+	showKey = true,
+	showBrackets = false,
+	showIndex = true
+}
+
 function repo:LoadDir(dir)
 	print("Loading Directory")
 	local cacheResult = cache:Search(dir)
+	print("Cache Result: "..printTable(cacheResult, options))
 	if cacheResult ~= {} then
 		print("Found Cache")
 		repo:DisplayDir(cacheResult)

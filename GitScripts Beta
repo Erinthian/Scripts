@@ -180,13 +180,13 @@ function Func:CreateButton(Name, Type, Code)
 		Code = game:HttpGet(Code)
 	end
 
-	local function Interact()
+	ScriptButton.MouseButton1Click:Connect(function()
 		if Type == "Dir" then
 			Func:LoadDir(Code)
 		else
 			loadstring(Code)()
 		end
-	end
+	end)
 
 	ScriptButton.MouseButton2Click:Connect(function()
 		local ContextMenu = Instance.new("Frame")
@@ -228,18 +228,8 @@ function Func:CreateButton(Name, Type, Code)
 			return ContextButton
 		end
 
-		if Type == "Dir" then
-			CreateContextButton("Open").MouseButton1Click:Connect(function(Interact())
-		else
-			CreateContextButton("Execute").MouseButton1Click:Connect(function(Interact())
-		end
-
 		ContextMenu.Parent = game:GetService("CoreGui")
 	end
-
-	ScriptButton.MouseButton1Click:Connect(function()
-		Interact()
-	end)
 end
 
 local function Search()

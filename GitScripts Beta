@@ -188,13 +188,12 @@ function Func:CreateButton(Name, Type, Code)
 	end)
 
 	ScriptButton.MouseButton2Click:Connect(function()
-		print("Right clicked")
 		local ContextMenu = Instance.new("Frame")
 		ContextMenu.AutomaticSize = Enum.AutomaticSize.Y
 		ContextMenu.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
 		ContextMenu.BorderColor3 = Color3.fromRGB(50, 50, 50)
 		ContextMenu.BorderMode = Enum.BorderMode.Inset
-		ContextMenu.Position = UDim2.new(0,0,0,0) --UDim2.fromOffset(UserInputService:GetMouseLocation().X, UserInputService:GetMouseLocation().Y)
+		ContextMenu.Position = UDim2.fromOffset(UserInputService:GetMouseLocation().X, UserInputService:GetMouseLocation().Y)
 		ContextMenu.Size = UDim2.fromOffset(160, 20)
 		
 		local ListLayout = Instance.new("UIListLayout")
@@ -233,6 +232,13 @@ function Func:CreateButton(Name, Type, Code)
 
 		local CopyButton = CreateContextButton("Copy Code", function()
 			setclipboard(Code)
+		end)
+
+		UserInputService.InputBegan:Connect(function(input, gameProcessed)
+			if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.MouseButton2 then
+				task.wait(0.1)
+				ContextFrame:Destroy()
+			end
 		end)
 
 		ContextMenu.Parent = ScriptsGui

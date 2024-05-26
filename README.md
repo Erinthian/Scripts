@@ -6,12 +6,12 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/Erinthian/Scripts/mai
 
 # Planned features for GitScripts:
 * Add Right Click Functionality
-* Execute All Scripts in Directory
+ * Execute All Scripts in Directory
+ * Loop Script
+ * Viewing/Copying scripts
 * Refresh Directory Button
-* Repeatedly Execute Selected Script
 * Script Settings
 * Global Search
-* Support for viewing scripts
 * Script metadata
 
 <sup><sub>You weren't supposed to find this</sub></sup>

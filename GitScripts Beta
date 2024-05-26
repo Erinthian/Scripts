@@ -1,7 +1,6 @@
 --// Variables \\--
 local UserInputService = game:GetService("UserInputService")
 local Http = game:GetService("HttpService")
-local Mouse = LocalPlayer:GetMouse()
 local Repo = "https://api.github.com/repos/Erinthian/Scripts/contents"
 
 --// Initialization \\--
@@ -194,7 +193,7 @@ function Func:CreateButton(Name, Type, Code)
 		ContextMenu.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
 		ContextMenu.BorderColor3 = Color3.fromRGB(50, 50, 50)
 		ContextMenu.BorderMode = Enum.BorderMode.Inset
-		ContextMenu.Position = UDim2.new(Mouse.X/Mouse.ViewSizeX, 0, Mouse.Y/Mouse.ViewSizeY, 0)
+		ContextMenu.Position = UDim2.new(UserInputService:GetMouseLocation().X, 0, UserInputService:GetMouseLocation().Y, 0)
 		ContextMenu.Size = UDim2.fromOffset(160, 20)
 		
 		local ListLayout = Instance.new("UIListLayout")

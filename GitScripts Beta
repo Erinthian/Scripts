@@ -270,7 +270,6 @@ function repo:LoadDir(dir)
 	local cacheResult = cache:Search(dir)
 	if cacheResult then
 		print("Found Cache")
-		print("Cache Result: "..cacheResult)
 		repo:DisplayDir(cacheResult)
 	else
 		print("Could not find cache")

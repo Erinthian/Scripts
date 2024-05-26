@@ -1,0 +1,1 @@
+game:GetService("ReplicatedStorage").Communication.HitTree:FireServer(game:GetService("Workspace").MegaTrees:FindFirstChildOfClass("Model"))

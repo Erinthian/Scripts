@@ -154,10 +154,6 @@ function Func:LoadDir(dir, FirstRun)
 end
 
 function Func:CreateButton(Name, Type, Code)
-	if Type ~= "Dir" then
-		Code = game:HttpGet(Code)
-	end
-	
 	local ScriptButton = Instance.new("TextButton")
 	ScriptButton.FontFace = Font.new("rbxasset://fonts/families/Ubuntu.json")
 	ScriptButton.Text = Name
@@ -180,6 +176,7 @@ function Func:CreateButton(Name, Type, Code)
 		Icon.Image = "rbxasset://textures/TagEditor/Folder.png"
 	else
 		Icon.Image = "rbxassetid://11295287500"
+		Code = game:HttpGet(Code)
 	end
 
 	ScriptButton.MouseButton1Click:Connect(function()
@@ -189,9 +186,77 @@ function Func:CreateButton(Name, Type, Code)
 			loadstring(Code)()
 		end
 	end)
+
+	ScriptButton.MouseButton2Click:Connect(function()
+		local ContextMenu = Instance.new("Frame")
+		ContextMenu.AutomaticSize = Enum.AutomaticSize.Y
+		ContextMenu.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+		ContextMenu.BorderColor3 = Color3.fromRGB(50, 50, 50)
+		ContextMenu.BorderMode = Enum.BorderMode.Inset
+		ContextMenu.Position = UDim2.fromOffset(UserInputService:GetMouseLocation().X, UserInputService:GetMouseLocation().Y)
+		ContextMenu.Size = UDim2.fromOffset(160, 20)
+		
+		local ListLayout = Instance.new("UIListLayout")
+		ListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+		ListLayout.Parent = ContextMenu
+		
+		local ContextMenuUIStroke = Instance.new("UIStroke")
+		ContextMenuUIStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+		ContextMenuUIStroke.Color = Color3.fromRGB(10, 10, 10)
+		ContextMenuUIStroke.LineJoinMode = Enum.LineJoinMode.Miter
+		ContextMenuUIStroke.Parent = ContextMenu
+
+		local function CreateContextButton(text, callback)
+			local ContextButton = Instance.new("TextButton")
+			ContextButton.FontFace = Font.new("rbxasset://fonts/families/Ubuntu.json")
+			ContextButton.Text = text
+			ContextButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+			ContextButton.TextSize = 14
+			ContextButton.TextTruncate = Enum.TextTruncate.SplitWord
+			ContextButton.TextXAlignment = Enum.TextXAlignment.Left
+			ContextButton.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+			ContextButton.BorderColor3 = Color3.fromRGB(50, 50, 50)
+			ContextButton.BorderMode = Enum.BorderMode.Inset
+			ContextButton.BorderSizePixel = 0
+			ContextButton.Size = UDim2.new(1, 0, 0, 20)
+			ContextButton.Parent = ContextMenu
+
+			local ContextButtonPadding = Instance.new("UIPadding")
+			ContextButtonPadding.PaddingLeft = UDim.new(0, 10)
+			ContextButtonPadding.Parent = ContextButton
+
+			ContextButton.MouseButton1Click:Connect(callback)
+
+			return ContextButton
+		end
+
+		if Type == "Dir" then
+			local ExecuteDirButton = CreateContextButton("Execute Contents", function()
+				for _, file in pairs(Http:JSONDecode(game:HttpGet(Code))) do
+					if file.type ~= "dir" then
+						loadstring(game:HttpGet(file.download_url))()
+					end
+				end
+				print("executed")
+			end)
+		else
+			local CopyButton = CreateContextButton("Copy Code", function()
+				setclipboard(Code)
+			end)
+		end 
+
+		UserInputService.InputBegan:Connect(function(input, gameProcessed)
+			if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.MouseButton2 then
+				task.wait(0.1)
+				ContextMenu:Destroy()
+			end
+		end)
+
+		ContextMenu.Parent = ScriptsGui
+	end)
 end
 
-function Search()
+local function Search()
 	local search = string.lower(Searchbar.Text)
 	for _, v in	ipairs(Holder:GetChildren()) do
 		if v:IsA("GuiButton") then

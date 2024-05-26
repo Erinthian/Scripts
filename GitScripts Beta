@@ -1,4 +1,4 @@
-print("v1.9")
+print("v1.10")
 --// Variables \\--
 local UserInputService = game:GetService("UserInputService")
 local Http = game:GetService("HttpService")
@@ -175,11 +175,9 @@ function gui:CreateButton(Name, Type, Code)
 	if Type == "Dir" then
 		ScriptButton.LayoutOrder = -1
 		Icon.Image = "rbxasset://textures/TagEditor/Folder.png"
-		print("Button type is Directory")
 	else
 		Icon.Image = "rbxassetid://11295287500"
 		Code = game:HttpGet(Code)
-		print("Button type is Script, Code fetched from URL")
 	end
 
 	ScriptButton.MouseButton1Click:Connect(function()
@@ -214,7 +212,6 @@ function gui:CreateButton(Name, Type, Code)
 		ContextMenuUIStroke.Parent = ContextMenu
 
 		local function CreateContextButton(text, callback)
-			print("Creating context menu button: " .. text)
 			local ContextButton = Instance.new("TextButton")
 			ContextButton.FontFace = Font.new("rbxasset://fonts/families/Ubuntu.json")
 			ContextButton.Text = text
@@ -240,18 +237,15 @@ function gui:CreateButton(Name, Type, Code)
 
 		if Type == "Dir" then
 			local ExecuteDirButton = CreateContextButton("Execute Contents", function()
-				print("Executing all files in directory")
 				for _, file in pairs(Http:JSONDecode(game:HttpGet(Code))) do
 					if file.type ~= "dir" then
 						print("Executing file: " .. file.name)
 						loadstring(game:HttpGet(file.download_url))()
 					end
 				end
-				print("Execution completed")
 			end)
 		else
 			local CopyButton = CreateContextButton("Copy Code", function()
-				print("Copying code to clipboard")
 				setclipboard(Code)
 			end)
 		end 
@@ -259,7 +253,6 @@ function gui:CreateButton(Name, Type, Code)
 		UserInputService.InputBegan:Connect(function(input, gameProcessed)
 			if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.MouseButton2 then
 				task.wait(0.1)
-				print("Context menu closed")
 				ContextMenu:Destroy()
 			end
 		end)
@@ -272,10 +265,8 @@ function repo:DisplayDir(dir)
 	print("Displaying directory contents")
 	for _, file in ipairs(dir) do
 		if file.type == "dir" then
-			print("Found Directory " .. file.name)
 			gui:CreateButton(file.name, "Dir", file.url)
 		elseif file.type == "file" then
-			print("Found File " .. file.name)
 			gui:CreateButton(file.name, "Script", file.download_url)
 		end
 	end

@@ -1,3 +1,4 @@
+print("v1")
 --// Variables \\--
 local UserInputService = game:GetService("UserInputService")
 local Http = game:GetService("HttpService")

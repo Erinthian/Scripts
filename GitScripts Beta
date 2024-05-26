@@ -235,7 +235,7 @@ function Func:CreateButton(Name, Type, Code)
 			setclipboard(Code)
 		end)
 
-		ContextMenu.Parent = game:GetService("ScriptsGui")
+		ContextMenu.Parent = ScriptsGui
 	end)
 end
 

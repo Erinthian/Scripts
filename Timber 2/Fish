@@ -1,1 +1,2 @@
+-- Needs fishing rod equipped
 game:GetService("ReplicatedStorage").Communication.CollectFishingRewards:FireServer()

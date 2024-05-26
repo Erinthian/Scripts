@@ -193,7 +193,7 @@ function Func:CreateButton(Name, Type, Code)
 		ContextMenu.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
 		ContextMenu.BorderColor3 = Color3.fromRGB(50, 50, 50)
 		ContextMenu.BorderMode = Enum.BorderMode.Inset
-		ContextMenu.Position = UDim2.fromOffset(UserInputService:GetMouseLocation().X, UserInputService:GetMouseLocation().Y)
+		ContextMenu.Position = UDim2.new(0,0,0,0) --UDim2.fromOffset(UserInputService:GetMouseLocation().X, UserInputService:GetMouseLocation().Y)
 		ContextMenu.Size = UDim2.fromOffset(160, 20)
 		
 		local ListLayout = Instance.new("UIListLayout")

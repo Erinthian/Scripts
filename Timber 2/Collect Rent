@@ -1,0 +1,9 @@
+local Workspace = game:GetService("Workspace")
+local LocalPlayer = game:GetService("Players").LocalPlayer
+local Plot = Workspace.Plots[LocalPlayer.Name]
+
+for _, v in pairs(Plot.Land:GetChildren()) do
+	if v:FindFirstChild("HouseModel") then
+        firetouchinterest(LocalPlayer.Character.HumanoidRootPart, v.Collect, 0)
+    end
+end

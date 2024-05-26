@@ -1,4 +1,4 @@
-print("v1.1")
+print("v1.2")
 --// Variables \\--
 local UserInputService = game:GetService("UserInputService")
 local Http = game:GetService("HttpService")
@@ -144,7 +144,6 @@ function cache:Search(parent)
 			table.insert(files, file)
 		end
 	end
-	if files == {} then files = nil end
 	return files
 end
 
@@ -268,7 +267,7 @@ end
 function repo:LoadDir(dir)
 	print("Loading Directory")
 	local cacheResult = cache:Search(dir)
-	if cacheResult then
+	if cacheResult ~= {} then
 		print("Found Cache")
 		repo:DisplayDir(cacheResult)
 	else

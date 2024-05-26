@@ -228,7 +228,7 @@ function Func:CreateButton(Name, Type, Code)
 		end
 
 		ContextMenu.Parent = game:GetService("CoreGui")
-	end
+	end)
 end
 
 local function Search()

@@ -148,6 +148,7 @@ function cache:Search(parent)
 end
 
 function gui:CreateButton(Name, Type, Code)
+	print("Creating button for "..Name)
 	local ScriptButton = Instance.new("TextButton")
 	ScriptButton.FontFace = Font.new("rbxasset://fonts/families/Ubuntu.json")
 	ScriptButton.Text = Name
@@ -251,20 +252,27 @@ function gui:CreateButton(Name, Type, Code)
 end
 
 function repo:DisplayDir(dir)
+	print("Displaying Directory")
 	for _, file in ipairs(dir) do
 		if file.type == "dir" then
+			print("Found Directory "..file.name)
 			gui:CreateButton(file.name, "Dir", file.url)
 		elseif file.type == "file" then
+			print("Found File "..file.name)
 			gui:CreateButton(file.name, "Script", file.download_url)
 		end
 	end
 end
 
 function repo:LoadDir(dir)
+	print("Loading Directory")
 	local cacheResult = cache:Search(dir)
 	if cacheResult then
+		print("Found Cache")
+		print("Cache Result: "..cacheResult)
 		repo:DisplayDir(cacheResult)
 	else
+		print("Could not find cache")
 		local response = game:HttpGet(dir)
 		for _, file in pairs(Http:JSONDecode(response)) do
 			cache:Save(file)

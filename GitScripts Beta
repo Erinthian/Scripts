@@ -5,6 +5,7 @@ local Http = game:GetService("HttpService")
 local Repository = "https://api.github.com/repos/Erinthian/Scripts/contents"
 local CachedRepo = {}
 
+--// Classes \\--
 local cache = {}
 local repo = {}
 local gui = {}

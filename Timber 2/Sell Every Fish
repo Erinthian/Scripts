@@ -1,5 +1,0 @@
-local Fish = {"Orange Fish", "Purple Fish", "Yellow Fish", "Small Fish", "Green Fish", "Blue Fish", "Fire Fish"}
-
-for _, v in pairs(Fish) do
-	game:GetService("ReplicatedStorage").Communication.NPCShopSell:FireServer("Fisherman Fred", v)
-end

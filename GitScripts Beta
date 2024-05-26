@@ -133,24 +133,28 @@ end)
 
 --// Logic \\--
 function cache:Save(file)
+	print("Saving file to cache: " .. file.name)
 	table.insert(CachedRepo, file)
 end
 
 function cache:Search(parent)
+	print("Searching cache for parent: " .. parent)
 	local files = {}
 	for _, file in ipairs(CachedRepo) do
 		local file_url = file.url
 		local fileparent = string.gsub(string.sub(file_url, 1, string.find(file_url, "/[^/]*$") - 1), "?ref=main", "")
+		print("Checking file: " .. file.name .. " with parent: " .. fileparent)
 		if fileparent == parent then
-			print("Found file in cache: "..file.name)
+			print("Found file in cache: " .. file.name)
 			table.insert(files, file)
 		end
 	end
+	print("Search completed, found " .. #files .. " files.")
 	return files
 end
 
 function gui:CreateButton(Name, Type, Code)
-	print("Creating button for "..Name)
+	print("Creating button for " .. Name)
 	local ScriptButton = Instance.new("TextButton")
 	ScriptButton.FontFace = Font.new("rbxasset://fonts/families/Ubuntu.json")
 	ScriptButton.Text = Name
@@ -171,20 +175,26 @@ function gui:CreateButton(Name, Type, Code)
 	if Type == "Dir" then
 		ScriptButton.LayoutOrder = -1
 		Icon.Image = "rbxasset://textures/TagEditor/Folder.png"
+		print("Button type is Directory")
 	else
 		Icon.Image = "rbxassetid://11295287500"
 		Code = game:HttpGet(Code)
+		print("Button type is Script, Code fetched from URL")
 	end
 
 	ScriptButton.MouseButton1Click:Connect(function()
+		print("Button clicked (Left) for " .. Name)
 		if Type == "Dir" then
+			print("Loading directory: " .. Code)
 			repo:LoadDir(Code)
 		else
+			print("Executing script code")
 			loadstring(Code)()
 		end
 	end)
 
 	ScriptButton.MouseButton2Click:Connect(function()
+		print("Button clicked (Right) for " .. Name)
 		local ContextMenu = Instance.new("Frame")
 		ContextMenu.AutomaticSize = Enum.AutomaticSize.Y
 		ContextMenu.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
@@ -204,6 +214,7 @@ function gui:CreateButton(Name, Type, Code)
 		ContextMenuUIStroke.Parent = ContextMenu
 
 		local function CreateContextButton(text, callback)
+			print("Creating context menu button: " .. text)
 			local ContextButton = Instance.new("TextButton")
 			ContextButton.FontFace = Font.new("rbxasset://fonts/families/Ubuntu.json")
 			ContextButton.Text = text
@@ -229,15 +240,18 @@ function gui:CreateButton(Name, Type, Code)
 
 		if Type == "Dir" then
 			local ExecuteDirButton = CreateContextButton("Execute Contents", function()
+				print("Executing all files in directory")
 				for _, file in pairs(Http:JSONDecode(game:HttpGet(Code))) do
 					if file.type ~= "dir" then
+						print("Executing file: " .. file.name)
 						loadstring(game:HttpGet(file.download_url))()
 					end
 				end
-				print("executed")
+				print("Execution completed")
 			end)
 		else
 			local CopyButton = CreateContextButton("Copy Code", function()
+				print("Copying code to clipboard")
 				setclipboard(Code)
 			end)
 		end 
@@ -245,6 +259,7 @@ function gui:CreateButton(Name, Type, Code)
 		UserInputService.InputBegan:Connect(function(input, gameProcessed)
 			if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.MouseButton2 then
 				task.wait(0.1)
+				print("Context menu closed")
 				ContextMenu:Destroy()
 			end
 		end)
@@ -254,30 +269,32 @@ function gui:CreateButton(Name, Type, Code)
 end
 
 function repo:DisplayDir(dir)
-	print("Displaying Directory")
+	print("Displaying directory contents")
 	for _, file in ipairs(dir) do
 		if file.type == "dir" then
-			print("Found Directory "..file.name)
+			print("Found Directory " .. file.name)
 			gui:CreateButton(file.name, "Dir", file.url)
 		elseif file.type == "file" then
-			print("Found File "..file.name)
+			print("Found File " .. file.name)
 			gui:CreateButton(file.name, "Script", file.download_url)
 		end
 	end
+	print("Directory display completed")
 end
 
 function repo:LoadDir(dir)
-	print("Loading Directory")
+	print("Loading directory: " .. dir)
 	local cacheResult = cache:Search(dir)
 	if cacheResult and cacheResult ~= {} and cacheResult ~= nil then
-		print("Found Cache")
+		print("Displaying cached directory contents")
 		repo:DisplayDir(cacheResult)
 	else
-		print("Could not find cache")
+		print("Fetching directory contents from URL")
 		local response = game:HttpGet(dir)
 		for _, file in pairs(Http:JSONDecode(response)) do
 			cache:Save(file)
 		end
+		print("Reloading directory after caching")
 		repo:LoadDir(dir)
 	end
 end

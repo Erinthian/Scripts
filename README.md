@@ -5,9 +5,10 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/Erinthian/Scripts/mai
 ```
 
 # Planned features for GitScripts:
+* Execute All Scripts in Directory
+* Refresh Directory Button
 * Repeatedly Execute Selected Script
 * Script Settings
-* Refresh Directory Button
 * Global Search
 * Support for viewing scripts
 * Script metadata

@@ -9,6 +9,7 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/Erinthian/Scripts/mai
     * ~~Execute All Scripts in Directory~~
     * Loop Script
     * Viewing/Copying scripts
+* Have a dictionary of all of the directories instead of calling the api for each load. Use a refresh button to update the dictionary.
 * Refresh Directory Button
 * Script Settings
 * Global Search

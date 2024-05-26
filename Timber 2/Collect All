@@ -11,7 +11,7 @@ for _, v in pairs(Plot.Land:GetChildren()) do
         end
     end
 
-    if v:FindFirstChild("HouseModel") then
+    if v:FindFirstChild("HouseModel") or v:FindFirstChild("Bee") then
         firetouchinterest(LocalPlayer.Character.HumanoidRootPart, v.Collect, 0)
     end
 

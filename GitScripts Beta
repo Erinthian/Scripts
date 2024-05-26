@@ -237,7 +237,7 @@ function Func:CreateButton(Name, Type, Code)
 		UserInputService.InputBegan:Connect(function(input, gameProcessed)
 			if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.MouseButton2 then
 				task.wait(0.1)
-				ContextFrame:Destroy()
+				ContextMenu:Destroy()
 			end
 		end)
 

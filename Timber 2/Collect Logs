@@ -1,0 +1,5 @@
+local Workspace = game:GetService("Workspace")
+local LocalPlayer = game:GetService("Players").LocalPlayer
+local Plot = Workspace.Plots[LocalPlayer.Name]
+
+firetouchinterest(LocalPlayer.Character, Plot.Land["0_2"].Collect, 0)

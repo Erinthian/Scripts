@@ -1,4 +1,4 @@
-print("v1.11")
+print("v1.12")
 --// Variables \\--
 local UserInputService = game:GetService("UserInputService")
 local Http = game:GetService("HttpService")
@@ -281,6 +281,7 @@ function repo:LoadDir(dir)
 	else
 		print("Fetching directory contents from URL")
 		local response = game:HttpGet(dir)
+		print("Http Response: "..response)
 		for _, file in pairs(Http:JSONDecode(response)) do
 			cache:Save(file)
 		end

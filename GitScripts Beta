@@ -230,9 +230,19 @@ function Func:CreateButton(Name, Type, Code)
 			return ContextButton
 		end
 
-		local CopyButton = CreateContextButton("Copy Code", function()
-			setclipboard(Code)
-		end)
+		if Type == "Dir" then
+			local ExecuteDirButton = CreateContextButton("Execute Contents", function()
+				for _, file in pairs(Http:JSONDecode(game:HttpGet(dir))) do
+					if file.type ~= "dir" then
+						loadstring(game:HttpGet(file.download_url))
+					end
+				end
+			end)
+		else
+			local CopyButton = CreateContextButton("Copy Code", function()
+				setclipboard(Code)
+			end)
+		end 
 
 		UserInputService.InputBegan:Connect(function(input, gameProcessed)
 			if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.MouseButton2 then

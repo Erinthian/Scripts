@@ -206,9 +206,10 @@ function Func:CreateButton(Name, Type, Code)
 		ContextMenuUIStroke.LineJoinMode = Enum.LineJoinMode.Miter
 		ContextMenuUIStroke.Parent = ContextMenu
 
-		local function CreateContextButton(Name)
+		local function CreateContextButton(text, callback)
 			local ContextButton = Instance.new("TextButton")
 			ContextButton.FontFace = Font.new("rbxasset://fonts/families/Ubuntu.json")
+			ContextButton.Text = text
 			ContextButton.TextColor3 = Color3.fromRGB(255, 255, 255)
 			ContextButton.TextSize = 14
 			ContextButton.TextTruncate = Enum.TextTruncate.SplitWord
@@ -224,10 +225,16 @@ function Func:CreateButton(Name, Type, Code)
 			ContextButtonPadding.PaddingLeft = UDim.new(0, 10)
 			ContextButtonPadding.Parent = ContextButton
 
+			ContextButton.MouseButton1Click:Connect(callback)
+
 			return ContextButton
 		end
 
-		ContextMenu.Parent = game:GetService("CoreGui")
+		local CopyButton = CreateContextButton("Copy Code", function()
+			setclipboard(Code)
+		end)
+
+		ContextMenu.Parent = game:GetService("ScriptsGui")
 	end)
 end
 

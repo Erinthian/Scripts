@@ -1,0 +1,5 @@
+game:GetService("ReplicatedStorage").Communication.UpgradeStat:FireServer("AxeStrength")
+game:GetService("ReplicatedStorage").Communication.UpgradeStat:FireServer("Speed")
+game:GetService("ReplicatedStorage").Communication.UpgradeStat:FireServer("HutCapacity")
+game:GetService("ReplicatedStorage").Communication.UpgradeStat:FireServer("GoldenChance")
+game:GetService("ReplicatedStorage").Communication.UpgradeStat:FireServer("TreeGrowSpeed")

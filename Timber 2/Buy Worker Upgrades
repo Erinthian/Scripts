@@ -1,0 +1,4 @@
+game:GetService("ReplicatedStorage").Communication.UpgradeStat:FireServer("WorkerAmount")
+game:GetService("ReplicatedStorage").Communication.UpgradeStat:FireServer("WorkerStrength")
+game:GetService("ReplicatedStorage").Communication.UpgradeStat:FireServer("WorkerMaxTrees")
+game:GetService("ReplicatedStorage").Communication.UpgradeStat:FireServer("WorkerSpeed")

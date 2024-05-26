@@ -1,4 +1,3 @@
-print("test2")
 --// Variables \\--
 local UserInputService = game:GetService("UserInputService")
 local Http = game:GetService("HttpService")
@@ -233,7 +232,6 @@ function Func:CreateButton(Name, Type, Code)
 
 		if Type == "Dir" then
 			local ExecuteDirButton = CreateContextButton("Execute Contents", function()
-				print("attempting execute")
 				for _, file in pairs(Http:JSONDecode(game:HttpGet(Code))) do
 					if file.type ~= "dir" then
 						loadstring(game:HttpGet(file.download_url))()

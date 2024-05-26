@@ -311,7 +311,7 @@ function repo:LoadDir(dir)
 	print("Loading Directory")
 	local cacheResult = cache:Search(dir)
 	print("Cache Result: "..printTable(cacheResult, options))
-	if cacheResult ~= {} then
+	if cacheResult and cacheResult ~= {} and cacheResult ~= nil then
 		print("Found Cache")
 		repo:DisplayDir(cacheResult)
 	else

@@ -1,0 +1,6 @@
+local Workspace = game:GetService("Workspace")
+local Ores = Workspace.Ores
+
+for _, v in pairs(Ores:GetChildren()) do
+	game:GetService("ReplicatedStorage").Communication.HitOre:FireServer(v.Name)
+end

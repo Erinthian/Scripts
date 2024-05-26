@@ -1,4 +1,4 @@
-print("v1.8")
+print("v1.9")
 --// Variables \\--
 local UserInputService = game:GetService("UserInputService")
 local Http = game:GetService("HttpService")
@@ -285,7 +285,7 @@ end
 function repo:LoadDir(dir)
 	print("Loading directory: " .. dir)
 	local cacheResult = cache:Search(dir)
-	if cacheResult and cacheResult ~= {} and cacheResult ~= nil then
+	if cacheResult and #cacheResult > 0 then
 		print("Displaying cached directory contents")
 		repo:DisplayDir(cacheResult)
 	else

@@ -188,6 +188,7 @@ function Func:CreateButton(Name, Type, Code)
 	end)
 
 	ScriptButton.MouseButton2Click:Connect(function()
+		print("Right clicked")
 		local ContextMenu = Instance.new("Frame")
 		ContextMenu.AutomaticSize = Enum.AutomaticSize.Y
 		ContextMenu.BackgroundColor3 = Color3.fromRGB(30, 30, 30)

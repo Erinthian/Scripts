@@ -1,3 +1,7 @@
+--// Variables \\
+local Power = game:GetService("ReplicatedStorage").PowerValues.PowerLevel.Value
+
+--// Initialization \\--
 local InfoGui = Instance.new("ScreenGui")
 InfoGui.IgnoreGuiInset = true
 
@@ -33,6 +37,7 @@ PowerLabel.Parent = TimeLabel
 
 InfoGui.Parent = game:GetService("CoreGui")
 
+--// Logic \\--
 game:GetService("Players").LocalPlayer.Backpack.Watch.Screen.SurfaceGui.Frame.TIME:GetPropertyChangedSignal("Text"):Connect(function()
 	TimeLabel.Text = "Time: "..game:GetService("Players").LocalPlayer.Backpack.Watch.Screen.SurfaceGui.Frame.TIME.Text
 end)
@@ -41,6 +46,6 @@ game:GetService("ReplicatedStorage").PowerValues.PowerLevel.Changed:Connect(func
 	if game:GetService("ReplicatedStorage").StationPower.Value == false then
 		PowerLabel.Text = "Power: 0%"
 	else
-		PowerLabel.Text = "Power: "..tostring(math.floor(game:GetService("ReplicatedStorage").PowerValues.PowerLevel/1000*100) + 1)
+		PowerLabel.Text = "Power: "..tostring(math.floor(/1000*100) + 1)
 	end
 end)

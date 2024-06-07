@@ -1,8 +1,8 @@
 local FillTransparency = 0
 local OutlineTransparency = 0
 
-local FillColor = Color3.fromRGB(0, 0, 255)
-local OutlineColor = Color3.fromRGB(0, 0, 255)
+local FillColor = Color3.fromRGB(255, 255, 0)
+local OutlineColor = Color3.fromRGB(255, 255, 0)
 
 local DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
 --------------------------------------------------------

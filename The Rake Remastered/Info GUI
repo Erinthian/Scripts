@@ -41,6 +41,6 @@ game:GetService("ReplicatedStorage").PowerValues.PowerLevel.Changed:Connect(func
 	if game:GetService("ReplicatedStorage").StationPower.Value == false then
 		PowerLabel.Text = "Power: 0%"
 	else
-		PowerLabel.Text = "Power: "..tostring(math.floor(Power/1000*100) + 1)
+		PowerLabel.Text = "Power: "..tostring(math.floor(game:GetService("ReplicatedStorage").PowerValues.PowerLevel/1000*100) + 1)
 	end
 end)

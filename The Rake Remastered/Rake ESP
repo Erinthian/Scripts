@@ -1,6 +1,3 @@
-local Enabled = true
-local hideDead = true
-
 local FillTransparency = 0
 local OutlineTransparency = 1
 
@@ -22,22 +19,24 @@ if Enabled == false then
 	Storage:Destroy()
 end
 
-local function CreateHighlight(rake)
+local function CreateHighlight(part)
+	task.wait(0.1)
 	local NewHighlight = Instance.new("Highlight", Storage)
-	NewHighlight.FillTransparency = FillTransparency
-	NewHighlight.OutlineTransparency = OutlineTransparency
-	NewHighlight.Adornee = rake
-	NewHighlight.Enabled = Enabled
-	NewHighlight.DepthMode = DepthMode
+	NewHighlight.Adornee = part
 
-	local bb = RunService.RenderStepped:Connect(function()
+	local loop = RunService.Heartbeat:Connect(function()
+		NewHighlight.FillTransparency = FillTransparency
+		NewHighlight.OutlineTransparency = OutlineTransparency
+		
 		NewHighlight.FillColor = FillColor
 		NewHighlight.OutlineColor = OutlineColor
+
+		NewHighlight.DepthMode = DepthMode
 	end)
 
-	Rake.Destroying:Connect(function()
+	part.Destroying:Connect(function()
+		loop:Disconnect()
 		NewHighlight:Destroy()
-		bb:Disconnect()
 	end)
 end
 

@@ -7,6 +7,7 @@ local CoreGui = game:GetService("CoreGui")
 local FillTransparency = 0.5
 local OutlineTransparency = 1
 local ShowLocalPlayer = false
+local FillColor = white
 
 --// Logic \\--
 Storage = Instance.new("Folder", CoreGui)
@@ -28,8 +29,7 @@ local function CreateHighlight(plr)
 			NewHighlight.Enabled = false
 		end
 		
-		NewHighlight.FillColor = fillcolorPicker.Color
-		NewHighlight.OutlineColor = outlinecolorPicker.Color
+		NewHighlight.FillColor = FillColor
 	end)
 
 	plr.CharacterRemoving:Connect(function()

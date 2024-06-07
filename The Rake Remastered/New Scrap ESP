@@ -6,13 +6,13 @@ local OutlineColor = Color3.fromRGB(255, 255, 0)
 
 local DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
 --------------------------------------------------------
-if game:GetService("CoreGui"):FindFirstChild("FlareHighlight") then game:GetService("CoreGui"):FindFirstChild("FlareHighlight"):Destroy() end
+if game:GetService("CoreGui"):FindFirstChild("ScrapHighlight") then game:GetService("CoreGui"):FindFirstChild("ScrapHighlight"):Destroy() end
 
 local Storage = Instance.new("Folder")
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
 
-Storage.Name = "FlareHighlight"
+Storage.Name = "ScrapHighlight"
 Storage.Parent = game.CoreGui
 
 if Enabled == false then

@@ -9,23 +9,11 @@ local OutlineColor = Color3.fromRGB(255, 255, 0)
 
 local DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
 --------------------------------------------------------
-if game:GetService("CoreGui"):FindFirstChild("ScrapHighlight") then game:GetService("CoreGui"):FindFirstChild("ScrapHighlight"):Destroy() end
-
-local Storage = Instance.new("Folder")
-local Players = game:GetService("Players")
-local RunService = game:GetService("RunService")
-
-Storage.Name = "ScrapHighlight"
-Storage.Parent = game.CoreGui
-
-if Enabled == false then
-	Storage:Destroy()
-end
 
 local NewHighlight = Instance.new("Highlight", Storage)
 NewHighlight.FillTransparency = FillTransparency
 NewHighlight.OutlineTransparency = OutlineTransparency
-NewHighlight.Adornee = game:GetService("Workspace").Filter.ScrapSpawns
+NewHighlight.Parent = game:GetService("Workspace").Filter.ScrapSpawns
 NewHighlight.Enabled = Enabled
 NewHighlight.DepthMode = DepthMode
 

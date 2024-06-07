@@ -19,7 +19,6 @@ local function CreateHighlight(plr)
 
 	local loop = RunService.Heartbeat:Connect(function()
 		NewHighlight.Enabled = true
-		if not enabledToggle.CurrentValue then return end
 		NewHighlight.FillTransparency = FillTransparency
 		NewHighlight.OutlineTransparency = OutlineTransparency
 

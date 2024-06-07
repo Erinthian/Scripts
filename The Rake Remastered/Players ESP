@@ -7,7 +7,7 @@ local CoreGui = game:GetService("CoreGui")
 local FillTransparency = 0.5
 local OutlineTransparency = 1
 local ShowLocalPlayer = false
-local FillColor = white
+local FillColor = Color3.new(0, 0, 0)
 
 --// Logic \\--
 Storage = Instance.new("Folder", CoreGui)
@@ -25,7 +25,7 @@ local function CreateHighlight(plr)
 
 		NewHighlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
 
-		if ShowLocalPlayer and plr == LocalPlayer then
+		if (not ShowLocalPlayer) and plr == LocalPlayer then
 			NewHighlight.Enabled = false
 		end
 		

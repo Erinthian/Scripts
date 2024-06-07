@@ -1,0 +1,53 @@
+local FillTransparency = 0
+local OutlineTransparency = 0
+
+local FillColor = Color3.fromRGB(0, 0, 255)
+local OutlineColor = Color3.fromRGB(0, 0, 255)
+
+local DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
+--------------------------------------------------------
+if game:GetService("CoreGui"):FindFirstChild("FlareHighlight") then game:GetService("CoreGui"):FindFirstChild("FlareHighlight"):Destroy() end
+
+local Storage = Instance.new("Folder")
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+
+Storage.Name = "FlareHighlight"
+Storage.Parent = game.CoreGui
+
+if Enabled == false then
+	Storage:Destroy()
+end
+
+local function CreateHighlight(part)
+	task.wait(0.1)
+	local NewHighlight = Instance.new("Highlight", Storage)
+	NewHighlight.Adornee = part
+
+	local loop = RunService.Heartbeat:Connect(function()
+		NewHighlight.FillTransparency = FillTransparency
+		NewHighlight.OutlineTransparency = OutlineTransparency
+		
+		NewHighlight.FillColor = FillColor
+		NewHighlight.OutlineColor = OutlineColor
+
+		NewHighlight.DepthMode = DepthMode
+	end)
+
+	part.Destroying:Connect(function()
+		loop:Disconnect()
+		NewHighlight:Destroy()
+	end)
+end
+
+for _,v in pairs(game:GetService("Workspace").Filter.ScrapSpawns:GetDescendants()) do
+	if v:IsA("Model") then
+		CreateHighlight(v);
+	end
+end
+
+game:GetService("Workspace").Filter.ScrapSpawns.DescendantAdded:Connect(function(v)
+	if v:IsA("Model") then
+		CreateHighlight(v);
+	end
+end)

@@ -1,6 +1,6 @@
 local LocalPlayer = game:GetService("Players").LocalPlayer
 
-LocalPlayer.CameraMode = Enum.CameraMode.Classic\
+LocalPlayer.CameraMode = Enum.CameraMode.Classic
 LocalPlayer.CameraMaxZoomDistance = 50
 LocalPlayer:GetPropertyChangedSignal("CameraMaxZoomDistance"):Connect(function()
     LocalPlayer.CameraMaxZoomDistance = 50

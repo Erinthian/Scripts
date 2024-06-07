@@ -1,0 +1,54 @@
+--// Variables \\--
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+local RunService = game:GetService("RunService")
+local CoreGui = game:GetService("CoreGui")
+
+local FillTransparency = 0.5
+local OutlineTransparency = 1
+local ShowLocalPlayer = false
+
+--// Logic \\--
+Storage = Instance.new("Folder", CoreGui)
+
+local function CreateHighlight(plr)
+	task.wait(0.1)
+	local NewHighlight = Instance.new("Highlight", Storage)
+	NewHighlight.Adornee = plr.Character
+
+	local loop = RunService.Heartbeat:Connect(function()
+		NewHighlight.Enabled = true
+		if not enabledToggle.CurrentValue then return end
+		NewHighlight.FillTransparency = FillTransparency
+		NewHighlight.OutlineTransparency = OutlineTransparency
+
+		NewHighlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
+
+		if ShowLocalPlayer and plr == LocalPlayer then
+			NewHighlight.Enabled = false
+		end
+		
+		NewHighlight.FillColor = fillcolorPicker.Color
+		NewHighlight.OutlineColor = outlinecolorPicker.Color
+	end)
+
+	plr.CharacterRemoving:Connect(function()
+		NewHighlight:Destroy()
+		loop:Disconnect()
+	end)
+end
+
+local function CreateHighlightForPlayer(player)
+    if player.Character then
+        CreateHighlight(player)
+    end
+    player.CharacterAdded:Connect(function()
+        CreateHighlight(player)
+    end)
+end
+
+for _, player in ipairs(Players:GetPlayers()) do
+    CreateHighlightForPlayer(player)
+end
+
+Players.PlayerAdded:Connect(CreateHighlightForPlayer)

@@ -1,0 +1,51 @@
+local FillTransparency = 0
+local OutlineTransparency = 0
+
+local FillColor = Color3.fromRGB(0, 0, 255)
+local OutlineColor = Color3.fromRGB(0, 0, 255)
+
+local DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
+--------------------------------------------------------
+if game:GetService("CoreGui"):FindFirstChild("FlareHighlight") then game:GetService("CoreGui"):FindFirstChild("FlareHighlight"):Destroy() end
+
+local Storage = Instance.new("Folder")
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+
+Storage.Name = "FlareHighlight"
+Storage.Parent = game.CoreGui
+
+if Enabled == false then
+	Storage:Destroy()
+end
+
+local function CreateHighlight(part)
+	task.wait(0.1)
+	local NewHighlight = Instance.new("Highlight", Storage)
+	NewHighlight.Adornee = part
+
+	local loop = RunService.Heartbeat:Connect(function()
+		NewHighlight.FillTransparency = FillTransparency
+		NewHighlight.OutlineTransparency = OutlineTransparency
+		
+		NewHighlight.FillColor = FillColor
+		NewHighlight.OutlineColor = OutlineColor
+
+		NewHighlight.DepthMode = DepthMode
+	end)
+
+	part.Destroying:Connect(function()
+		loop:Disconnect()
+		NewHighlight:Destroy()
+	end)
+end
+
+if workspace:FindFirstChild("FlareGunPickUp") then
+	CreateHighlight(workspace:FindFirstChild("FlareGunPickUp").FlareGun)
+end
+
+workspace.ChildAdded:Connect(function(v)
+	if v.Name == "FlareGunPickUp" then
+		CreateHighlight(v.FlareGun);
+	end
+end)

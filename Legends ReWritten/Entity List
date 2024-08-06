@@ -132,7 +132,7 @@ UseEquipped.AnchorPoint = Vector2.new(0, 1)
 UseEquipped.BackgroundColor3 = SecondaryColor
 UseEquipped.BorderSizePixel = 0
 UseEquipped.Position = UDim2.fromScale(0, 1)
-UseEquipped.Size = UDim2.fromScale(1, 0.076)
+UseEquipped.Size = UDim2.fromScale(0.48, 0.076)
 UseEquipped.Visible = true
 UseEquipped.Parent = Bosses
 
@@ -142,6 +142,26 @@ UseEquippedPadding.PaddingLeft = UDim.new(0.2, 0)
 UseEquippedPadding.PaddingRight = UDim.new(0.2, 0)
 UseEquippedPadding.PaddingTop = UDim.new(0.15, 0)
 UseEquippedPadding.Parent = UseEquipped
+
+local TPToBoss = Instance.new("TextButton")
+TPToBoss.FontFace = Font
+TPToBoss.Text = "Teleport"
+TPToBoss.TextColor3 = TextColor
+TPToBoss.TextScaled = true
+TPToBoss.AnchorPoint = Vector2.new(1, 1)
+TPToBoss.BackgroundColor3 = SecondaryColor
+TPToBoss.BorderSizePixel = 0
+TPToBoss.Position = UDim2.fromScale(1, 1)
+TPToBoss.Size = UDim2.fromScale(0.48, 0.076)
+TPToBoss.Visible = true
+TPToBoss.Parent = Bosses
+
+local TPToBossPadding = Instance.new("UIPadding")
+TPToBossPadding.PaddingBottom = UDim.new(0.15, 0)
+TPToBossPadding.PaddingLeft = UDim.new(0.2, 0)
+TPToBossPadding.PaddingRight = UDim.new(0.2, 0)
+TPToBossPadding.PaddingTop = UDim.new(0.15, 0)
+TPToBossPadding.Parent = TPToBoss
 
 local Drops = Instance.new("Folder")
 Drops.Parent = Mainframe
@@ -438,6 +458,18 @@ mobsFolder.ChildRemoved:Connect(listBosses)
 dropsFolder.ChildAdded:Connect(listDrops)
 dropsFolder.ChildRemoved:Connect(listDrops)
 
+local function tweenTP(pos, speed)
+	local originalPosition = player.Character.HumanoidRootPart.Position
+
+	local tween = game:GetService("TweenService"):Create(player.Character.HumanoidRootPart, TweenInfo.new(speed), {
+		Position = pos
+	})
+
+	tween:Play()
+	tween.Completed:Wait() 
+	player.Character.HumanoidRootPart.CFrame = CFrame.new(pos) 
+end
+
 UseEquipped.MouseButton1Click:Connect(function()
 	if selectedBoss and player.Character:FindFirstChildOfClass("Tool") then
 		local Tool = player.Character:FindFirstChildOfClass("Tool")
@@ -448,6 +480,12 @@ UseEquipped.MouseButton1Click:Connect(function()
 				Tool:FindFirstChildOfClass("Script")[action]:FireServer(selectedBoss.HumanoidRootPart.Position)
 			end
 		end
+	end
+end)
+
+TPToBoss.MouseButton1Click:Connect(function()
+	if selectedBoss then
+		tweenTP(selectedBoss.HumanoidRootPart.Position + Vector3.new(0, 0, 0), 5)
 	end
 end)
 

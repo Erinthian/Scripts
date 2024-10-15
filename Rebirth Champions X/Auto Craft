@@ -1,0 +1,7 @@
+while task.wait(1) do
+	game:GetService("ReplicatedStorage").Functions.Request:InvokeServer(table.unpack({
+  	  [1] = "CraftAll",
+ 	   [2] = {
+ 	   },
+	}))
+end

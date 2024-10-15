@@ -1,0 +1,11 @@
+game.Players.LocalPlayer.Passes.AutoClicker.Value = true
+game.Players.LocalPlayer.Passes.AutoRebirth.Value = true
+game.Players.LocalPlayer.Passes.AutoCraft.Value = true
+game.Players.LocalPlayer.Passes.AutoChestCollect.Value = true
+game.Players.LocalPlayer.Passes.MagicEggs.Value = true
+game.Players.LocalPlayer.Passes.SuperLuck.Value = true
+game.Players.LocalPlayer.Passes.UltraLuck.Value = true
+game.Players.LocalPlayer.Passes.x2Clicks.Value = true
+game.Players.LocalPlayer.Passes.FasterEggOpen.Value = true
+game.Players.LocalPlayer.Passes.x2Gems.Value = true
+game.Players.LocalPlayer.Passes.x2Rebirths.Value = true

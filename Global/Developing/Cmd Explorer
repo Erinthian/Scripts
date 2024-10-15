@@ -1,0 +1,223 @@
+--// Variables \\--
+local UserInputService = game:GetService("UserInputService")
+local currentDir = game
+
+--// Initialization \\--
+local CmdGui = Instance.new("ScreenGui")
+CmdGui.IgnoreGuiInset = true
+--CmdGui.ScreenInsets = Enum.ScreenInsets.DeviceSafeInsets
+
+local Mainframe = Instance.new("ImageButton")
+Mainframe.AutoButtonColor = false
+Mainframe.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+Mainframe.BorderColor3 = Color3.fromRGB(50, 50, 50)
+Mainframe.BorderMode = Enum.BorderMode.Inset
+Mainframe.Position = UDim2.fromScale(0.337, 0.325)
+Mainframe.Size = UDim2.fromOffset(400, 250)
+Mainframe.Parent = CmdGui
+
+local MainframePadding = Instance.new("UIPadding")
+MainframePadding.PaddingBottom = UDim.new(0, 4)
+MainframePadding.PaddingLeft = UDim.new(0, 4)
+MainframePadding.PaddingRight = UDim.new(0, 4)
+MainframePadding.PaddingTop = UDim.new(0, 4)
+MainframePadding.Parent = Mainframe
+
+local MainframeStroke = Instance.new("UIStroke")
+MainframeStroke.Color = Color3.fromRGB(10, 10, 10)
+MainframeStroke.LineJoinMode = Enum.LineJoinMode.Miter
+MainframeStroke.Parent = Mainframe
+
+local Title = Instance.new("TextLabel")
+Title.BackgroundTransparency = 1
+--Title.BorderSizePixel = 0
+Title.FontFace = Font.new("rbxasset://fonts/families/Ubuntu.json")
+Title.Size = UDim2.fromScale(1, 0.04)
+Title.Text = "Cmd"
+Title.TextColor3 = Color3.fromRGB(255, 255, 255)
+Title.TextSize = 14
+Title.TextYAlignment = Enum.TextYAlignment.Bottom
+Title.Parent = Mainframe
+
+local TitlePadding = Instance.new("UIPadding")
+TitlePadding.PaddingBottom = UDim.new(0, 1)
+TitlePadding.Parent = Title
+
+local Close = Instance.new("TextButton")
+Close.BackgroundTransparency = 1
+Close.FontFace = Font.new("rbxasset://fonts/families/SourceSansPro.json")
+Close.Position = UDim2.new(1, -10, 0, -4)
+Close.Size = UDim2.new(0, 14, 1, 4)
+Close.Text = "X"
+Close.TextColor3 = Color3.fromRGB(255, 255, 255)
+Close.TextScaled = true
+--Close.TextWrapped = true
+Close.Parent = Title
+
+local CloseStroke = Instance.new("UIStroke")
+CloseStroke.Color = Color3.fromRGB(10, 10, 10)
+CloseStroke.Parent = Close
+
+local Holder = Instance.new("ScrollingFrame")
+Holder.AutomaticCanvasSize = Enum.AutomaticSize.Y
+Holder.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+Holder.BorderSizePixel = 0
+Holder.CanvasSize = UDim2.new()
+Holder.Position = UDim2.fromScale(0, 0.04)
+Holder.ScrollBarThickness = 0
+Holder.Size = UDim2.fromScale(1, 0.871)
+Holder.Parent = Mainframe
+
+local HolderPadding = Instance.new("UIPadding")
+HolderPadding.PaddingBottom = UDim.new(0, 3)
+HolderPadding.PaddingLeft = UDim.new(0, 3)
+HolderPadding.PaddingRight = UDim.new(0, 3)
+HolderPadding.PaddingTop = UDim.new(0, 3)
+HolderPadding.Parent = Holder
+
+local ListLayout = Instance.new("UIListLayout")
+ListLayout.Padding = UDim.new(0, 2)
+--ListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+ListLayout.Parent = Holder
+
+local Input = Instance.new("TextBox")
+Input.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+Input.BorderSizePixel = 0
+Input.FontFace = Font.new("rbxasset://fonts/families/Ubuntu.json")
+Input.PlaceholderText = "Type 'help' for more information"
+Input.Position = UDim2.fromScale(0, 0.93)
+Input.Size = UDim2.fromScale(1, 0.07)
+--Input.Text = ""
+Input.TextColor3 = Color3.fromRGB(255, 255, 255)
+Input.TextSize = 14
+Input.TextXAlignment = Enum.TextXAlignment.Left
+Input.Parent = Mainframe
+
+local InputPadding = Instance.new("UIPadding")
+InputPadding.PaddingLeft = UDim.new(0, 3)
+InputPadding.Parent = Input
+
+Close.MouseButton1Click:Connect(function()
+	CmdGui:Destroy()
+end)
+
+CmdGui.Parent = game:GetService("CoreGui")
+--CmdGui.Parent = game:GetService("Players").LocalPlayer.PlayerGui
+
+--// Drag \\--
+local dragging = false
+local dragStart
+local startPos
+
+Mainframe.MouseButton1Down:Connect(function()
+	dragging = true
+	dragStart = UserInputService:GetMouseLocation()
+	startPos = Mainframe.Position
+end)
+
+UserInputService.InputChanged:Connect(function(input)
+	if dragging and input.UserInputType == Enum.UserInputType.MouseMovement then
+		local delta = UserInputService:GetMouseLocation() - dragStart
+		Mainframe.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+	end
+end)
+
+UserInputService.InputEnded:Connect(function(input)
+	if input.UserInputType == Enum.UserInputType.MouseButton1 then
+		dragging = false
+	end
+end)
+
+--// Logic \\--
+Input.Text = currentDir:GetFullName()..">"
+
+local function onTextChanged()
+	local prefix = currentDir:GetFullName() .. ">"
+	local prefixLength = #prefix
+
+	if Input.Text:sub(1, prefixLength) ~= prefix then
+		local newText = Input.Text:sub(prefixLength + 1):match("^%s*(.-)%s*$"):gsub("[\n\r]", "")
+
+		Input.Text = prefix .. newText
+
+		Input.CursorPosition = #Input.Text + 1
+	else
+		local cleanedText = Input.Text:gsub("[\n\r]", "")
+		if cleanedText ~= Input.Text then
+			Input.Text = cleanedText
+			Input.CursorPosition = #Input.Text + 1
+		end
+	end
+end
+
+Input:GetPropertyChangedSignal("Text"):Connect(onTextChanged)
+Input.FocusLost:Connect(onTextChanged)
+
+local function clearCmds()
+	for _, v in ipairs(Holder:GetChildren()) do
+		if v:IsA("TextLabel") then
+			v:Destroy()
+		end
+	end
+end
+
+local function cmdPrint(str)
+	local Command = Instance.new("TextLabel")
+	Command.BackgroundTransparency = 1
+	Command.FontFace = Font.new("rbxasset://fonts/families/Ubuntu.json")
+	Command.Size = UDim2.new(1, 0, 0, 10)
+	Command.TextColor3 = Color3.fromRGB(255, 255, 255)
+	Command.Text = str or ""
+	Command.TextSize = 10
+	Command.TextXAlignment = Enum.TextXAlignment.Left
+	Command.Parent = Holder
+end
+
+local function dir()
+	for _, v in ipairs(currentDir:GetChildren()) do
+		cmdPrint(v.Name.." | "..v.ClassName)
+	end
+end
+
+local function concatenatePath(path)
+	local currentInstance = currentDir
+	
+	if path[1] == game then
+		currentInstance = game
+		table.remove(path, 1)
+	end
+
+	for _, instanceName in ipairs(path) do
+		currentInstance = currentInstance[instanceName]
+	end
+
+	return currentInstance
+end
+
+local function sendCmd(cmd)
+	if string.match(cmd, "^dir") then
+		clearCmds()
+		dir()
+	end
+	if string.match(cmd, "^cd") then
+		local directory = string.gsub(cmd, "cd ", "")
+		local path = string.split(directory, ".")
+		
+		if directory == ".." then
+			currentDir = currentDir.Parent
+			return
+		end
+		
+		currentDir = concatenatePath(path)
+	end
+end
+
+Input.FocusLost:Connect(function(pressedEnter)
+	if pressedEnter then
+		local cmd = string.gsub(Input.Text, currentDir:GetFullName()..">", "")
+		sendCmd(cmd)
+		Input:CaptureFocus()
+	else
+		Input:ReleaseFocus()
+	end
+end)

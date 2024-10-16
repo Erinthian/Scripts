@@ -1,0 +1,19 @@
+local A_1 = "BugBiologistJake"
+local A_2 = "WoodlandGrove"
+local Event = game:GetService("ReplicatedStorage").ServerCommunication.GameMechanics.Remotes.Functions.InitiateQuest
+Event:InvokeServer(A_1, A_2)
+
+local A_1 = "BugFarmerChris"
+local A_2 = "TheRanch"
+local Event = game:GetService("ReplicatedStorage").ServerCommunication.GameMechanics.Remotes.Functions.InitiateQuest
+Event:InvokeServer(A_1, A_2)
+
+local A_1 = "BugDiscovererJessica"
+local A_2 = "VibrantRainforest"
+local Event = game:GetService("ReplicatedStorage").ServerCommunication.GameMechanics.Remotes.Functions.InitiateQuest
+Event:InvokeServer(A_1, A_2)
+
+local A_1 = "BugGuardianHannah"
+local A_2 = "SunshineParadise"
+local Event = game:GetService("ReplicatedStorage").ServerCommunication.GameMechanics.Remotes.Functions.InitiateQuest
+Event:InvokeServer(A_1, A_2)

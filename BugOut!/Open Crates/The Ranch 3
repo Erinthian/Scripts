@@ -1,0 +1,4 @@
+local A_1 = "The Ranch"
+local A_2 = "Three"
+local Event = game:GetService("ReplicatedStorage").ServerCommunication.GameMechanics.Remotes.Functions.PurchaseCrate
+Event:InvokeServer(A_1, A_2)

@@ -1,0 +1,19 @@
+local A_1 = "TheRanch"
+local Event = game:GetService("ReplicatedStorage").ServerCommunication.GameMechanics.Remotes.Functions.UnlockBorder
+Event:InvokeServer(A_1)
+
+local A_1 = "VibrantRainforest"
+local Event = game:GetService("ReplicatedStorage").ServerCommunication.GameMechanics.Remotes.Functions.UnlockBorder
+Event:InvokeServer(A_1)
+
+local A_1 = "DustedDesert"
+local Event = game:GetService("ReplicatedStorage").ServerCommunication.GameMechanics.Remotes.Functions.UnlockBorder
+Event:InvokeServer(A_1)
+
+local A_1 = "SunshineParadise"
+local Event = game:GetService("ReplicatedStorage").ServerCommunication.GameMechanics.Remotes.Functions.UnlockBorder
+Event:InvokeServer(A_1)
+
+local A_1 = "ColdGlacier"
+local Event = game:GetService("ReplicatedStorage").ServerCommunication.GameMechanics.Remotes.Functions.UnlockBorder
+Event:InvokeServer(A_1)

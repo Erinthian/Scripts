@@ -1,0 +1,3 @@
+local A_1 = 1620494190
+local Event = game:GetService("ReplicatedStorage").ServerCommunication.GameMechanics.Remotes.Events.DailyReward
+Event:FireServer(A_1)

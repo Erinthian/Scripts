@@ -1,0 +1,11 @@
+if _G.HitBugs then
+    _G.HitBugs = not _G.HitBugs
+else
+    _G.HitBugs = true
+    while _G.HitBugs do
+        local A_1 = "MouseDown"
+        local A_2 = false
+        local Event = game:GetService("ReplicatedStorage").ServerCommunication.GameMechanics.Remotes.Events.SendMouseEvent
+        Event:FireServer(A_1, A_2)
+    end
+end

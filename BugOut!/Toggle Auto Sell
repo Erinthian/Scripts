@@ -1,0 +1,16 @@
+local remote = game:GetService("ReplicatedStorage").ServerCommunication.GameMechanics.Remotes.Events.SellInsects
+
+if _G.AutoSell then
+    _G.AutoSell = not _G.AutoSell
+else
+    _G.AutoSell = true
+    while _G.AutoSell do
+        local A_1 = "Normal"
+        local Event = remote
+        Event:FireServer(A_1)
+        task.wait()
+    end
+end
+
+
+

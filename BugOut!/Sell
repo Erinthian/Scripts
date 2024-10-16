@@ -1,3 +1,0 @@
-local A_1 = "Normal"
-local Event = game:GetService("ReplicatedStorage").ServerCommunication.GameMechanics.Remotes.Events.SellInsects
-Event:FireServer(A_1)

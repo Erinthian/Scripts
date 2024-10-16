@@ -1,0 +1,110 @@
+local Enabled = true
+
+local UseLocalPlayer = false
+local HideFriendly = true
+local HideEnemy = false
+
+local FillTransparency = 0.25
+local OutlineTransparency = 0
+
+--local FillColor = Color3.fromRGB(255, 0, 0)
+--local OutlineColor = Color3.fromRGB(0, 0, 0)
+
+local DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
+
+
+local FriendlyFill = Color3.fromRGB(47, 211, 61)
+local FriendlyOutline = Color3.fromRGB(17, 181, 31)
+local EnemyFill = Color3.fromRGB(211, 47, 47)
+local EnemyOutline = Color3.fromRGB(181, 17, 17)
+--------------------------------------------------------
+if game:GetService("CoreGui"):FindFirstChild("Highlights") then game:GetService("CoreGui"):FindFirstChild("Highlights"):Destroy() end
+
+local Storage = Instance.new("Folder")
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+
+if Enabled == false then
+    Storage:Destroy()
+end
+
+if Storage.Name == "Folder" then
+    Storage.Name = "Highlights"
+    Storage.Parent = game.CoreGui
+end
+
+local plr = game:service'Players'.LocalPlayer
+local highlights = Instance.new('Folder', game:service'CoreGui')
+
+--[[
+local function addhighlight(object)
+   local highlight = Instance.new('Highlight', highlights)
+   highlight.Adornee = object
+   
+   highlight.FillColor = settings.fillcolor
+   highlight.FillTransparency = settings.filltransparency
+   
+   highlight.OutlineColor = settings.outlinecolor
+   highlight.OutlineTransparency = settings.outlinetransparency
+
+   highlight.DepthMode = settings.depthmode
+   
+   highlight.Adornee.Changed:Connect(function()
+       if not highlight.Adornee or not highlight.Adornee.Parent then
+           highlight:Destroy()    
+       end
+   end)
+   
+   return highlight
+end
+]]
+
+local function CreateHighlight(obj, isEnemy)
+    local NewHighlight = Instance.new("Highlight", Storage)
+    NewHighlight.OutlineTransparency = OutlineTransparency
+	NewHighlight.FillTransparency = FillTransparency
+    NewHighlight.Adornee = obj
+	NewHighlight.DepthMode = DepthMode
+	NewHighlight.Enabled = Enabled
+
+    local bb = RunService.RenderStepped:Connect(function()
+		if isEnemy then
+			NewHighlight.FillColor = EnemyFill
+			NewHighlight.OutlineColor = EnemyOutline
+		else
+			NewHighlight.FillColor = FriendlyFill
+			NewHighlight.OutlineColor = FriendlyOutline
+		end
+    end)
+
+    obj.Destroying:Connect(function()
+        NewHighlight:Destroy()
+        bb:Disconnect()
+    end)
+end
+
+local function addtoplayer(obj)
+	if obj:IsA'Model' and obj.Name == 'Player' then--and obj.Parent.Name ~= tostring(plr.TeamColor) then
+		if obj.Parent.Name == tostring(plr.TeamColor) then
+			if HideFriendly then
+				else
+				CreateHighlight(obj, false)
+		   	end
+			else
+			if HideEnemy then
+				else
+				CreateHighlight(obj, true)
+			end
+	   	end
+
+       --CreateHighlight(obj)
+   end
+end
+
+for i,v in pairs(workspace.Players:GetDescendants()) do
+   addtoplayer(v)
+end
+
+workspace.Players.DescendantAdded:Connect(function(v)
+   addtoplayer(v)
+end)

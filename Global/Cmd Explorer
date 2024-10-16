@@ -250,12 +250,14 @@ local function sendCmd(cmd)
 				if string.match(string.lower(v[term[2]]), string.lower(term[3])) then
 					cmdPrint(v.Name.." | "..v.ClassName.." | "..v:GetFullName())
 				end
+				task.wait()
 			end
 		else
 			for _, v in ipairs(currentDir:GetChildren()) do
 				if string.match(string.lower(v[term[2]]), string.lower(term[3])) then
 					cmdPrint(v.Name.." | "..v.ClassName)
 				end
+				task.wait()
 			end
 		end
 	end

@@ -1,0 +1,307 @@
+--// Settings \\--
+local ShowLabels = true
+local ShowButtons = false
+local ShowDecals = false
+local ShowTextures = false
+local RemoveDeletedImages = false
+local RemoveRobloxImages = true
+local RemoveFaces = true
+
+--// UI Settings \\--
+local Font = Font.new("rbxasset://fonts/families/Ubuntu.json")
+local MainColor = Color3.fromRGB(40, 40, 40)
+local SecondaryColor = Color3.fromRGB(30, 30, 30)
+local TertiaryColor = Color3.fromRGB(50, 50, 50)
+local TextColor = Color3.fromRGB(250, 250, 250)
+local ZoomLevel = 3
+
+--// Variables \\--
+local UserInputService, MarketPlaceService = game:GetService("UserInputService"), game:GetService("MarketplaceService")
+local LocalPlayer = game:GetService("Players").LocalPlayer
+local Mouse = LocalPlayer:GetMouse()
+local addedIds = {}
+
+--// Initialization \\--
+local ImageLogger = Instance.new("ScreenGui")
+
+local Mainframe = Instance.new("ImageButton",ImageLogger)
+Mainframe.ImageTransparency = 1
+Mainframe.AutoButtonColor = false
+Mainframe.BackgroundColor3 = MainColor
+Mainframe.BorderSizePixel = 0
+Mainframe.Position = UDim2.fromScale(0.550, 0.250)
+Mainframe.Size = UDim2.fromScale(0.164, 0.298)
+
+local Close = Instance.new("TextButton",Mainframe)
+Close.FontFace = Font
+Close.Text = "X"
+Close.TextColor3 = TextColor
+Close.TextSize = 10
+Close.BackgroundColor3 = Color3.new(1,0,0)
+Close.BorderSizePixel = 0
+Close.Position = UDim2.fromScale(0.954, 0)
+Close.Size = UDim2.fromScale(0.046, 0.0395)
+
+local Title = Instance.new("TextLabel",Mainframe)
+Title.FontFace = Font
+Title.Text = "ImageLogger"
+Title.TextColor3 = TextColor
+Title.TextSize = 13
+Title.BackgroundTransparency = 1
+Title.Position = UDim2.fromScale(0.0184, 0)
+Title.Size = UDim2.fromScale(0.954, 0.0435)
+
+local ImageHolder = Instance.new("ScrollingFrame",Mainframe)
+ImageHolder.AutomaticCanvasSize = Enum.AutomaticSize.Y
+ImageHolder.ScrollBarThickness = 0
+ImageHolder.BackgroundColor3 = SecondaryColor
+ImageHolder.BorderSizePixel = 0
+ImageHolder.Position = UDim2.fromScale(0.023, 0.0474)
+ImageHolder.Size = UDim2.fromScale(0.954, 0.933)
+
+local UIGridLayout = Instance.new("UIGridLayout",ImageHolder)
+UIGridLayout.CellPadding = UDim2.new()
+UIGridLayout.CellSize = UDim2.fromScale(1/ZoomLevel, 1/ZoomLevel)
+UIGridLayout.SortOrder = Enum.SortOrder.LayoutOrder
+
+ImageLogger.Parent = game:GetService("CoreGui")
+
+Close.MouseButton1Click:Connect(function()
+	ImageHolder.CanvasSize = UDim2.new()
+	ImageLogger:Destroy()
+end)
+
+--// Functions \\--
+function subId(Id)
+	local subbed = string.match(Id, "%d+$") or "0"
+	return subbed
+end
+
+function ViewDecal(id)
+	local BG = Instance.new("ImageButton")
+	BG.ImageTransparency = 1
+	BG.AutoButtonColor = false
+	BG.BackgroundColor3 = Color3.new(0,0,0)
+	BG.BackgroundTransparency = 0.4
+	BG.Size = UDim2.fromScale(1, 1)
+
+	local Image = Instance.new("ImageLabel", BG)
+	Image.Image = id
+	Image.BackgroundColor3 = MainColor
+	Image.AnchorPoint = Vector2.new(0.5, 0.5)
+	Image.Position = UDim2.fromScale(0.5, 0.5)
+	Image.Size = UDim2.fromScale(0.521, 0.927)
+
+	BG.Parent = ImageLogger
+
+	BG.MouseButton1Click:Connect(function()
+		BG:Destroy()
+	end)
+end
+
+function RemoveDecal(id, force)
+	local subId = subId(id)
+	if subId == "0" or subId == "420" and RemoveRobloxImages or (subId == "100" or subId == "180" and RemoveRobloxImages) then return end
+	local image = ImageHolder[subId]
+	if force or RemoveDeletedImages then
+		image:Destroy()
+	else
+		image.ImageColor3 = Color3.new(1,0,0)
+		image.MouseEnter:Connect(function()
+			image.ImageColor3 = Color3.new(1,1,1)
+		end)
+		image.MouseLeave:Connect(function()
+			image.ImageColor3 = Color3.new(1,0,0)
+		end)
+	end
+end
+
+function openContext(id, instance)
+	local subId = subId(id)
+	local ImageInfo = MarketPlaceService:GetProductInfo(subId, Enum.InfoType.Asset)
+
+	local ContextFrame = Instance.new("Frame")
+	ContextFrame.BackgroundColor3 = MainColor
+	ContextFrame.BorderSizePixel = 2
+	ContextFrame.BorderColor3 = TertiaryColor
+	ContextFrame.Position = UDim2.new(Mouse.X/Mouse.ViewSizeX, 0, Mouse.Y/Mouse.ViewSizeY, 0)
+	ContextFrame.Size = UDim2.fromScale(0.09, 0.185)
+
+	local ListLayout = Instance.new("UIListLayout",ContextFrame)
+	ListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+
+	local Folder = Instance.new("Folder",ContextFrame)
+
+	local CopyFrame = Instance.new("Frame",Folder)
+	CopyFrame.BackgroundColor3 = MainColor
+	CopyFrame.BorderSizePixel = 2
+	CopyFrame.BorderColor3 = TertiaryColor
+	CopyFrame.Position = UDim2.fromScale(1.1, 0.275)
+	CopyFrame.Size = UDim2.fromScale(1, 1)
+	CopyFrame.Visible = false
+
+	local CopyListLayout = Instance.new("UIListLayout",CopyFrame)
+	CopyListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+
+	local Name = Instance.new("TextLabel",ContextFrame)
+	Name.FontFace = Font
+	Name.Text = ImageInfo.Name
+	Name.TextColor3 = Color3.fromRGB(200, 200, 200)
+	Name.TextTruncate = Enum.TextTruncate.AtEnd
+	Name.TextSize = 15
+	Name.BackgroundTransparency = 1
+	Name.Size = UDim2.fromScale(1, 0.1)
+
+	local function createButton(parent, text, callback)
+		local button = Instance.new("TextButton",parent)
+		button.FontFace = Font
+		button.Text = text
+		button.TextColor3 = TextColor
+		button.TextSize = 17
+		button.TextXAlignment = Enum.TextXAlignment.Left
+		button.BackgroundColor3 = MainColor
+		button.BorderSizePixel = 0
+		button.Size = UDim2.fromScale(1, 0.175)
+
+		button.MouseButton1Click:Connect(callback)
+
+		return button
+	end
+
+	createButton(ContextFrame, "   View Image", function()
+		ViewDecal(id)
+	end)
+
+	local Copy = createButton(ContextFrame, "   Copy >", function() end)
+
+	Copy.MouseEnter:Connect(function()
+		CopyFrame.Visible = not CopyFrame.Visible
+	end)
+
+	createButton(ContextFrame, "   Save Image", function()
+		makefolder("SavedImages")
+		writefile("SavedImages/"..ImageInfo.Name..".png", game:HttpGet('https://assetdelivery.roblox.com/v1/asset/?id='..subId))
+	end)
+
+	createButton(ContextFrame, "   Goto Part", function()
+		LocalPlayer.Character.HumanoidRootPart.CFrame = instance.CFrame
+	end)
+
+	createButton(ContextFrame, "   Remove Log", function()
+		RemoveDecal(subId, true)
+	end)
+	
+	local Name = Name:Clone()
+	Name.Text = "Copy"
+	Name.Parent = CopyFrame
+
+	createButton(CopyFrame, "   Copy Name", function()
+		setclipboard(ImageInfo.Name)
+	end)
+
+	createButton(CopyFrame, "   Copy Id", function()
+		setclipboard(subId)
+	end)
+
+	createButton(CopyFrame, "   Copy Link", function()
+		setclipboard("https://www.roblox.com/library/"..subId)
+	end)
+
+	createButton(CopyFrame, "   Copy Path", function()
+		setclipboard(instance:GetFullName())
+	end)
+
+	UserInputService.InputBegan:Connect(function(input, gameProcessed)
+		if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.MouseButton2 then
+			task.wait(0.1)
+			ContextFrame:Destroy()
+		end
+	end)
+
+	ContextFrame.Parent = ImageLogger
+end
+
+function LogDecal(id, instance)
+	local subId = subId(id)
+	if subId == "0" or subId == "420" and RemoveRobloxImages or (subId == "100" or subId == "180" and RemoveRobloxImages) or instance.Name == "face" and RemoveFaces then return end
+	local ImageButton = Instance.new("ImageButton")
+	ImageButton.Name = subId
+	ImageButton.Image = id
+	ImageButton.BorderSizePixel = 0
+	ImageButton.BackgroundColor3 = TertiaryColor
+	ImageButton.BackgroundTransparency = 0.5
+	ImageButton.Parent = ImageHolder
+
+	ImageButton.MouseButton2Click:Connect(function()
+		openContext(id, instance)
+	end)
+	task.wait()
+end
+
+local function CheckInstance(v)
+	if string.find(v:GetFullName(), "CoreGui") then return end
+	local image
+
+	local function newImage()
+		RemoveDecal(image)
+		image = v.Image
+		if not addedIds[image] then
+			LogDecal(image, v)
+			addedIds[image] = true
+		end
+	end
+
+	if (v:IsA("ImageLabel") and ShowLabels) or (v:IsA("ImageButton") and ShowButtons) then
+		image = v.Image
+		local changed = v:GetPropertyChangedSignal("Image"):Connect(newImage)
+		ImageLogger.Destroying:Connect(function()
+			changed:Disconnect()
+		end)
+	elseif (v:IsA("Decal") and ShowDecals) or (v:IsA("Texture") and ShowTextures) then
+		image = v.Texture
+		local changed = v:GetPropertyChangedSignal("Texture"):Connect(newImage)
+		ImageLogger.Destroying:Connect(function()
+			changed:Disconnect()
+		end)
+	else
+		return
+	end
+
+	if not addedIds[image] then
+		LogDecal(image, v)
+		addedIds[image] = true
+	end
+end
+
+--// Drag \\--
+local dragging = false
+local dragStart
+local startPos
+
+Mainframe.MouseButton1Down:Connect(function()
+	dragging = true
+    dragStart = UserInputService:GetMouseLocation()
+	startPos = Mainframe.Position
+end)
+
+UserInputService.InputChanged:Connect(function(input)
+    if dragging and input.UserInputType == Enum.UserInputType.MouseMovement then
+        local delta = UserInputService:GetMouseLocation() - dragStart
+        Mainframe.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+    end
+end)
+
+UserInputService.InputEnded:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 then
+        dragging = false
+    end
+end)
+
+--// Logic \\--
+for _,v in pairs(game:GetDescendants()) do
+    CheckInstance(v)
+end
+
+game.DescendantAdded:Connect(function(v)
+	CheckInstance(v)
+end)

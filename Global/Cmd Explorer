@@ -1,5 +1,6 @@
 --// Variables \\--
 local UserInputService = game:GetService("UserInputService")
+local RunService = game:GetService("RunService")
 local currentDir = game
 
 --// Initialization \\--
@@ -101,8 +102,11 @@ Close.MouseButton1Click:Connect(function()
 	CmdGui:Destroy()
 end)
 
-CmdGui.Parent = game:GetService("CoreGui")
---CmdGui.Parent = game:GetService("Players").LocalPlayer.PlayerGui
+if RunService:IsStudio() then
+	CmdGui.Parent = game:GetService("Players").LocalPlayer.PlayerGui
+else
+	CmdGui.Parent = game:GetService("CoreGui")
+end
 
 --// Drag \\--
 local dragging = false
@@ -209,6 +213,51 @@ local function sendCmd(cmd)
 		end
 		
 		currentDir = concatenatePath(path)
+		clearCmds()
+		dir()
+	end
+	if string.match(cmd, "^print") then
+		local thing = string.gsub(cmd, "print ", "")
+		local thing2 = string.split(thing, ".")
+		
+		clearCmds()
+		if thing2 then
+			local finalthing = currentDir
+			for _, v in ipairs(thing2) do
+				finalthing = finalthing[v]
+			end
+			cmdPrint(finalthing)
+		end
+	end
+	if string.match(cmd, "^copy") then
+		local thing = string.gsub(cmd, "print ", "")
+		local thing2 = string.split(thing, ".")
+
+		if thing2 then
+			local finalthing = currentDir
+			for _, v in ipairs(thing2) do
+				finalthing = finalthing[v]
+			end
+			setclipboard(finalthing)
+		end
+	end
+	if string.match(cmd, "^search") then
+		local term = string.split(cmd, " ")
+		-- term 2 is property, term 3 is value, term 4 is recursive
+		clearCmds()
+		if string.lower(term[4]) == "true" then
+			for _, v in ipairs(currentDir:GetDescendants()) do
+				if string.match(string.lower(v[term[2]]), string.lower(term[3])) then
+					cmdPrint(v.Name.." | "..v.ClassName.." | "..v:GetFullName())
+				end
+			end
+		else
+			for _, v in ipairs(currentDir:GetChildren()) do
+				if string.match(string.lower(v[term[2]]), string.lower(term[3])) then
+					cmdPrint(v.Name.." | "..v.ClassName)
+				end
+			end
+		end
 	end
 end
 

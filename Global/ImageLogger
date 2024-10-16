@@ -271,6 +271,7 @@ local function CheckInstance(v)
 		LogDecal(image, v)
 		addedIds[image] = true
 	end
+    task.wait()
 end
 
 --// Drag \\--

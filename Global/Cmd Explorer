@@ -245,7 +245,7 @@ local function sendCmd(cmd)
 		local term = string.split(cmd, " ")
 		-- term 2 is property, term 3 is value, term 4 is recursive
 		clearCmds()
-		if string.lower(term[4]) == "true" then
+		if term[4] and string.lower(term[4]) == "true" then
 			for _, v in ipairs(currentDir:GetDescendants()) do
 				if string.match(string.lower(v[term[2]]), string.lower(term[3])) then
 					cmdPrint(v.Name.." | "..v.ClassName.." | "..v:GetFullName())

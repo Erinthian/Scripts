@@ -243,23 +243,43 @@ local function sendCmd(cmd)
 	end
 	if string.match(cmd, "^search") then
 		local term = string.split(cmd, " ")
-		-- term 2 is property, term 3 is value, term 4 is recursive
+
+		local property = term[2]
+		local value = term[3]
+		local recursive = term[4]
 		clearCmds()
-		if term[4] and string.lower(term[4]) == "true" then
+		if recursive and string.lower(recursive) == "true" then
 			for _, v in ipairs(currentDir:GetDescendants()) do
-				if string.match(string.lower(v[term[2]]), string.lower(term[3])) then
+				if string.match(v[property], value) then
 					cmdPrint(v.Name.." | "..v.ClassName.." | "..v:GetFullName())
 				end
 				task.wait()
 			end
 		else
 			for _, v in ipairs(currentDir:GetChildren()) do
-				if string.match(string.lower(v[term[2]]), string.lower(term[3])) then
+				if string.match(v[property], value) then
 					cmdPrint(v.Name.." | "..v.ClassName)
 				end
 				task.wait()
 			end
 		end
+		--[[
+		if recursive and string.lower(recursive) == "true" then
+			for _, v in ipairs(currentDir:GetDescendants()) do
+				if string.match(string.lower(v[property]), string.lower(value)) then
+					cmdPrint(v.Name.." | "..v.ClassName.." | "..v:GetFullName())
+				end
+				task.wait()
+			end
+		else
+			for _, v in ipairs(currentDir:GetChildren()) do
+				if string.match(string.lower(v[property]), string.lower(value)) then
+					cmdPrint(v.Name.." | "..v.ClassName)
+				end
+				task.wait()
+			end
+		end
+		]]
 	end
 end
 

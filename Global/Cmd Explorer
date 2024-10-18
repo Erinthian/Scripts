@@ -250,27 +250,12 @@ local function sendCmd(cmd)
 		clearCmds()
 		if recursive and string.lower(recursive) == "true" then
 			for _, v in ipairs(currentDir:GetDescendants()) do
-				if string.match(v[property], value) then
-					cmdPrint(v.Name.." | "..v.ClassName.." | "..v:GetFullName())
-				end
-				task.wait()
-			end
-		else
-			for _, v in ipairs(currentDir:GetChildren()) do
-				if string.match(v[property], value) then
-					cmdPrint(v.Name.." | "..v.ClassName)
-				end
-				task.wait()
-			end
-		end
-		--[[
-		if recursive and string.lower(recursive) == "true" then
-			for _, v in ipairs(currentDir:GetDescendants()) do
 				if string.match(string.lower(v[property]), string.lower(value)) then
 					cmdPrint(v.Name.." | "..v.ClassName.." | "..v:GetFullName())
 				end
 				task.wait()
 			end
+			cmdPrint("DONE")
 		else
 			for _, v in ipairs(currentDir:GetChildren()) do
 				if string.match(string.lower(v[property]), string.lower(value)) then
@@ -278,8 +263,8 @@ local function sendCmd(cmd)
 				end
 				task.wait()
 			end
+			cmdPrint("DONE")
 		end
-		]]
 	end
 end
 

@@ -1,6 +1,10 @@
-getgenv().a = true
-while getgenv().a == true do
-    local ohString1 = "Lunar World"
-    game:GetService("ReplicatedStorage").Events.WorldBoost:FireServer(ohString1)
-    wait(1)
+if _G.Multiplier == true or _G.Multiplier == false then
+    _G.Multiplier = not _G.Multiplier
+else
+    _G.Multiplier = true
+    while _G.Multiplier do
+        local ohString1 = "Lunar World"
+        game:GetService("ReplicatedStorage").Events.WorldBoost:FireServer(ohString1)
+        task.wait(1)
+    end
 end

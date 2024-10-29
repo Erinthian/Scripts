@@ -1,17 +1,17 @@
 for _, v in ipairs(game:GetDescendants()) do
 	if v:IsA("RemoteEvent") then
-		v.OnClientEvent:Connect(function(args)
-			print("Arguments: ")
-			for k, v in pairs(args) do
-				print(k .. " = " .. tostring(v))
+		v.OnClientEvent:Connect(function(...)
+			local args = {...}
+			for i = 1, select("#", ...) do
+				print(args[i])
 			end
 		end)
 	end
 	if v:IsA("RemoteFunction") then
-		v.OnClientInvoke:Connect(function(args)
-			print("Arguments: ")
-			for k, v in pairs(args) do
-				print(k .. " = " .. tostring(v))
+		v.OnClientInvoke:Connect(function(...)
+			local args = {...}
+			for i = 1, select("#", ...) do
+				print(args[i])
 			end
 		end)
 	end

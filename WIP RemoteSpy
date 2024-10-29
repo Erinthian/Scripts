@@ -1,0 +1,18 @@
+for _, v in ipairs(workspace:GetDescendants()) do
+	if v:IsA("RemoteEvent") then
+		v.OnClientEvent:Connect(function(args)
+			print("Arguments: ")
+			for k, v in pairs(args) do
+				print(k .. " = " .. tostring(v))
+			end
+		end)
+	end
+	if v:IsA("RemoteFunction") then
+		v.OnClientInvoke:Connect(function(args)
+			print("Arguments: ")
+			for k, v in pairs(args) do
+				print(k .. " = " .. tostring(v))
+			end
+		end)
+	end
+end

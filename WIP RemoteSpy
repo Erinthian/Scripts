@@ -1,4 +1,4 @@
-for _, v in ipairs(workspace:GetDescendants()) do
+for _, v in ipairs(game:GetDescendants()) do
 	if v:IsA("RemoteEvent") then
 		v.OnClientEvent:Connect(function(args)
 			print("Arguments: ")
@@ -15,4 +15,5 @@ for _, v in ipairs(workspace:GetDescendants()) do
 			end
 		end)
 	end
+    task.wait()
 end

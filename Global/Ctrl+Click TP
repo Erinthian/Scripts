@@ -1,31 +1,30 @@
-local Player = game.Players.LocalPlayer
+local Player = game:GetService("Players").LocalPlayer
 local Mouse = Player:GetMouse()
 local UserInputService = game:GetService('UserInputService')
 
 local HoldingControl = false
+local ControlKeys = {Enum.KeyCode.LeftControl, Enum.KeyCode.RightControl}
 
-Mouse.Button1Down:connect(function()
-if HoldingControl then
-Player.Character:MoveTo(Mouse.Hit.p)
-end
+Mouse.Button1Down:Connect(function()
+	if HoldingControl then
+		if Player.Character then
+			Player.Character:MoveTo(Mouse.Hit.p)
+		end
+	end
 end)
 
-UserInputService.InputBegan:connect(function(Input, Processed)
-if Input.UserInputType == Enum.UserInputType.Keyboard then
-if Input.KeyCode == Enum.KeyCode.LeftControl then
-HoldingControl = true
-elseif Input.KeyCode == Enum.KeyCode.RightControl then
-HoldingControl = true
-end
-end
+UserInputService.InputBegan:Connect(function(Input)
+	if Input.UserInputType == Enum.UserInputType.Keyboard then
+		if table.find(ControlKeys, Input.KeyCode) then
+			HoldingControl = true
+		end
+	end
 end)
 
-UserInputService.InputEnded:connect(function(Input, Processed)
-if Input.UserInputType == Enum.UserInputType.Keyboard then
-if Input.KeyCode == Enum.KeyCode.LeftControl then
-HoldingControl = false
-elseif Input.KeyCode == Enum.KeyCode.RightControl then
-HoldingControl = false
-end
-end
+UserInputService.InputEnded:Connect(function(Input)
+	if Input.UserInputType == Enum.UserInputType.Keyboard then
+		if table.find(ControlKeys, Input.KeyCode) then
+			HoldingControl = false
+		end
+	end
 end)

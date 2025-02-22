@@ -4,6 +4,7 @@ local player = game:GetService("Players").LocalPlayer
 local mobsFolder = workspace.Mobs
 local dropsFolder = workspace.Drops
 local selectedBoss
+local selectedMob
 local selectedDrop
 
 --// UI Settings \\--
@@ -476,6 +477,28 @@ local function selectBoss(instance)
 	end
 end
 
+local function selectMob(instance)
+	if instance then
+		selectedMob = instance
+		for _,v in pairs(MobsHolder:GetChildren()) do
+			if v:IsA("TextButton") then
+				if v.Text == instance.Name then
+					v.BorderColor3 = Color3.new(1,0,0)
+				else
+					v.BorderColor3 = SecondaryColor
+				end
+			end
+		end
+	else
+		selectedMob = nil
+		for _,v in pairs(MobsHolder:GetChildren()) do
+			if v:IsA("TextButton") then
+				v.BorderColor3 = SecondaryColor
+			end
+		end
+	end
+end
+
 local function selectDrop(instance)
 	if instance then
 		print(instance)
@@ -527,6 +550,34 @@ local function addBoss(name, instance)
 	end)
 end
 
+local function addMob(name, instance)
+	local Name = Instance.new("TextButton")
+	Name.FontFace = Font
+	Name.Text = name
+	Name.TextColor3 = TextColor
+	Name.TextScaled = true
+	Name.BackgroundColor3 = MainColor
+	Name.BorderColor3 = SecondaryColor
+	Name.BorderMode = Enum.BorderMode.Inset
+	Name.Size = UDim2.new(1, 0, 0.087, 0)
+	Name.Parent = BossHolder
+
+	local Padding = Instance.new("UIPadding")
+	Padding.PaddingBottom = UDim.new(0.15, 0)
+	Padding.PaddingLeft = UDim.new(0, 0)
+	Padding.PaddingRight = UDim.new(0, 0)
+	Padding.PaddingTop = UDim.new(0.15, 0)
+	Padding.Parent = Name
+
+	Name.MouseButton1Click:Connect(function()
+		if selectedMob == instance then
+			selectMob(nil)
+		else
+			selectMob(instance)
+		end
+	end)
+end
+
 local function addDrop(name, instance)
 	if name == "Gold" then return end
 	local Name = Instance.new("TextButton")
@@ -564,6 +615,14 @@ local function removeBosses()
 	end
 end
 
+local function removeMobs()
+	for _,v in pairs(MobsHolder:GetChildren()) do
+		if v:IsA("TextButton") then
+			v:Destroy()
+		end
+	end
+end
+
 local function removeDrops()
 	for _,v in pairs(DropsHolder:GetChildren()) do
 		if v:IsA("TextButton") then
@@ -585,6 +644,24 @@ local function listBosses()
 	removeBosses()
 	for i, v in pairs(bossCount) do
 		addBoss(i, v)
+	end
+end
+
+local function listMobs()
+	task.wait()
+	local mobCount = {}
+
+	for _, v in pairs(mobsFolder:GetChildren()) do
+		if v:FindFirstChild("Boss") and v.Boss.Value == false then
+			mobCount[v.Name] = v
+		else
+			mobCount[v.Name] = v
+		end
+	end
+
+	removeMobs()
+	for i, v in pairs(mobCount) do
+		addMob(i, v)
 	end
 end
 
@@ -624,9 +701,12 @@ end
 
 --// Logic \\--
 listBosses()
+listMobs()
 listDrops()
 mobsFolder.ChildAdded:Connect(listBosses)
 mobsFolder.ChildRemoved:Connect(listBosses)
+mobsFolder.ChildAdded:Connect(listMobs)
+mobsFolder.ChildRemoved:Connect(listMobs)
 dropsFolder.ChildAdded:Connect(listDrops)
 dropsFolder.ChildRemoved:Connect(listDrops)
 
@@ -669,6 +749,36 @@ end)
 TPToBoss.MouseButton1Click:Connect(function()
 	if selectedBoss then
 		tweenTP(selectedBoss.HumanoidRootPart.Position + Vector3.new(0, 0, 0), 5)
+	end
+end)
+
+UseEquippedMob.MouseButton1Click:Connect(function()
+	if selectedMob and player.Character:FindFirstChildOfClass("Tool") then
+		local Tool = player.Character:FindFirstChildOfClass("Tool")
+		local ToolScript = Tool:FindFirstChildOfClass("Script")
+		local Actions = {"Create", "Punch", "Shoot", "Activate", "Throw", "Charge"}
+		local ActionOverrides = {
+			DismantleV1 = "Activate",
+			FireArrow = "Charge"
+		}
+
+		if ActionOverrides[Tool.Name] then
+			ToolScript[ActionOverrides[Tool.Name]]:FireServer(selectedMob.HumanoidRootPart.Position)
+			return
+		else
+			for _, action in ipairs(Actions) do
+				if ToolScript:FindFirstChild(action) then
+					ToolScript[action]:FireServer(selectedMob.HumanoidRootPart.Position)
+					return
+				end
+			end
+		end
+	end
+end)
+
+TPToBoss.MouseButton1Click:Connect(function()
+	if selectedMob then
+		tweenTP(selectedMob.HumanoidRootPart.Position + Vector3.new(0, 0, 0), 5)
 	end
 end)
 

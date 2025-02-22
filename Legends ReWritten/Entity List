@@ -482,13 +482,14 @@ UseEquipped.MouseButton1Click:Connect(function()
 		for _, override in ipairs(ActionOverrides) do
 			if Tool:FindFirstChildOfClass("Script"):FindFirstChild(override[Tool.Name]) then
 				Tool:FindFirstChildOfClass("Script")[Tool.Name]:FireServer(selectedBoss.HumanoidRootPart.Position)
-				return end)
+				return
 			end
 		end
 
 		for _, action in ipairs(Actions) do
 			if Tool:FindFirstChildOfClass("Script"):FindFirstChild(action) then
 				Tool:FindFirstChildOfClass("Script")[action]:FireServer(selectedBoss.HumanoidRootPart.Position)
+				return
 			end
 		end
 	end

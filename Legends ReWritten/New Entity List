@@ -60,7 +60,6 @@ Close.Size = UDim2.fromOffset(16, 16)
 Close.Text = "X"
 Close.TextColor3 = TextColor
 Close.TextScaled = true
---Close.TextWrapped = true
 Close.ZIndex = 2
 Close.Parent = Mainframe
 
@@ -73,6 +72,7 @@ ClosePadding.Parent = Close
 local ContentFrame = Instance.new("Frame")
 ContentFrame.Name = "ContentFrame"
 ContentFrame.BackgroundTransparency = 1
+ContentFrame.ClipsDescendants = true
 ContentFrame.Position = UDim2.fromScale(0, 0.051)
 ContentFrame.Size = UDim2.fromScale(1, 0.948)
 ContentFrame.Parent = Mainframe
@@ -182,28 +182,6 @@ BossButtonsLayout.Padding = UDim.new(0, 9)
 BossButtonsLayout.SortOrder = Enum.SortOrder.LayoutOrder
 BossButtonsLayout.Parent = BossButtons
 
-local TPToBoss = Instance.new("TextButton")
-TPToBoss.Name = "TPToBoss"
-TPToBoss.AnchorPoint = Vector2.new(0, 1)
-TPToBoss.BackgroundColor3 = SecondaryColor
-TPToBoss.BorderSizePixel = 0
-TPToBoss.FontFace = Font
-TPToBoss.Position = UDim2.fromScale(0, 1)
-TPToBoss.Size = UDim2.fromOffset(106, 20)
-TPToBoss.Text = "Teleport"
-TPToBoss.TextColor3 = TextColor
-TPToBoss.TextScaled = true
---TPToBoss.TextWrapped = true
-TPToBoss.Parent = BossButtons
-
-local TPToBossPadding = Instance.new("UIPadding")
-TPToBossPadding.Name = "TPToBossPadding"
-TPToBossPadding.PaddingBottom = UDim.new(0.15, 0)
-TPToBossPadding.PaddingLeft = UDim.new(0.2, 0)
-TPToBossPadding.PaddingRight = UDim.new(0.2, 0)
-TPToBossPadding.PaddingTop = UDim.new(0.15, 0)
-TPToBossPadding.Parent = TPToBoss
-
 local UseEquippedBoss = Instance.new("TextButton")
 UseEquippedBoss.Name = "UseEquippedBoss"
 UseEquippedBoss.AnchorPoint = Vector2.new(0, 1)
@@ -215,7 +193,6 @@ UseEquippedBoss.Size = UDim2.fromOffset(106, 20)
 UseEquippedBoss.Text = "Use Equipped"
 UseEquippedBoss.TextColor3 = TextColor
 UseEquippedBoss.TextScaled = true
---UseEquippedBoss.TextWrapped = true
 UseEquippedBoss.Parent = BossButtons
 
 local UseEquippedBossPadding = Instance.new("UIPadding")
@@ -225,6 +202,27 @@ UseEquippedBossPadding.PaddingLeft = UDim.new(0.2, 0)
 UseEquippedBossPadding.PaddingRight = UDim.new(0.2, 0)
 UseEquippedBossPadding.PaddingTop = UDim.new(0.15, 0)
 UseEquippedBossPadding.Parent = UseEquippedBoss
+
+local TPToBoss = Instance.new("TextButton")
+TPToBoss.Name = "TPToBoss"
+TPToBoss.AnchorPoint = Vector2.new(0, 1)
+TPToBoss.BackgroundColor3 = SecondaryColor
+TPToBoss.BorderSizePixel = 0
+TPToBoss.FontFace = Font
+TPToBoss.Position = UDim2.fromScale(0, 1)
+TPToBoss.Size = UDim2.fromOffset(106, 20)
+TPToBoss.Text = "Teleport"
+TPToBoss.TextColor3 = TextColor
+TPToBoss.TextScaled = true
+TPToBoss.Parent = BossButtons
+
+local TPToBossPadding = Instance.new("UIPadding")
+TPToBossPadding.Name = "TPToBossPadding"
+TPToBossPadding.PaddingBottom = UDim.new(0.15, 0)
+TPToBossPadding.PaddingLeft = UDim.new(0.2, 0)
+TPToBossPadding.PaddingRight = UDim.new(0.2, 0)
+TPToBossPadding.PaddingTop = UDim.new(0.15, 0)
+TPToBossPadding.Parent = TPToBoss
 
 local MobButtons = Instance.new("Frame")
 MobButtons.Name = "MobButtons"
@@ -256,7 +254,6 @@ TPToMob.Size = UDim2.fromOffset(106, 20)
 TPToMob.Text = "Teleport"
 TPToMob.TextColor3 = TextColor
 TPToMob.TextScaled = true
---TPToMob.TextWrapped = true
 TPToMob.Parent = MobButtons
 
 local TPToMobPadding = Instance.new("UIPadding")
@@ -278,7 +275,6 @@ UseEquippedMob.Size = UDim2.fromOffset(106, 20)
 UseEquippedMob.Text = "Use Equipped"
 UseEquippedMob.TextColor3 = TextColor
 UseEquippedMob.TextScaled = true
---UseEquippedMob.TextWrapped = true
 UseEquippedMob.Parent = MobButtons
 
 local UseEquippedMobPadding = Instance.new("UIPadding")
@@ -316,7 +312,6 @@ PickUpOne.Size = UDim2.fromOffset(106, 20)
 PickUpOne.Text = "Pick Up"
 PickUpOne.TextColor3 = TextColor
 PickUpOne.TextScaled = true
---PickUpOne.TextWrapped = true
 PickUpOne.Parent = DropButtons
 
 local PickUpOnePadding = Instance.new("UIPadding")
@@ -338,7 +333,6 @@ PickUpAll.Size = UDim2.fromOffset(106, 20)
 PickUpAll.Text = "Pick Up All"
 PickUpAll.TextColor3 = TextColor
 PickUpAll.TextScaled = true
---PickUpAll.TextWrapped = true
 PickUpAll.Parent = DropButtons
 
 local PickUpAllPadding = Instance.new("UIPadding")
@@ -368,7 +362,6 @@ BossesTab.Size = UDim2.fromScale(0.333, 1)
 BossesTab.Text = "Bosses"
 BossesTab.TextColor3 = TextColor
 BossesTab.TextScaled = true
---BossesTab.TextWrapped = true
 BossesTab.Parent = TabButtons
 
 local BossesTabPadding = Instance.new("UIPadding")
@@ -392,7 +385,6 @@ MobsTab.Size = UDim2.fromScale(0.333, 1)
 MobsTab.Text = "Enemies"
 MobsTab.TextColor3 = TextColor
 MobsTab.TextScaled = true
---MobsTab.TextWrapped = true
 MobsTab.Parent = TabButtons
 
 local MobsTabPadding = Instance.new("UIPadding")
@@ -422,7 +414,6 @@ DropsTab.Size = UDim2.fromScale(0.333, 1)
 DropsTab.Text = "Drops"
 DropsTab.TextColor3 = TextColor
 DropsTab.TextScaled = true
---DropsTab.TextWrapped = true
 DropsTab.Parent = TabButtons
 
 local DropsTabPadding = Instance.new("UIPadding")

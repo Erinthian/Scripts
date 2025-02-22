@@ -473,22 +473,21 @@ end
 UseEquipped.MouseButton1Click:Connect(function()
 	if selectedBoss and player.Character:FindFirstChildOfClass("Tool") then
 		local Tool = player.Character:FindFirstChildOfClass("Tool")
+		local ToolScript = Tool:FindFirstChildOfClass("Script")
 		local Actions = {"Create", "Punch", "Shoot", "Activate", "Throw", "Charge"}
 		local ActionOverrides = {
 			DismantleV1 = "Activate",
 			FireArrow = "Charge"
 		}
 
-		for _, override in ipairs(ActionOverrides) do
-			if Tool:FindFirstChildOfClass("Script"):FindFirstChild(override[Tool.Name]) then
-				Tool:FindFirstChildOfClass("Script")[override[Tool.Name]]:FireServer(selectedBoss.HumanoidRootPart.Position)
-				return
-			end
+		if ToolScript:FindFirstChild(ActionOverrides[Tool.Name]) then
+			ToolScript[ActionOverrides[Tool.Name]]:FireServer(selectedBoss.HumanoidRootPart.Position)
+			return
 		end
 
 		for _, action in ipairs(Actions) do
-			if Tool:FindFirstChildOfClass("Script"):FindFirstChild(action) then
-				Tool:FindFirstChildOfClass("Script")[action]:FireServer(selectedBoss.HumanoidRootPart.Position)
+			if ToolScript:FindFirstChild(action) then
+				ToolScript[action]:FireServer(selectedBoss.HumanoidRootPart.Position)
 				return
 			end
 		end

@@ -475,7 +475,8 @@ UseEquipped.MouseButton1Click:Connect(function()
 		local Tool = player.Character:FindFirstChildOfClass("Tool")
 		local Actions = {"Create", "Punch", "Shoot", "Activate", "Throw", "Charge"}
 		local ActionOverrides = {
-			"DismantleV1" = "Activate"
+			"DismantleV1" = "Activate",
+			"FireArrow" = "Charge"
 		}
 
 		for _, override in ipairs(ActionOverrides) do

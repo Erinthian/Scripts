@@ -1,0 +1,612 @@
+--// Variables \\--
+local UserInputService = game:GetService("UserInputService")
+local player = game:GetService("Players").LocalPlayer
+local mobsFolder = workspace.Mobs
+local dropsFolder = workspace.Drops
+local selectedBoss
+local selectedDrop
+
+--// UI Settings \\--
+local Font = Font.new("rbxasset://fonts/families/Ubuntu.json")
+local MainColor = Color3.fromRGB(40, 40, 40)
+local SecondaryColor = Color3.fromRGB(30, 30, 30)
+local TextColor = Color3.fromRGB(250, 250, 250)
+
+--// UI \\--
+local Entities = Instance.new("ScreenGui")
+Entities.Name = "Entities"
+Entities.IgnoreGuiInset = true
+Entities.ScreenInsets = Enum.ScreenInsets.DeviceSafeInsets
+
+local EntitiesPadding = Instance.new("UIPadding")
+EntitiesPadding.Name = "EntitiesPadding"
+EntitiesPadding.PaddingBottom = UDim.new(0.225, 0)
+EntitiesPadding.PaddingLeft = UDim.new(0.225, 0)
+EntitiesPadding.PaddingRight = UDim.new(0.225, 0)
+EntitiesPadding.PaddingTop = UDim.new(0.225, 0)
+EntitiesPadding.Parent = Entities
+
+local Mainframe = Instance.new("ImageButton")
+Mainframe.Name = "Mainframe"
+Mainframe.AutoButtonColor = false
+Mainframe.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+Mainframe.BorderSizePixel = 0
+Mainframe.ImageTransparency = 1
+Mainframe.Position = UDim2.fromScale(0.549, 0.243)
+Mainframe.Size = UDim2.fromScale(0.49, 0.49)
+Mainframe.Parent = Entities
+
+local AspectRatio = Instance.new("UIAspectRatioConstraint")
+AspectRatio.Name = "AspectRatio"
+AspectRatio.AspectRatio = 0.816
+AspectRatio.Parent = Mainframe
+
+local MainframePadding = Instance.new("UIPadding")
+MainframePadding.Name = "MainframePadding"
+MainframePadding.PaddingBottom = UDim.new(0, 8)
+MainframePadding.PaddingLeft = UDim.new(0, 8)
+MainframePadding.PaddingRight = UDim.new(0, 8)
+MainframePadding.PaddingTop = UDim.new(0, 8)
+MainframePadding.Parent = Mainframe
+
+local Close = Instance.new("TextButton")
+Close.Name = "Close"
+Close.AnchorPoint = Vector2.new(1, 0)
+Close.BackgroundTransparency = 1
+Close.FontFace = Font.fromEnum(Enum.Font.Ubuntu)
+Close.Position = UDim2.new(1, 8, 0, -8)
+Close.Size = UDim2.fromOffset(16, 16)
+Close.Text = "X"
+Close.TextColor3 = Color3.fromRGB(250, 250, 250)
+Close.TextScaled = true
+Close.TextWrapped = true
+Close.ZIndex = 2
+Close.Parent = Mainframe
+
+local ClosePadding = Instance.new("UIPadding")
+ClosePadding.Name = "ClosePadding"
+ClosePadding.PaddingLeft = UDim.new(0.2, 0)
+ClosePadding.PaddingRight = UDim.new(0.2, 0)
+ClosePadding.Parent = Close
+
+local ContentFrame = Instance.new("Frame")
+ContentFrame.Name = "ContentFrame"
+ContentFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+ContentFrame.BackgroundTransparency = 1
+ContentFrame.BorderSizePixel = 0
+ContentFrame.ClipsDescendants = true
+ContentFrame.Position = UDim2.fromScale(0, 0.051)
+ContentFrame.Selectable = true
+ContentFrame.SelectionGroup = true
+ContentFrame.Size = UDim2.fromScale(1, 0.948)
+ContentFrame.Parent = Mainframe
+
+local Holders = Instance.new("Frame")
+Holders.Name = "Holders"
+Holders.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+Holders.BackgroundTransparency = 1
+Holders.BorderSizePixel = 0
+Holders.ClipsDescendants = true
+Holders.Selectable = true
+Holders.SelectionGroup = true
+Holders.Size = UDim2.new(1, 0, 0, 234)
+Holders.Parent = ContentFrame
+
+local BossHolder = Instance.new("ScrollingFrame")
+BossHolder.Name = "BossHolder"
+BossHolder.AutomaticCanvasSize = Enum.AutomaticSize.Y
+BossHolder.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+BossHolder.BorderSizePixel = 0
+BossHolder.ScrollBarThickness = 0
+BossHolder.Size = UDim2.fromScale(1, 1)
+BossHolder.Parent = Holders
+
+local BossHolderListLayout = Instance.new("UIListLayout")
+BossHolderListLayout.Name = "BossHolderListLayout"
+BossHolderListLayout.Parent = BossHolder
+
+local BossHolderPadding = Instance.new("UIPadding")
+BossHolderPadding.Name = "BossHolderPadding"
+BossHolderPadding.PaddingBottom = UDim.new(0, 1)
+BossHolderPadding.PaddingLeft = UDim.new(0, 1)
+BossHolderPadding.PaddingRight = UDim.new(0, 1)
+BossHolderPadding.PaddingTop = UDim.new(0, 1)
+BossHolderPadding.Parent = BossHolder
+
+local HoldersPageLayout = Instance.new("UIPageLayout")
+HoldersPageLayout.Name = "UIPageLayout"
+HoldersPageLayout.SortOrder = Enum.SortOrder.LayoutOrder
+HoldersPageLayout.Parent = Holders
+
+local DropsHolder = Instance.new("ScrollingFrame")
+DropsHolder.Name = "DropsHolder"
+DropsHolder.AutomaticCanvasSize = Enum.AutomaticSize.Y
+DropsHolder.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+DropsHolder.BorderSizePixel = 0
+DropsHolder.ScrollBarThickness = 0
+DropsHolder.Size = UDim2.fromScale(1, 1)
+DropsHolder.Parent = Holders
+
+local DropsHolderListLayout = Instance.new("UIListLayout")
+DropsHolderListLayout.Name = "DropsHolderListLayout"
+DropsHolderListLayout.Parent = DropsHolder
+
+local DropsHolderPadding = Instance.new("UIPadding")
+DropsHolderPadding.Name = "DropsHolderPadding"
+DropsHolderPadding.PaddingBottom = UDim.new(0, 1)
+DropsHolderPadding.PaddingLeft = UDim.new(0, 1)
+DropsHolderPadding.PaddingRight = UDim.new(0, 1)
+DropsHolderPadding.PaddingTop = UDim.new(0, 1)
+DropsHolderPadding.Parent = DropsHolder
+
+local Buttons = Instance.new("Frame")
+Buttons.Name = "Buttons"
+Buttons.Active = true
+Buttons.AnchorPoint = Vector2.new(0, 1)
+Buttons.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+Buttons.BackgroundTransparency = 1
+Buttons.BorderSizePixel = 0
+Buttons.Position = UDim2.fromScale(0, 1)
+Buttons.Selectable = true
+Buttons.Size = UDim2.new(1, 0, 0, 20)
+Buttons.Parent = ContentFrame
+
+local BossButtons = Instance.new("Frame")
+BossButtons.Name = "BossButtons"
+BossButtons.Active = true
+BossButtons.AnchorPoint = Vector2.new(0, 1)
+BossButtons.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+BossButtons.BackgroundTransparency = 1
+BossButtons.BorderSizePixel = 0
+BossButtons.Position = UDim2.fromScale(0, 1)
+BossButtons.Selectable = true
+BossButtons.Size = UDim2.new(1, 0, 0, 20)
+BossButtons.Parent = Buttons
+
+local BossButtonsLayout = Instance.new("UIListLayout")
+BossButtonsLayout.Name = "BossButtonsLayout"
+BossButtonsLayout.FillDirection = Enum.FillDirection.Horizontal
+BossButtonsLayout.Padding = UDim.new(0, 9)
+BossButtonsLayout.SortOrder = Enum.SortOrder.LayoutOrder
+BossButtonsLayout.Parent = BossButtons
+
+local TPToBoss = Instance.new("TextButton")
+TPToBoss.Name = "TPToBoss"
+TPToBoss.AnchorPoint = Vector2.new(0, 1)
+TPToBoss.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+TPToBoss.BorderSizePixel = 0
+TPToBoss.FontFace = Font.fromEnum(Enum.Font.Ubuntu)
+TPToBoss.Position = UDim2.fromScale(0, 1)
+TPToBoss.Size = UDim2.fromOffset(106, 20)
+TPToBoss.Text = "Teleport"
+TPToBoss.TextColor3 = Color3.fromRGB(250, 250, 250)
+TPToBoss.TextScaled = true
+TPToBoss.TextWrapped = true
+TPToBoss.Parent = BossButtons
+
+local TPToBossPadding = Instance.new("UIPadding")
+TPToBossPadding.Name = "TPToBossPadding"
+TPToBossPadding.PaddingBottom = UDim.new(0.15, 0)
+TPToBossPadding.PaddingLeft = UDim.new(0.2, 0)
+TPToBossPadding.PaddingRight = UDim.new(0.2, 0)
+TPToBossPadding.PaddingTop = UDim.new(0.15, 0)
+TPToBossPadding.Parent = TPToBoss
+
+local UseEquipped = Instance.new("TextButton")
+UseEquipped.Name = "UseEquipped"
+UseEquipped.AnchorPoint = Vector2.new(0, 1)
+UseEquipped.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+UseEquipped.BorderSizePixel = 0
+UseEquipped.FontFace = Font.fromEnum(Enum.Font.Ubuntu)
+UseEquipped.Position = UDim2.fromScale(0, 1)
+UseEquipped.Size = UDim2.fromOffset(106, 20)
+UseEquipped.Text = "Use Equipped"
+UseEquipped.TextColor3 = Color3.fromRGB(250, 250, 250)
+UseEquipped.TextScaled = true
+UseEquipped.TextWrapped = true
+UseEquipped.Parent = BossButtons
+
+local UseEquippedPadding = Instance.new("UIPadding")
+UseEquippedPadding.Name = "UseEquippedPadding"
+UseEquippedPadding.PaddingBottom = UDim.new(0.15, 0)
+UseEquippedPadding.PaddingLeft = UDim.new(0.2, 0)
+UseEquippedPadding.PaddingRight = UDim.new(0.2, 0)
+UseEquippedPadding.PaddingTop = UDim.new(0.15, 0)
+UseEquippedPadding.Parent = UseEquipped
+
+local DropButtons = Instance.new("Frame")
+DropButtons.Name = "DropButtons"
+DropButtons.Active = true
+DropButtons.AnchorPoint = Vector2.new(0, 1)
+DropButtons.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+DropButtons.BackgroundTransparency = 1
+DropButtons.BorderSizePixel = 0
+DropButtons.Position = UDim2.fromScale(0, 1)
+DropButtons.Selectable = true
+DropButtons.Size = UDim2.new(1, 0, 0, 20)
+DropButtons.Parent = Buttons
+
+local DropButtonsLayout = Instance.new("UIListLayout")
+DropButtonsLayout.Name = "DropButtonsLayout"
+DropButtonsLayout.FillDirection = Enum.FillDirection.Horizontal
+DropButtonsLayout.Padding = UDim.new(0, 9)
+DropButtonsLayout.SortOrder = Enum.SortOrder.LayoutOrder
+DropButtonsLayout.Parent = DropButtons
+
+local PickUpOne = Instance.new("TextButton")
+PickUpOne.Name = "PickUpOne"
+PickUpOne.AnchorPoint = Vector2.new(0, 1)
+PickUpOne.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+PickUpOne.BorderSizePixel = 0
+PickUpOne.FontFace = Font.fromEnum(Enum.Font.Ubuntu)
+PickUpOne.Position = UDim2.fromScale(0, 1)
+PickUpOne.Size = UDim2.fromOffset(106, 20)
+PickUpOne.Text = "Pick Up"
+PickUpOne.TextColor3 = Color3.fromRGB(250, 250, 250)
+PickUpOne.TextScaled = true
+PickUpOne.TextWrapped = true
+PickUpOne.Parent = DropButtons
+
+local PickUpOnePadding = Instance.new("UIPadding")
+PickUpOnePadding.Name = "PickUpOnePadding"
+PickUpOnePadding.PaddingBottom = UDim.new(0.176, 0)
+PickUpOnePadding.PaddingLeft = UDim.new(0.292, 0)
+PickUpOnePadding.PaddingRight = UDim.new(0.292, 0)
+PickUpOnePadding.PaddingTop = UDim.new(0.176, 0)
+PickUpOnePadding.Parent = PickUpOne
+
+local PickUpAll = Instance.new("TextButton")
+PickUpAll.Name = "PickUpAll"
+PickUpAll.AnchorPoint = Vector2.new(0, 1)
+PickUpAll.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+PickUpAll.BorderSizePixel = 0
+PickUpAll.FontFace = Font.fromEnum(Enum.Font.Ubuntu)
+PickUpAll.Position = UDim2.fromScale(0, 1)
+PickUpAll.Size = UDim2.fromOffset(106, 20)
+PickUpAll.Text = "Pick Up All"
+PickUpAll.TextColor3 = Color3.fromRGB(250, 250, 250)
+PickUpAll.TextScaled = true
+PickUpAll.TextWrapped = true
+PickUpAll.Parent = DropButtons
+
+local PickUpAllPadding = Instance.new("UIPadding")
+PickUpAllPadding.Name = "PickUpAllPadding"
+PickUpAllPadding.PaddingBottom = UDim.new(0.176, 0)
+PickUpAllPadding.PaddingLeft = UDim.new(0.204, 0)
+PickUpAllPadding.PaddingRight = UDim.new(0.204, 0)
+PickUpAllPadding.PaddingTop = UDim.new(0.176, 0)
+PickUpAllPadding.Parent = PickUpAll
+
+local ButtonsPageLayout = Instance.new("UIPageLayout")
+ButtonsPageLayout.Name = "UIPageLayout"
+ButtonsPageLayout.SortOrder = Enum.SortOrder.LayoutOrder
+ButtonsPageLayout.Parent = Buttons
+
+local DragDetector = Instance.new("UIDragDetector")
+DragDetector.Name = "DragDetector"
+DragDetector.Parent = Mainframe
+
+local TabButtons = Instance.new("Frame")
+TabButtons.Name = "TabButtons"
+TabButtons.Active = true
+TabButtons.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+TabButtons.BackgroundTransparency = 1
+TabButtons.BorderColor3 = Color3.fromRGB(50, 50, 50)
+TabButtons.BorderMode = Enum.BorderMode.Inset
+TabButtons.Selectable = true
+TabButtons.Size = UDim2.fromScale(1, 0.051)
+TabButtons.Parent = Mainframe
+
+local BossesTab = Instance.new("TextButton")
+BossesTab.Name = "BossesTab"
+BossesTab.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+BossesTab.BorderColor3 = Color3.fromRGB(50, 50, 50)
+BossesTab.BorderMode = Enum.BorderMode.Inset
+BossesTab.FontFace = Font.fromEnum(Enum.Font.Ubuntu)
+BossesTab.Size = UDim2.fromScale(0.5, 1)
+BossesTab.Text = "Bosses"
+BossesTab.TextColor3 = Color3.fromRGB(250, 250, 250)
+BossesTab.TextScaled = true
+BossesTab.TextWrapped = true
+BossesTab.Parent = TabButtons
+
+local BossesTabPadding = Instance.new("UIPadding")
+BossesTabPadding.Name = "BossesTabPadding"
+BossesTabPadding.PaddingBottom = UDim.new(0.0622, 0)
+BossesTabPadding.PaddingLeft = UDim.new(0.32, 0)
+BossesTabPadding.PaddingRight = UDim.new(0.32, 0)
+BossesTabPadding.PaddingTop = UDim.new(0.0622, 0)
+BossesTabPadding.Parent = BossesTab
+
+local DropsTab = Instance.new("TextButton")
+DropsTab.Name = "DropsTab"
+DropsTab.AnchorPoint = Vector2.new(1, 0)
+DropsTab.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+DropsTab.BorderColor3 = Color3.fromRGB(50, 50, 50)
+DropsTab.BorderMode = Enum.BorderMode.Inset
+DropsTab.BorderSizePixel = 0
+DropsTab.FontFace = Font.fromEnum(Enum.Font.Ubuntu)
+DropsTab.Position = UDim2.fromScale(1, 0)
+DropsTab.Size = UDim2.fromScale(0.5, 1)
+DropsTab.Text = "Drops"
+DropsTab.TextColor3 = Color3.fromRGB(250, 250, 250)
+DropsTab.TextScaled = true
+DropsTab.TextWrapped = true
+DropsTab.Parent = TabButtons
+
+local DropsTabPadding = Instance.new("UIPadding")
+DropsTabPadding.Name = "DropsTabPadding"
+DropsTabPadding.PaddingBottom = UDim.new(0.0622, 0)
+DropsTabPadding.PaddingLeft = UDim.new(0.342, 0)
+DropsTabPadding.PaddingRight = UDim.new(0.342, 0)
+DropsTabPadding.PaddingTop = UDim.new(0.0622, 0)
+DropsTabPadding.Parent = DropsTab
+
+local UIListLayout = Instance.new("UIListLayout")
+UIListLayout.Name = "UIListLayout"
+UIListLayout.FillDirection = Enum.FillDirection.Horizontal
+UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+UIListLayout.Parent = TabButtons
+
+Entities.Parent = game:GetService("CoreGui")
+
+--// Functions \\--
+DropsTab.MouseButton1Click:Connect(function()
+	HoldersPageLayout:JumpTo(DropsHolder)
+	ButtonsPageLayout:JumpTo(DropButtons)
+
+	BossesTab.BorderSizePixel = 0
+	DropsTab.BorderSizePixel = 1
+end)
+
+BossesTab.MouseButton1Click:Connect(function()
+	HoldersPageLayout:JumpTo(BossHolder)
+	ButtonsPageLayout:JumpTo(BossButtons)
+
+	BossesTab.BorderSizePixel = 1
+	DropsTab.BorderSizePixel = 0
+end)
+
+local function selectBoss(instance)
+	if instance then
+		selectedBoss = instance
+		for _,v in pairs(BossHolder:GetChildren()) do
+			if v:IsA("TextButton") then
+				if v.Text == instance.Name then
+					v.BorderColor3 = Color3.new(1,0,0)
+				else
+					v.BorderColor3 = SecondaryColor
+				end
+			end
+		end
+	else
+		selectedBoss = nil
+		for _,v in pairs(BossHolder:GetChildren()) do
+			if v:IsA("TextButton") then
+				v.BorderColor3 = SecondaryColor
+			end
+		end
+	end
+end
+
+local function selectDrop(instance)
+	if instance then
+		print(instance)
+		selectedDrop = instance
+		for _,v in pairs(DropsHolder:GetChildren()) do
+			if v:IsA("TextButton") then
+				if v.Text == instance.Touched.textgui.text.Text then
+					v.BorderColor3 = Color3.new(1,0,0)
+				else
+					v.BorderColor3 = SecondaryColor
+				end
+			end
+		end
+	else
+		selectedDrop = nil
+		for _,v in pairs(DropsHolder:GetChildren()) do
+			if v:IsA("TextButton") then
+				v.BorderColor3 = SecondaryColor
+			end
+		end
+	end
+end
+
+local function addBoss(name, instance)
+	local Name = Instance.new("TextButton")
+	Name.FontFace = Font
+	Name.Text = name
+	Name.TextColor3 = TextColor
+	Name.TextScaled = true
+	Name.BackgroundColor3 = MainColor
+	Name.BorderColor3 = SecondaryColor
+	Name.BorderMode = Enum.BorderMode.Inset
+	Name.Size = UDim2.new(1, 0, 0.087, 0)
+	Name.Parent = BossHolder
+
+	local Padding = Instance.new("UIPadding")
+	Padding.PaddingBottom = UDim.new(0.15, 0)
+	Padding.PaddingLeft = UDim.new(0, 0)
+	Padding.PaddingRight = UDim.new(0, 0)
+	Padding.PaddingTop = UDim.new(0.15, 0)
+	Padding.Parent = Name
+
+	Name.MouseButton1Click:Connect(function()
+		if selectedBoss == instance then
+			selectBoss(nil)
+		else
+			selectBoss(instance)
+		end
+	end)
+end
+
+local function addDrop(name, instance)
+	if name == "Gold" then return end
+	local Name = Instance.new("TextButton")
+	Name.FontFace = Font
+	Name.Text = name
+	Name.TextColor3 = TextColor
+	Name.TextScaled = true
+	Name.BackgroundColor3 = MainColor
+	Name.BorderColor3 = SecondaryColor
+	Name.BorderMode = Enum.BorderMode.Inset
+	Name.Size = UDim2.new(1, 0, 0.087, 0)
+	Name.Parent = DropsHolder
+
+	local Padding = Instance.new("UIPadding")
+	Padding.PaddingBottom = UDim.new(0.15, 0)
+	Padding.PaddingLeft = UDim.new(0, 0)
+	Padding.PaddingRight = UDim.new(0, 0)
+	Padding.PaddingTop = UDim.new(0.15, 0)
+	Padding.Parent = Name
+
+	Name.MouseButton1Click:Connect(function()
+		if selectedBoss == instance then
+			selectDrop(nil)
+		else
+			selectDrop(instance)
+		end
+	end)
+end
+
+local function removeBosses()
+	for _,v in pairs(BossHolder:GetChildren()) do
+		if v:IsA("TextButton") then
+			v:Destroy()
+		end
+	end
+end
+
+local function removeDrops()
+	for _,v in pairs(DropsHolder:GetChildren()) do
+		if v:IsA("TextButton") then
+			v:Destroy()
+		end
+	end
+end
+
+local function listBosses()
+	task.wait()
+	local bossCount = {}
+
+	for _, v in pairs(mobsFolder:GetChildren()) do
+		if v:FindFirstChild("Boss") and v.Boss.Value == true then
+			bossCount[v.Name] = v
+		end
+	end
+
+	removeBosses()
+	for i, v in pairs(bossCount) do
+		addBoss(i, v)
+	end
+end
+
+local function listDrops()
+	task.wait()
+
+	local DropCount = {}
+
+	for _, item in ipairs(dropsFolder:GetChildren()) do
+		if item:FindFirstChild("Touched") then
+			local itemName = item.Touched.textgui.text.Text
+			if DropCount[itemName] then
+				DropCount[itemName .. " x" .. DropCount[itemName].count] = nil
+				DropCount[itemName].count = DropCount[itemName].count + 1
+			else
+				DropCount[itemName] = {count = 1, instance = item}
+			end
+		end
+	end
+
+	local newDropCount = {}
+	for itemName, itemData in pairs(DropCount) do
+		if itemData.count > 1 then
+			newDropCount[itemName .. " x" .. itemData.count] = itemData.instance
+		else
+			newDropCount[itemName] = itemData.instance
+		end
+	end
+
+	DropCount = newDropCount
+
+	removeDrops()
+	for i, v in pairs(DropCount) do
+		addDrop(i, v)
+	end
+end
+
+--// Logic \\--
+listBosses()
+listDrops()
+mobsFolder.ChildAdded:Connect(listBosses)
+mobsFolder.ChildRemoved:Connect(listBosses)
+dropsFolder.ChildAdded:Connect(listDrops)
+dropsFolder.ChildRemoved:Connect(listDrops)
+
+local function tweenTP(pos, speed)
+	local originalPosition = player.Character.HumanoidRootPart.Position
+
+	local tween = game:GetService("TweenService"):Create(player.Character.HumanoidRootPart, TweenInfo.new(speed), {
+		Position = pos
+	})
+
+	tween:Play()
+	tween.Completed:Wait() 
+	player.Character.HumanoidRootPart.CFrame = CFrame.new(pos) 
+end
+
+UseEquipped.MouseButton1Click:Connect(function()
+	if selectedBoss and player.Character:FindFirstChildOfClass("Tool") then
+		local Tool = player.Character:FindFirstChildOfClass("Tool")
+		local ToolScript = Tool:FindFirstChildOfClass("Script")
+		local Actions = {"Create", "Punch", "Shoot", "Activate", "Throw", "Charge"}
+		local ActionOverrides = {
+			DismantleV1 = "Activate",
+			FireArrow = "Charge"
+		}
+
+		if ActionOverrides[Tool.Name] then
+			ToolScript[ActionOverrides[Tool.Name]]:FireServer(selectedBoss.HumanoidRootPart.Position)
+			return
+		else
+			for _, action in ipairs(Actions) do
+				if ToolScript:FindFirstChild(action) then
+					ToolScript[action]:FireServer(selectedBoss.HumanoidRootPart.Position)
+					return
+				end
+			end
+		end
+	end
+end)
+
+TPToBoss.MouseButton1Click:Connect(function()
+	if selectedBoss then
+		tweenTP(selectedBoss.HumanoidRootPart.Position + Vector3.new(0, 0, 0), 5)
+	end
+end)
+
+PickUpOne.MouseButton1Click:Connect(function()
+	if selectedDrop then
+		if selectedDrop.Touched.textgui.text.Text == "Gold" then return end
+		local item = string.gsub(selectedDrop.Touched.textgui.text.Text, " ", "")
+		local amount = selectedDrop.DropAmount.Value
+
+		game:GetService("ReplicatedStorage").Remotes.ObtainDrop:FireServer(item, amount)
+		--selectedDrop:Destroy()
+	end
+end)
+
+PickUpAll.MouseButton1Click:Connect(function()
+	for _,v in pairs(workspace.Drops:GetChildren()) do
+		if v:FindFirstChild("Touched") then
+			local name = v.Touched.textgui.text.Text
+			if name == "Gold" then else
+				local item = string.gsub(v.Touched.textgui.text.Text, " ", "")
+				local amount = v.DropAmount.Value
+
+				game:GetService("ReplicatedStorage").Remotes.ObtainDrop:FireServer(item, amount)
+				v:Destroy()
+			end
+		end
+	end
+end)

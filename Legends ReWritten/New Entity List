@@ -92,6 +92,11 @@ Holders.SelectionGroup = true
 Holders.Size = UDim2.new(1, 0, 0, 234)
 Holders.Parent = ContentFrame
 
+local HoldersPageLayout = Instance.new("UIPageLayout")
+HoldersPageLayout.Name = "HoldersPageLayout"
+HoldersPageLayout.SortOrder = Enum.SortOrder.LayoutOrder
+HoldersPageLayout.Parent = Holders
+
 local BossHolder = Instance.new("ScrollingFrame")
 BossHolder.Name = "BossHolder"
 BossHolder.AutomaticCanvasSize = Enum.AutomaticSize.Y
@@ -112,32 +117,6 @@ BossHolderPadding.PaddingLeft = UDim.new(0, 1)
 BossHolderPadding.PaddingRight = UDim.new(0, 1)
 BossHolderPadding.PaddingTop = UDim.new(0, 1)
 BossHolderPadding.Parent = BossHolder
-
-local HoldersPageLayout = Instance.new("UIPageLayout")
-HoldersPageLayout.Name = "HoldersPageLayout"
-HoldersPageLayout.SortOrder = Enum.SortOrder.LayoutOrder
-HoldersPageLayout.Parent = Holders
-
-local DropsHolder = Instance.new("ScrollingFrame")
-DropsHolder.Name = "DropsHolder"
-DropsHolder.AutomaticCanvasSize = Enum.AutomaticSize.Y
-DropsHolder.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-DropsHolder.BorderSizePixel = 0
-DropsHolder.ScrollBarThickness = 0
-DropsHolder.Size = UDim2.fromScale(1, 1)
-DropsHolder.Parent = Holders
-
-local DropsHolderListLayout = Instance.new("UIListLayout")
-DropsHolderListLayout.Name = "DropsHolderListLayout"
-DropsHolderListLayout.Parent = DropsHolder
-
-local DropsHolderPadding = Instance.new("UIPadding")
-DropsHolderPadding.Name = "DropsHolderPadding"
-DropsHolderPadding.PaddingBottom = UDim.new(0, 1)
-DropsHolderPadding.PaddingLeft = UDim.new(0, 1)
-DropsHolderPadding.PaddingRight = UDim.new(0, 1)
-DropsHolderPadding.PaddingTop = UDim.new(0, 1)
-DropsHolderPadding.Parent = DropsHolder
 
 local MobsHolder = Instance.new("ScrollingFrame")
 MobsHolder.Name = "MobsHolder"
@@ -160,6 +139,27 @@ MobsHolderPadding.PaddingRight = UDim.new(0, 1)
 MobsHolderPadding.PaddingTop = UDim.new(0, 1)
 MobsHolderPadding.Parent = MobsHolder
 
+local DropsHolder = Instance.new("ScrollingFrame")
+DropsHolder.Name = "DropsHolder"
+DropsHolder.AutomaticCanvasSize = Enum.AutomaticSize.Y
+DropsHolder.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+DropsHolder.BorderSizePixel = 0
+DropsHolder.ScrollBarThickness = 0
+DropsHolder.Size = UDim2.fromScale(1, 1)
+DropsHolder.Parent = Holders
+
+local DropsHolderListLayout = Instance.new("UIListLayout")
+DropsHolderListLayout.Name = "DropsHolderListLayout"
+DropsHolderListLayout.Parent = DropsHolder
+
+local DropsHolderPadding = Instance.new("UIPadding")
+DropsHolderPadding.Name = "DropsHolderPadding"
+DropsHolderPadding.PaddingBottom = UDim.new(0, 1)
+DropsHolderPadding.PaddingLeft = UDim.new(0, 1)
+DropsHolderPadding.PaddingRight = UDim.new(0, 1)
+DropsHolderPadding.PaddingTop = UDim.new(0, 1)
+DropsHolderPadding.Parent = DropsHolder
+
 local Buttons = Instance.new("Frame")
 Buttons.Name = "Buttons"
 Buttons.Active = true
@@ -171,6 +171,11 @@ Buttons.Position = UDim2.fromScale(0, 1)
 Buttons.Selectable = true
 Buttons.Size = UDim2.new(1, 0, 0, 20)
 Buttons.Parent = ContentFrame
+
+local ButtonsPageLayout = Instance.new("UIPageLayout")
+ButtonsPageLayout.Name = "ButtonsPageLayout"
+ButtonsPageLayout.SortOrder = Enum.SortOrder.LayoutOrder
+ButtonsPageLayout.Parent = Buttons
 
 local BossButtons = Instance.new("Frame")
 BossButtons.Name = "BossButtons"
@@ -234,11 +239,6 @@ UseEquippedBossPadding.PaddingLeft = UDim.new(0.2, 0)
 UseEquippedBossPadding.PaddingRight = UDim.new(0.2, 0)
 UseEquippedBossPadding.PaddingTop = UDim.new(0.15, 0)
 UseEquippedBossPadding.Parent = UseEquippedBoss
-
-local ButtonsPageLayout = Instance.new("UIPageLayout")
-ButtonsPageLayout.Name = "ButtonsPageLayout"
-ButtonsPageLayout.SortOrder = Enum.SortOrder.LayoutOrder
-ButtonsPageLayout.Parent = Buttons
 
 local DropButtons = Instance.new("Frame")
 DropButtons.Name = "DropButtons"

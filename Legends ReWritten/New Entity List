@@ -26,13 +26,13 @@ EntitiesPadding.PaddingRight = UDim.new(0.225, 0)
 EntitiesPadding.PaddingTop = UDim.new(0.225, 0)
 EntitiesPadding.Parent = Entities
 
-local Mainframe = Instance.new("ImageButton")
+local Mainframe = Instance.new("Frame")
 Mainframe.Name = "Mainframe"
-Mainframe.AutoButtonColor = false
+Mainframe.Active = true
 Mainframe.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
 Mainframe.BorderSizePixel = 0
-Mainframe.ImageTransparency = 1
 Mainframe.Position = UDim2.fromScale(0.549, 0.243)
+Mainframe.Selectable = true
 Mainframe.Size = UDim2.fromScale(0.49, 0.49)
 Mainframe.Parent = Entities
 
@@ -53,7 +53,7 @@ local Close = Instance.new("TextButton")
 Close.Name = "Close"
 Close.AnchorPoint = Vector2.new(1, 0)
 Close.BackgroundTransparency = 1
-Close.FontFace = Font
+Close.FontFace = Font.new("rbxasset://fonts/families/Ubuntu.json")
 Close.Position = UDim2.new(1, 8, 0, -8)
 Close.Size = UDim2.fromOffset(16, 16)
 Close.Text = "X"
@@ -114,7 +114,7 @@ BossHolderPadding.PaddingTop = UDim.new(0, 1)
 BossHolderPadding.Parent = BossHolder
 
 local HoldersPageLayout = Instance.new("UIPageLayout")
-HoldersPageLayout.Name = "UIPageLayout"
+HoldersPageLayout.Name = "HoldersPageLayout"
 HoldersPageLayout.SortOrder = Enum.SortOrder.LayoutOrder
 HoldersPageLayout.Parent = Holders
 
@@ -138,6 +138,27 @@ DropsHolderPadding.PaddingLeft = UDim.new(0, 1)
 DropsHolderPadding.PaddingRight = UDim.new(0, 1)
 DropsHolderPadding.PaddingTop = UDim.new(0, 1)
 DropsHolderPadding.Parent = DropsHolder
+
+local MobsHolder = Instance.new("ScrollingFrame")
+MobsHolder.Name = "MobsHolder"
+MobsHolder.AutomaticCanvasSize = Enum.AutomaticSize.Y
+MobsHolder.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+MobsHolder.BorderSizePixel = 0
+MobsHolder.ScrollBarThickness = 0
+MobsHolder.Size = UDim2.fromScale(1, 1)
+MobsHolder.Parent = Holders
+
+local MobsHolderListLayout = Instance.new("UIListLayout")
+MobsHolderListLayout.Name = "MobsHolderListLayout"
+MobsHolderListLayout.Parent = MobsHolder
+
+local MobsHolderPadding = Instance.new("UIPadding")
+MobsHolderPadding.Name = "MobsHolderPadding"
+MobsHolderPadding.PaddingBottom = UDim.new(0, 1)
+MobsHolderPadding.PaddingLeft = UDim.new(0, 1)
+MobsHolderPadding.PaddingRight = UDim.new(0, 1)
+MobsHolderPadding.PaddingTop = UDim.new(0, 1)
+MobsHolderPadding.Parent = MobsHolder
 
 local Buttons = Instance.new("Frame")
 Buttons.Name = "Buttons"
@@ -175,7 +196,7 @@ TPToBoss.Name = "TPToBoss"
 TPToBoss.AnchorPoint = Vector2.new(0, 1)
 TPToBoss.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
 TPToBoss.BorderSizePixel = 0
-TPToBoss.FontFace = Font
+TPToBoss.FontFace = Font.new("rbxasset://fonts/families/Ubuntu.json")
 TPToBoss.Position = UDim2.fromScale(0, 1)
 TPToBoss.Size = UDim2.fromOffset(106, 20)
 TPToBoss.Text = "Teleport"
@@ -192,27 +213,32 @@ TPToBossPadding.PaddingRight = UDim.new(0.2, 0)
 TPToBossPadding.PaddingTop = UDim.new(0.15, 0)
 TPToBossPadding.Parent = TPToBoss
 
-local UseEquipped = Instance.new("TextButton")
-UseEquipped.Name = "UseEquipped"
-UseEquipped.AnchorPoint = Vector2.new(0, 1)
-UseEquipped.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-UseEquipped.BorderSizePixel = 0
-UseEquipped.FontFace = Font
-UseEquipped.Position = UDim2.fromScale(0, 1)
-UseEquipped.Size = UDim2.fromOffset(106, 20)
-UseEquipped.Text = "Use Equipped"
-UseEquipped.TextColor3 = Color3.fromRGB(250, 250, 250)
-UseEquipped.TextScaled = true
-UseEquipped.TextWrapped = true
-UseEquipped.Parent = BossButtons
+local UseEquippedBoss = Instance.new("TextButton")
+UseEquippedBoss.Name = "UseEquippedBoss"
+UseEquippedBoss.AnchorPoint = Vector2.new(0, 1)
+UseEquippedBoss.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+UseEquippedBoss.BorderSizePixel = 0
+UseEquippedBoss.FontFace = Font.new("rbxasset://fonts/families/Ubuntu.json")
+UseEquippedBoss.Position = UDim2.fromScale(0, 1)
+UseEquippedBoss.Size = UDim2.fromOffset(106, 20)
+UseEquippedBoss.Text = "Use Equipped"
+UseEquippedBoss.TextColor3 = Color3.fromRGB(250, 250, 250)
+UseEquippedBoss.TextScaled = true
+UseEquippedBoss.TextWrapped = true
+UseEquippedBoss.Parent = BossButtons
 
-local UseEquippedPadding = Instance.new("UIPadding")
-UseEquippedPadding.Name = "UseEquippedPadding"
-UseEquippedPadding.PaddingBottom = UDim.new(0.15, 0)
-UseEquippedPadding.PaddingLeft = UDim.new(0.2, 0)
-UseEquippedPadding.PaddingRight = UDim.new(0.2, 0)
-UseEquippedPadding.PaddingTop = UDim.new(0.15, 0)
-UseEquippedPadding.Parent = UseEquipped
+local UseEquippedBossPadding = Instance.new("UIPadding")
+UseEquippedBossPadding.Name = "UseEquippedBossPadding"
+UseEquippedBossPadding.PaddingBottom = UDim.new(0.15, 0)
+UseEquippedBossPadding.PaddingLeft = UDim.new(0.2, 0)
+UseEquippedBossPadding.PaddingRight = UDim.new(0.2, 0)
+UseEquippedBossPadding.PaddingTop = UDim.new(0.15, 0)
+UseEquippedBossPadding.Parent = UseEquippedBoss
+
+local ButtonsPageLayout = Instance.new("UIPageLayout")
+ButtonsPageLayout.Name = "ButtonsPageLayout"
+ButtonsPageLayout.SortOrder = Enum.SortOrder.LayoutOrder
+ButtonsPageLayout.Parent = Buttons
 
 local DropButtons = Instance.new("Frame")
 DropButtons.Name = "DropButtons"
@@ -238,7 +264,7 @@ PickUpOne.Name = "PickUpOne"
 PickUpOne.AnchorPoint = Vector2.new(0, 1)
 PickUpOne.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
 PickUpOne.BorderSizePixel = 0
-PickUpOne.FontFace = Font
+PickUpOne.FontFace = Font.new("rbxasset://fonts/families/Ubuntu.json")
 PickUpOne.Position = UDim2.fromScale(0, 1)
 PickUpOne.Size = UDim2.fromOffset(106, 20)
 PickUpOne.Text = "Pick Up"
@@ -260,7 +286,7 @@ PickUpAll.Name = "PickUpAll"
 PickUpAll.AnchorPoint = Vector2.new(0, 1)
 PickUpAll.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
 PickUpAll.BorderSizePixel = 0
-PickUpAll.FontFace = Font
+PickUpAll.FontFace = Font.new("rbxasset://fonts/families/Ubuntu.json")
 PickUpAll.Position = UDim2.fromScale(0, 1)
 PickUpAll.Size = UDim2.fromOffset(106, 20)
 PickUpAll.Text = "Pick Up All"
@@ -277,10 +303,68 @@ PickUpAllPadding.PaddingRight = UDim.new(0.204, 0)
 PickUpAllPadding.PaddingTop = UDim.new(0.176, 0)
 PickUpAllPadding.Parent = PickUpAll
 
-local ButtonsPageLayout = Instance.new("UIPageLayout")
-ButtonsPageLayout.Name = "UIPageLayout"
-ButtonsPageLayout.SortOrder = Enum.SortOrder.LayoutOrder
-ButtonsPageLayout.Parent = Buttons
+local MobButtons = Instance.new("Frame")
+MobButtons.Name = "MobButtons"
+MobButtons.Active = true
+MobButtons.AnchorPoint = Vector2.new(0, 1)
+MobButtons.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+MobButtons.BackgroundTransparency = 1
+MobButtons.BorderSizePixel = 0
+MobButtons.Position = UDim2.fromScale(0, 1)
+MobButtons.Selectable = true
+MobButtons.Size = UDim2.new(1, 0, 0, 20)
+MobButtons.Parent = Buttons
+
+local MobButtonsLayout = Instance.new("UIListLayout")
+MobButtonsLayout.Name = "MobButtonsLayout"
+MobButtonsLayout.FillDirection = Enum.FillDirection.Horizontal
+MobButtonsLayout.Padding = UDim.new(0, 9)
+MobButtonsLayout.SortOrder = Enum.SortOrder.LayoutOrder
+MobButtonsLayout.Parent = MobButtons
+
+local TPToMob = Instance.new("TextButton")
+TPToMob.Name = "TPToMob"
+TPToMob.AnchorPoint = Vector2.new(0, 1)
+TPToMob.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+TPToMob.BorderSizePixel = 0
+TPToMob.FontFace = Font.new("rbxasset://fonts/families/Ubuntu.json")
+TPToMob.Position = UDim2.fromScale(0, 1)
+TPToMob.Size = UDim2.fromOffset(106, 20)
+TPToMob.Text = "Teleport"
+TPToMob.TextColor3 = Color3.fromRGB(250, 250, 250)
+TPToMob.TextScaled = true
+TPToMob.TextWrapped = true
+TPToMob.Parent = MobButtons
+
+local TPToMobPadding = Instance.new("UIPadding")
+TPToMobPadding.Name = "TPToMobPadding"
+TPToMobPadding.PaddingBottom = UDim.new(0.15, 0)
+TPToMobPadding.PaddingLeft = UDim.new(0.2, 0)
+TPToMobPadding.PaddingRight = UDim.new(0.2, 0)
+TPToMobPadding.PaddingTop = UDim.new(0.15, 0)
+TPToMobPadding.Parent = TPToMob
+
+local UseEquippedMob = Instance.new("TextButton")
+UseEquippedMob.Name = "UseEquippedMob"
+UseEquippedMob.AnchorPoint = Vector2.new(0, 1)
+UseEquippedMob.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+UseEquippedMob.BorderSizePixel = 0
+UseEquippedMob.FontFace = Font.new("rbxasset://fonts/families/Ubuntu.json")
+UseEquippedMob.Position = UDim2.fromScale(0, 1)
+UseEquippedMob.Size = UDim2.fromOffset(106, 20)
+UseEquippedMob.Text = "Use Equipped"
+UseEquippedMob.TextColor3 = Color3.fromRGB(250, 250, 250)
+UseEquippedMob.TextScaled = true
+UseEquippedMob.TextWrapped = true
+UseEquippedMob.Parent = MobButtons
+
+local UseEquippedMobPadding = Instance.new("UIPadding")
+UseEquippedMobPadding.Name = "UseEquippedMobPadding"
+UseEquippedMobPadding.PaddingBottom = UDim.new(0.15, 0)
+UseEquippedMobPadding.PaddingLeft = UDim.new(0.2, 0)
+UseEquippedMobPadding.PaddingRight = UDim.new(0.2, 0)
+UseEquippedMobPadding.PaddingTop = UDim.new(0.15, 0)
+UseEquippedMobPadding.Parent = UseEquippedMob
 
 local DragDetector = Instance.new("UIDragDetector")
 DragDetector.Name = "DragDetector"
@@ -302,8 +386,8 @@ BossesTab.Name = "BossesTab"
 BossesTab.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
 BossesTab.BorderColor3 = Color3.fromRGB(50, 50, 50)
 BossesTab.BorderMode = Enum.BorderMode.Inset
-BossesTab.FontFace = Font
-BossesTab.Size = UDim2.fromScale(0.5, 1)
+BossesTab.FontFace = Font.new("rbxasset://fonts/families/Ubuntu.json")
+BossesTab.Size = UDim2.fromScale(0.333, 1)
 BossesTab.Text = "Bosses"
 BossesTab.TextColor3 = Color3.fromRGB(250, 250, 250)
 BossesTab.TextScaled = true
@@ -318,6 +402,36 @@ BossesTabPadding.PaddingRight = UDim.new(0.32, 0)
 BossesTabPadding.PaddingTop = UDim.new(0.0622, 0)
 BossesTabPadding.Parent = BossesTab
 
+local MobsTab = Instance.new("TextButton")
+MobsTab.Name = "MobsTab"
+MobsTab.AnchorPoint = Vector2.new(1, 0)
+MobsTab.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+MobsTab.BorderColor3 = Color3.fromRGB(50, 50, 50)
+MobsTab.BorderMode = Enum.BorderMode.Inset
+MobsTab.BorderSizePixel = 0
+MobsTab.FontFace = Font.new("rbxasset://fonts/families/Ubuntu.json")
+MobsTab.Position = UDim2.fromScale(1, 0)
+MobsTab.Size = UDim2.fromScale(0.333, 1)
+MobsTab.Text = "Enemies"
+MobsTab.TextColor3 = Color3.fromRGB(250, 250, 250)
+MobsTab.TextScaled = true
+MobsTab.TextWrapped = true
+MobsTab.Parent = TabButtons
+
+local MobsTabPadding = Instance.new("UIPadding")
+MobsTabPadding.Name = "MobsTabPadding"
+MobsTabPadding.PaddingBottom = UDim.new(0.126, 0)
+MobsTabPadding.PaddingLeft = UDim.new(0.267, 0)
+MobsTabPadding.PaddingRight = UDim.new(0.267, 0)
+MobsTabPadding.PaddingTop = UDim.new(0.126, 0)
+MobsTabPadding.Parent = MobsTab
+
+local UIListLayout = Instance.new("UIListLayout")
+UIListLayout.Name = "UIListLayout"
+UIListLayout.FillDirection = Enum.FillDirection.Horizontal
+UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+UIListLayout.Parent = TabButtons
+
 local DropsTab = Instance.new("TextButton")
 DropsTab.Name = "DropsTab"
 DropsTab.AnchorPoint = Vector2.new(1, 0)
@@ -325,9 +439,9 @@ DropsTab.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
 DropsTab.BorderColor3 = Color3.fromRGB(50, 50, 50)
 DropsTab.BorderMode = Enum.BorderMode.Inset
 DropsTab.BorderSizePixel = 0
-DropsTab.FontFace = Font
+DropsTab.FontFace = Font.new("rbxasset://fonts/families/Ubuntu.json")
 DropsTab.Position = UDim2.fromScale(1, 0)
-DropsTab.Size = UDim2.fromScale(0.5, 1)
+DropsTab.Size = UDim2.fromScale(0.333, 1)
 DropsTab.Text = "Drops"
 DropsTab.TextColor3 = Color3.fromRGB(250, 250, 250)
 DropsTab.TextScaled = true
@@ -342,29 +456,34 @@ DropsTabPadding.PaddingRight = UDim.new(0.342, 0)
 DropsTabPadding.PaddingTop = UDim.new(0.0622, 0)
 DropsTabPadding.Parent = DropsTab
 
-local UIListLayout = Instance.new("UIListLayout")
-UIListLayout.Name = "UIListLayout"
-UIListLayout.FillDirection = Enum.FillDirection.Horizontal
-UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
-UIListLayout.Parent = TabButtons
-
 Entities.Parent = game:GetService("CoreGui")
 
 --// Functions \\--
-DropsTab.MouseButton1Click:Connect(function()
-	HoldersPageLayout:JumpTo(DropsHolder)
-	ButtonsPageLayout:JumpTo(DropButtons)
-
-	BossesTab.BorderSizePixel = 0
-	DropsTab.BorderSizePixel = 1
-end)
-
 BossesTab.MouseButton1Click:Connect(function()
 	HoldersPageLayout:JumpTo(BossHolder)
 	ButtonsPageLayout:JumpTo(BossButtons)
 
 	BossesTab.BorderSizePixel = 1
+	MobsTab.BorderSizePixel = 0
 	DropsTab.BorderSizePixel = 0
+end)
+
+MobsTab.MouseButton1Click:Connect(function()
+	HoldersPageLayout:JumpTo(MobsHolder)
+	ButtonsPageLayout:JumpTo(MobButtons)
+
+	BossesTab.BorderSizePixel = 0
+	MobsTab.BorderSizePixel = 1
+	DropsTab.BorderSizePixel = 0
+end)
+
+DropsTab.MouseButton1Click:Connect(function()
+	HoldersPageLayout:JumpTo(DropsHolder)
+	ButtonsPageLayout:JumpTo(DropButtons)
+
+	BossesTab.BorderSizePixel = 0
+	MobsTab.BorderSizePixel = 0
+	DropsTab.BorderSizePixel = 1
 end)
 
 local function selectBoss(instance)
@@ -555,7 +674,7 @@ local function tweenTP(pos, speed)
 	player.Character.HumanoidRootPart.CFrame = CFrame.new(pos) 
 end
 
-UseEquipped.MouseButton1Click:Connect(function()
+UseEquippedBoss.MouseButton1Click:Connect(function()
 	if selectedBoss and player.Character:FindFirstChildOfClass("Tool") then
 		local Tool = player.Character:FindFirstChildOfClass("Tool")
 		local ToolScript = Tool:FindFirstChildOfClass("Script")

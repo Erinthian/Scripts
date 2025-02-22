@@ -560,7 +560,7 @@ local function addMob(name, instance)
 	Name.BorderColor3 = SecondaryColor
 	Name.BorderMode = Enum.BorderMode.Inset
 	Name.Size = UDim2.new(1, 0, 0.087, 0)
-	Name.Parent = BossHolder
+	Name.Parent = MobsHolder
 
 	local Padding = Instance.new("UIPadding")
 	Padding.PaddingBottom = UDim.new(0.15, 0)

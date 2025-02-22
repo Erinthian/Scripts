@@ -480,15 +480,15 @@ UseEquipped.MouseButton1Click:Connect(function()
 			FireArrow = "Charge"
 		}
 
-		if ToolScript:FindFirstChild(ActionOverrides[Tool.Name]) then
+		if ActionOverrides[Tool.Name] then
 			ToolScript[ActionOverrides[Tool.Name]]:FireServer(selectedBoss.HumanoidRootPart.Position)
 			return
-		end
-
-		for _, action in ipairs(Actions) do
-			if ToolScript:FindFirstChild(action) then
-				ToolScript[action]:FireServer(selectedBoss.HumanoidRootPart.Position)
-				return
+		else
+			for _, action in ipairs(Actions) do
+				if ToolScript:FindFirstChild(action) then
+					ToolScript[action]:FireServer(selectedBoss.HumanoidRootPart.Position)
+					return
+				end
 			end
 		end
 	end

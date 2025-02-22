@@ -507,7 +507,7 @@ PickUpOne.MouseButton1Click:Connect(function()
 		local amount = selectedDrop.DropAmount.Value
 
 		game:GetService("ReplicatedStorage").Remotes.ObtainDrop:FireServer(item, amount)
-		selectedDrop:Destroy()
+		--selectedDrop:Destroy()
 	end
 end)
 

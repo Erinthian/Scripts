@@ -87,6 +87,7 @@ Holders.Parent = ContentFrame
 
 local HoldersPageLayout = Instance.new("UIPageLayout")
 HoldersPageLayout.Name = "HoldersPageLayout"
+HoldersPageLayout.ScrollWheelInputEnabled = false
 HoldersPageLayout.SortOrder = Enum.SortOrder.LayoutOrder
 HoldersPageLayout.Parent = Holders
 
@@ -164,6 +165,7 @@ Buttons.Parent = ContentFrame
 
 local ButtonsPageLayout = Instance.new("UIPageLayout")
 ButtonsPageLayout.Name = "ButtonsPageLayout"
+ButtonsPageLayout.ScrollWheelInputEnabled = false
 ButtonsPageLayout.SortOrder = Enum.SortOrder.LayoutOrder
 ButtonsPageLayout.Parent = Buttons
 
@@ -711,7 +713,9 @@ dropsFolder.ChildAdded:Connect(listDrops)
 dropsFolder.ChildRemoved:Connect(listDrops)
 
 local function tweenTP(pos, speed)
-	local originalPosition = player.Character.HumanoidRootPart.Position
+    player.Character:SetPrimaryPartCFrame(CFrame.new(pos))
+    --[[
+    local originalPosition = player.Character.HumanoidRootPart.Position
 
 	local tween = game:GetService("TweenService"):Create(player.Character.HumanoidRootPart, TweenInfo.new(speed), {
 		Position = pos
@@ -719,7 +723,8 @@ local function tweenTP(pos, speed)
 
 	tween:Play()
 	tween.Completed:Wait() 
-	player.Character.HumanoidRootPart.CFrame = CFrame.new(pos) 
+	player.Character.HumanoidRootPart.CFrame = CFrame.new(pos)
+    ]]
 end
 
 UseEquippedBoss.MouseButton1Click:Connect(function()
@@ -776,7 +781,7 @@ UseEquippedMob.MouseButton1Click:Connect(function()
 	end
 end)
 
-TPToBoss.MouseButton1Click:Connect(function()
+TPToMob.MouseButton1Click:Connect(function()
 	if selectedMob then
 		tweenTP(selectedMob.HumanoidRootPart.Position + Vector3.new(0, 0, 0), 5)
 	end

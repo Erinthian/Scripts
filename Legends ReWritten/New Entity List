@@ -713,9 +713,9 @@ dropsFolder.ChildAdded:Connect(listDrops)
 dropsFolder.ChildRemoved:Connect(listDrops)
 
 local function tweenTP(pos, speed)
-    local originalPosition = player.Character.HumanoidRootPart.Position
+    local time = (pos - player.Character.HumanoidRootPart.Position).Magnitude / player.Character.Humanoid.WalkSpeed
 
-	local tween = game:GetService("TweenService"):Create(player.Character.HumanoidRootPart, TweenInfo.new(speed), {
+	local tween = game:GetService("TweenService"):Create(player.Character.HumanoidRootPart, TweenInfo.new(time), {
 		Position = pos
 	})
 

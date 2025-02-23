@@ -111,6 +111,7 @@ local function createHolder()
 	padding.PaddingRight = UDim.new(0, 1)
 	padding.PaddingTop = UDim.new(0, 1)
 	padding.Parent = holder
+	return holder
 end
 
 local BossHolder = createHolder()
@@ -153,7 +154,6 @@ local function createButtonSet()
 	layout.Padding = UDim.new(0, 9)
 	layout.SortOrder = Enum.SortOrder.LayoutOrder
 	layout.Parent = buttonSet
-
 	return buttonSet
 end
 

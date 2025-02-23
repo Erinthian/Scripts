@@ -441,11 +441,11 @@ local function listEntities()
 	local mobCount = {}
 	local dropCount = {}
 
-	for _, v in ipairs(mobsFolder:GetChildren()) do
-		if v:FindFirstChild("Boss") and v.Boss.Value then
-			bossCount[v.Name] = v
+	for _, mob in ipairs(mobsFolder:GetChildren()) do
+		if mob:FindFirstChild("Boss") and mob.Boss.Value then
+			bossCount[mob.Name] = mob
 		else
-			mobCount[v.Name] = v
+			mobCount[mob.Name] = mob
 		end
 	end
 

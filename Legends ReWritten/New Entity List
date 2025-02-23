@@ -713,8 +713,6 @@ dropsFolder.ChildAdded:Connect(listDrops)
 dropsFolder.ChildRemoved:Connect(listDrops)
 
 local function tweenTP(pos, speed)
-    player.Character:SetPrimaryPartCFrame(CFrame.new(pos))
-    --[[
     local originalPosition = player.Character.HumanoidRootPart.Position
 
 	local tween = game:GetService("TweenService"):Create(player.Character.HumanoidRootPart, TweenInfo.new(speed), {
@@ -724,7 +722,6 @@ local function tweenTP(pos, speed)
 	tween:Play()
 	tween.Completed:Wait() 
 	player.Character.HumanoidRootPart.CFrame = CFrame.new(pos)
-    ]]
 end
 
 UseEquippedBoss.MouseButton1Click:Connect(function()

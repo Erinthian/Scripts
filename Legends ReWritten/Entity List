@@ -235,11 +235,11 @@ local function createTabButton(Text, horPadding, vertPadding)
 	local tab = Instance.new("TextButton")
 	tab.BackgroundColor3 = SecondaryColor
 	tab.BorderColor3 = BorderColor
-	tab.BorderMode = Enum.BorderMode.Middle
+	tab.BorderMode = Enum.BorderMode.Outline
 	tab.BorderSizePixel = 0
 	tab.FontFace = Font
 	tab.Size = UDim2.fromScale(0.333, 1)
-	tab.Text = "Bosses"
+	tab.Text = Text
 	tab.TextColor3 = TextColor
 	tab.TextScaled = true
 	tab.Parent = TabButtons

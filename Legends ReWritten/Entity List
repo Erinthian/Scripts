@@ -461,33 +461,21 @@ end
 local function listDrops()
 	task.wait()
 
-	local DropCount = {}
+	local dropCount = {}
 
 	for _, item in ipairs(dropsFolder:GetChildren()) do
-		if item:FindFirstChild("Touched") then
-			local itemName = item.Touched.textgui.text.Text
-			if DropCount[itemName] then
-				DropCount[itemName .. " x" .. DropCount[itemName].count] = nil
-				DropCount[itemName].count = DropCount[itemName].count + 1
-			else
-				DropCount[itemName] = {count = 1, instance = item}
-			end
-		end
-	end
-
-	local newDropCount = {}
-	for itemName, itemData in pairs(DropCount) do
-		if itemData.count > 1 then
-			newDropCount[itemName .. " x" .. itemData.count] = itemData.instance
-		else
-			newDropCount[itemName] = itemData.instance
-		end
-	end
-
-	DropCount = newDropCount
+        if item:FindFirstChild("Touched") then
+            local itemName = item.Touched.textgui.text.Text
+            if not dropCount[itemName] then
+                dropCount[itemName] = { instance = item, count = 1 }
+            else
+                dropCount[itemName].count += 1
+            end
+        end
+    end
 
 	removeEntities(DropsHolder)
-	for i, v in pairs(DropCount) do
+	for i, v in pairs(dropCount) do
 		addDrop(i, v)
 	end
 end

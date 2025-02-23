@@ -235,7 +235,7 @@ local function createTabButton(Text, horPadding, vertPadding)
 	local tab = Instance.new("TextButton")
 	tab.BackgroundColor3 = SecondaryColor
 	tab.BorderColor3 = BorderColor
-	tab.BorderMode = Enum.BorderMode.Outline
+	tab.BorderMode = Enum.BorderMode.Middle
 	tab.BorderSizePixel = 0
 	tab.FontFace = Font
 	tab.Size = UDim2.fromScale(0.333, 1)
@@ -435,51 +435,70 @@ local function removeEntities(holder)
 	end
 end
 
-local function listEntities()
+local function listMobs()
 	task.wait()
     local bossCount = {}
 	local mobCount = {}
-	local dropCount = {}
 
-	for _, mob in ipairs(mobsFolder:GetChildren()) do
-		if mob:FindFirstChild("Boss") and mob.Boss.Value then
-			bossCount[mob.Name] = mob
+	for _, v in pairs(mobsFolder:GetChildren()) do
+		if v:FindFirstChild("Boss") and v.Boss.Value then
+			bossCount[v.Name] = v
 		else
-			mobCount[mob.Name] = mob
+			mobCount[v.Name] = v
 		end
 	end
 
-	for _, item in ipairs(dropsFolder:GetChildren()) do
-        if item:FindFirstChild("Touched") then
-            local itemName = item.Touched.textgui.text.Text
-            if not dropCount[itemName] then
-                dropCount[itemName] = { instance = item, count = 1 }
-            else
-                dropCount[itemName].count += 1
-            end
-        end
-    end
-
     removeEntities(BossHolder)
-    for i, v in ipairs(bossCount) do
+    for i, v in pairs(bossCount) do
         addBoss(i, v)
     end
 	removeEntities(MobsHolder)
-	for i, v in ipairs(mobCount) do
+	for i, v in pairs(mobCount) do
 		addMob(i, v)
 	end
+end
+
+local function listDrops()
+	task.wait()
+
+	local DropCount = {}
+
+	for _, item in ipairs(dropsFolder:GetChildren()) do
+		if item:FindFirstChild("Touched") then
+			local itemName = item.Touched.textgui.text.Text
+			if DropCount[itemName] then
+				DropCount[itemName .. " x" .. DropCount[itemName].count] = nil
+				DropCount[itemName].count = DropCount[itemName].count + 1
+			else
+				DropCount[itemName] = {count = 1, instance = item}
+			end
+		end
+	end
+
+	local newDropCount = {}
+	for itemName, itemData in pairs(DropCount) do
+		if itemData.count > 1 then
+			newDropCount[itemName .. " x" .. itemData.count] = itemData.instance
+		else
+			newDropCount[itemName] = itemData.instance
+		end
+	end
+
+	DropCount = newDropCount
+
 	removeEntities(DropsHolder)
-	for i, v in ipairs(dropCount) do
+	for i, v in pairs(DropCount) do
 		addDrop(i, v)
 	end
 end
 
 --// Logic \\--
-listEntities()
-mobsFolder.ChildAdded:Connect(listEntities)
-mobsFolder.ChildRemoved:Connect(listEntities)
-dropsFolder.ChildAdded:Connect(listEntities)
-dropsFolder.ChildRemoved:Connect(listEntities)
+listMobs()
+listDrops()
+mobsFolder.ChildAdded:Connect(listMobs)
+mobsFolder.ChildRemoved:Connect(listMobs)
+dropsFolder.ChildAdded:Connect(listDrops)
+dropsFolder.ChildRemoved:Connect(listDrops)
 
 local function tweenTP(pos)
     local humanoid = player.Character.HumanoidRootPart

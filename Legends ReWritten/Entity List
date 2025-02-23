@@ -1,17 +1,29 @@
+--// Script Settings \\--
+local ActionOverrides = {
+	DismantleV1 = "Activate",
+	FireArrow = "Charge"
+}
+
+local TweenSpeed = 200
+local DeleteDrops = false
+
+--// UI Settings \\--
+local Font = Font.new("rbxasset://fonts/families/Ubuntu.json")
+local MainColor = Color3.fromRGB(40, 40, 40)
+local SecondaryColor = Color3.fromRGB(30, 30, 30)
+local BorderColor = Color3.fromRGB(50, 50, 50)
+local TextColor = Color3.fromRGB(250, 250, 250)
+
 --// Variables \\--
 local UserInputService = game:GetService("UserInputService")
+local TweenService = game:GetService("TweenService")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local player = game:GetService("Players").LocalPlayer
 local mobsFolder = workspace.Mobs
 local dropsFolder = workspace.Drops
 local selectedBoss
 local selectedMob
 local selectedDrop
-
---// UI Settings \\--
-local Font = Font.new("rbxasset://fonts/families/Ubuntu.json")
-local MainColor = Color3.fromRGB(40, 40, 40)
-local SecondaryColor = Color3.fromRGB(30, 30, 30)
-local TextColor = Color3.fromRGB(250, 250, 250)
 
 --// UI \\--
 local Entities = Instance.new("ScreenGui")
@@ -208,7 +220,7 @@ local TabButtons = Instance.new("Frame")
 TabButtons.Name = "TabButtons"
 TabButtons.BackgroundColor3 = SecondaryColor
 TabButtons.BackgroundTransparency = 1
-TabButtons.BorderColor3 = Color3.fromRGB(50, 50, 50)
+TabButtons.BorderColor3 = BorderColor
 TabButtons.BorderMode = Enum.BorderMode.Inset
 TabButtons.Size = UDim2.fromScale(1, 0.051)
 TabButtons.Parent = Mainframe
@@ -222,8 +234,9 @@ UIListLayout.Parent = TabButtons
 local function createTabButton(Text, horPadding, vertPadding)
 	local tab = Instance.new("TextButton")
 	tab.BackgroundColor3 = SecondaryColor
-	tab.BorderColor3 = Color3.fromRGB(50, 50, 50)
-	tab.BorderMode = Enum.BorderMode.Inset
+	tab.BorderColor3 = BorderColor
+	tab.BorderMode = Enum.BorderMode.Outline
+	tab.BorderSizePixel = 0
 	tab.FontFace = Font
 	tab.Size = UDim2.fromScale(0.333, 1)
 	tab.Text = "Bosses"
@@ -282,7 +295,7 @@ end)
 local function selectBoss(instance)
 	if instance then
 		selectedBoss = instance
-		for _,v in pairs(BossHolder:GetChildren()) do
+		for _,v in ipairs(BossHolder:GetChildren()) do
 			if v:IsA("TextButton") then
 				if v.Text == instance.Name then
 					v.BorderColor3 = Color3.new(1,0,0)
@@ -293,7 +306,7 @@ local function selectBoss(instance)
 		end
 	else
 		selectedBoss = nil
-		for _,v in pairs(BossHolder:GetChildren()) do
+		for _,v in ipairs(BossHolder:GetChildren()) do
 			if v:IsA("TextButton") then
 				v.BorderColor3 = SecondaryColor
 			end
@@ -304,7 +317,7 @@ end
 local function selectMob(instance)
 	if instance then
 		selectedMob = instance
-		for _,v in pairs(MobsHolder:GetChildren()) do
+		for _,v in ipairs(MobsHolder:GetChildren()) do
 			if v:IsA("TextButton") then
 				if v.Text == instance.Name then
 					v.BorderColor3 = Color3.new(1,0,0)
@@ -315,7 +328,7 @@ local function selectMob(instance)
 		end
 	else
 		selectedMob = nil
-		for _,v in pairs(MobsHolder:GetChildren()) do
+		for _,v in ipairs(MobsHolder:GetChildren()) do
 			if v:IsA("TextButton") then
 				v.BorderColor3 = SecondaryColor
 			end
@@ -325,9 +338,15 @@ end
 
 local function selectDrop(instance)
 	if instance then
-		print(instance)
+		local dropName = instance.Touched.textgui.text.Text
 		selectedDrop = instance
-		for _,v in pairs(DropsHolder:GetChildren()) do
+		if DropsHolder:FindFirstChild(dropName) then
+			v.BorderColor3 = Color3.new(1,0,0)
+		else
+			v.BorderColor3 = SecondaryColor
+		end
+		--[[
+		for _,v in ipairs(DropsHolder:GetChildren()) do
 			if v:IsA("TextButton") then
 				if v.Text == instance.Touched.textgui.text.Text then
 					v.BorderColor3 = Color3.new(1,0,0)
@@ -336,9 +355,10 @@ local function selectDrop(instance)
 				end
 			end
 		end
+		]]
 	else
 		selectedDrop = nil
-		for _,v in pairs(DropsHolder:GetChildren()) do
+		for _,v in ipairs(DropsHolder:GetChildren()) do
 			if v:IsA("TextButton") then
 				v.BorderColor3 = SecondaryColor
 			end
@@ -408,7 +428,7 @@ local function addDrop(name, instance)
 end
 
 local function removeEntities(holder)
-    for _,v in pairs(holder:GetChildren()) do
+    for _,v in ipairs(holder:GetChildren()) do
 		if v:IsA("TextButton") then
 			v:Destroy()
 		end
@@ -419,8 +439,9 @@ local function listMobs()
 	task.wait()
     local bossCount = {}
 	local mobCount = {}
+	local dropCount = {}
 
-	for _, v in pairs(mobsFolder:GetChildren()) do
+	for _, v in ipairs(mobsFolder:GetChildren()) do
 		if v:FindFirstChild("Boss") and v.Boss.Value then
 			bossCount[v.Name] = v
 		else
@@ -428,46 +449,27 @@ local function listMobs()
 		end
 	end
 
+	for _, item in ipairs(dropsFolder:GetChildren()) do
+        if item:FindFirstChild("Touched") then
+            local itemName = item.Touched.textgui.text.Text
+            if not dropCount[itemName] then
+                dropCount[itemName] = { instance = item, count = 1 }
+            else
+                dropCount[itemName].count += 1
+            end
+        end
+    end
+
     removeEntities(BossHolder)
-    for i, v in pairs(bossCount) do
+    for i, v in ipairs(bossCount) do
         addBoss(i, v)
     end
 	removeEntities(MobsHolder)
-	for i, v in pairs(mobCount) do
+	for i, v in ipairs(mobCount) do
 		addMob(i, v)
 	end
-end
-
-local function listDrops()
-	task.wait()
-
-	local DropCount = {}
-
-	for _, item in ipairs(dropsFolder:GetChildren()) do
-		if item:FindFirstChild("Touched") then
-			local itemName = item.Touched.textgui.text.Text
-			if DropCount[itemName] then
-				DropCount[itemName .. " x" .. DropCount[itemName].count] = nil
-				DropCount[itemName].count = DropCount[itemName].count + 1
-			else
-				DropCount[itemName] = {count = 1, instance = item}
-			end
-		end
-	end
-
-	local newDropCount = {}
-	for itemName, itemData in pairs(DropCount) do
-		if itemData.count > 1 then
-			newDropCount[itemName .. " x" .. itemData.count] = itemData.instance
-		else
-			newDropCount[itemName] = itemData.instance
-		end
-	end
-
-	DropCount = newDropCount
-
 	removeEntities(DropsHolder)
-	for i, v in pairs(DropCount) do
+	for i, v in ipairs(dropCount) do
 		addDrop(i, v)
 	end
 end
@@ -480,16 +482,29 @@ mobsFolder.ChildRemoved:Connect(listMobs)
 dropsFolder.ChildAdded:Connect(listDrops)
 dropsFolder.ChildRemoved:Connect(listDrops)
 
-local function tweenTP(pos, speed)
-    local time = (pos - player.Character.HumanoidRootPart.Position).Magnitude / 100
+local function tweenTP(pos)
+    local humanoid = player.Character.HumanoidRootPart
+    local distance = (pos - humanoid.Position).Magnitude
+    local time = distance / TweenSpeed
 
-	local tween = game:GetService("TweenService"):Create(player.Character.HumanoidRootPart, TweenInfo.new(time, Enum.EasingStyle.Linear), {
-		Position = pos
-	})
+    TweenService:Create(humanoid, TweenInfo.new(time, Enum.EasingStyle.Linear), {
+        Position = pos
+    }):Play()
+end
 
-	tween:Play()
-	tween.Completed:Wait() 
-	player.Character.HumanoidRootPart.CFrame = CFrame.new(pos)
+local function pickUpDrops(drops)
+    for _, drop in ipairs(drops) do
+        local name = drop.Touched.textgui.text.Text
+        if name ~= "Gold" then
+            local item = string.gsub(name, " ", "")
+            local amount = drop.DropAmount.Value
+
+            ReplicatedStorage.Remotes.ObtainDrop:FireServer(item, amount)
+			if DeleteDrops then
+				drop:Destroy()
+			end
+        end
+    end
 end
 
 UseEquippedBoss.MouseButton1Click:Connect(function()
@@ -518,7 +533,7 @@ end)
 
 TPToBoss.MouseButton1Click:Connect(function()
 	if selectedBoss then
-		tweenTP(selectedBoss.HumanoidRootPart.Position + Vector3.new(0, 0, 0), 5)
+		tweenTP(selectedBoss.HumanoidRootPart.Position)
 	end
 end)
 
@@ -527,10 +542,6 @@ UseEquippedMob.MouseButton1Click:Connect(function()
 		local Tool = player.Character:FindFirstChildOfClass("Tool")
 		local ToolScript = Tool:FindFirstChildOfClass("Script")
 		local Actions = {"Create", "Punch", "Shoot", "Activate", "Throw", "Charge"}
-		local ActionOverrides = {
-			DismantleV1 = "Activate",
-			FireArrow = "Charge"
-		}
 
 		if ActionOverrides[Tool.Name] then
 			ToolScript[ActionOverrides[Tool.Name]]:FireServer(selectedMob.HumanoidRootPart.Position)
@@ -548,32 +559,16 @@ end)
 
 TPToMob.MouseButton1Click:Connect(function()
 	if selectedMob then
-		tweenTP(selectedMob.HumanoidRootPart.Position + Vector3.new(0, 0, 0), 5)
+		tweenTP(selectedMob.HumanoidRootPart.Position)
 	end
 end)
 
 PickUpOne.MouseButton1Click:Connect(function()
-	if selectedDrop then
-		if selectedDrop.Touched.textgui.text.Text == "Gold" then return end
-		local item = string.gsub(selectedDrop.Touched.textgui.text.Text, " ", "")
-		local amount = selectedDrop.DropAmount.Value
-
-		game:GetService("ReplicatedStorage").Remotes.ObtainDrop:FireServer(item, amount)
-		--selectedDrop:Destroy()
-	end
+    if selectedDrop then
+        pickUpDrops({selectedDrop})
+    end
 end)
 
 PickUpAll.MouseButton1Click:Connect(function()
-	for _,v in pairs(workspace.Drops:GetChildren()) do
-		if v:FindFirstChild("Touched") then
-			local name = v.Touched.textgui.text.Text
-			if name == "Gold" then else
-				local item = string.gsub(v.Touched.textgui.text.Text, " ", "")
-				local amount = v.DropAmount.Value
-
-				game:GetService("ReplicatedStorage").Remotes.ObtainDrop:FireServer(item, amount)
-				v:Destroy()
-			end
-		end
-	end
+    pickUpDrops(workspace.Drops:GetChildren())
 end)

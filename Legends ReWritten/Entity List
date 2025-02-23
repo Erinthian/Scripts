@@ -473,11 +473,8 @@ local function listDrops()
 end
 
 --// Logic \\--
-listBosses()
 listMobs()
 listDrops()
-mobsFolder.ChildAdded:Connect(listBosses)
-mobsFolder.ChildRemoved:Connect(listBosses)
 mobsFolder.ChildAdded:Connect(listMobs)
 mobsFolder.ChildRemoved:Connect(listMobs)
 dropsFolder.ChildAdded:Connect(listDrops)

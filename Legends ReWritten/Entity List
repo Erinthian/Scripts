@@ -25,7 +25,13 @@ local selectedBoss
 local selectedMob
 local selectedDrop
 
---// UI \\--
+--// Initialization \\--
+local HighlightStorage = Instance.new("Folder")
+HighlightStorage.Parent = game:GetService("CoreGui")
+local Highlight = Instance.new("Highlight")
+Highlight.Parent = HighlightStorage
+
+--// UI Initialization \\--
 local Entities = Instance.new("ScreenGui")
 Entities.Name = "Entities"
 Entities.IgnoreGuiInset = true
@@ -312,6 +318,7 @@ local function selectBoss(instance)
 			end
 		end
 	end
+	Highlight.Adornee = selectedBoss
 end
 
 local function selectMob(instance)
@@ -334,6 +341,7 @@ local function selectMob(instance)
 			end
 		end
 	end
+	Highlight.Adornee = selectedMob
 end
 
 local function selectDrop(instance)

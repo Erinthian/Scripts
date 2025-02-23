@@ -435,7 +435,7 @@ local function removeEntities(holder)
 	end
 end
 
-local function listMobs()
+local function listEntities()
 	task.wait()
     local bossCount = {}
 	local mobCount = {}
@@ -475,12 +475,11 @@ local function listMobs()
 end
 
 --// Logic \\--
-listMobs()
-listDrops()
-mobsFolder.ChildAdded:Connect(listMobs)
-mobsFolder.ChildRemoved:Connect(listMobs)
-dropsFolder.ChildAdded:Connect(listDrops)
-dropsFolder.ChildRemoved:Connect(listDrops)
+listEntities()
+mobsFolder.ChildAdded:Connect(listEntities)
+mobsFolder.ChildRemoved:Connect(listEntities)
+dropsFolder.ChildAdded:Connect(listEntities)
+dropsFolder.ChildRemoved:Connect(listEntities)
 
 local function tweenTP(pos)
     local humanoid = player.Character.HumanoidRootPart

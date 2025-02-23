@@ -29,6 +29,8 @@ local selectedDrop
 local HighlightStorage = Instance.new("Folder")
 HighlightStorage.Parent = game:GetService("CoreGui")
 local Highlight = Instance.new("Highlight")
+Highlight.FillTransparency = 0
+Highlight.OutlineTransparency = 1
 Highlight.Parent = HighlightStorage
 
 --// UI Initialization \\--

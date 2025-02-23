@@ -88,6 +88,8 @@ Holders.Parent = ContentFrame
 local HoldersPageLayout = Instance.new("UIPageLayout")
 HoldersPageLayout.Name = "HoldersPageLayout"
 HoldersPageLayout.ScrollWheelInputEnabled = false
+HoldersPageLayout.TweenTime = 0.1
+HoldersPageLayout.EasingStyle = Enum.EasingStyle.Linear
 HoldersPageLayout.SortOrder = Enum.SortOrder.LayoutOrder
 HoldersPageLayout.Parent = Holders
 
@@ -166,6 +168,8 @@ Buttons.Parent = ContentFrame
 local ButtonsPageLayout = Instance.new("UIPageLayout")
 ButtonsPageLayout.Name = "ButtonsPageLayout"
 ButtonsPageLayout.ScrollWheelInputEnabled = false
+ButtonsPageLayout.TweenTime = 0.1
+ButtonsPageLayout.EasingStyle = Enum.EasingStyle.Linear
 ButtonsPageLayout.SortOrder = Enum.SortOrder.LayoutOrder
 ButtonsPageLayout.Parent = Buttons
 
@@ -525,10 +529,15 @@ local function selectDrop(instance)
 end
 
 local function addBoss(name, instance)
+    local loaded = instance:FindFirstChild("HumanoidRootPart")
 	local Name = Instance.new("TextButton")
 	Name.FontFace = Font
 	Name.Text = name
-	Name.TextColor3 = TextColor
+    if Loaded then
+        Name.TextColor3 = Color3.new(0, 1, 0)
+    else
+        Name.TextColor3 = Color3.new(1, 0, 0)
+    end
 	Name.TextScaled = true
 	Name.BackgroundColor3 = MainColor
 	Name.BorderColor3 = SecondaryColor
@@ -553,10 +562,15 @@ local function addBoss(name, instance)
 end
 
 local function addMob(name, instance)
+    local loaded = instance:FindFirstChild("HumanoidRootPart")
 	local Name = Instance.new("TextButton")
 	Name.FontFace = Font
 	Name.Text = name
-	Name.TextColor3 = TextColor
+	if Loaded then
+        Name.TextColor3 = Color3.new(0, 1, 0)
+    else
+        Name.TextColor3 = Color3.new(1, 0, 0)
+    end
 	Name.TextScaled = true
 	Name.BackgroundColor3 = MainColor
 	Name.BorderColor3 = SecondaryColor
@@ -713,7 +727,7 @@ dropsFolder.ChildAdded:Connect(listDrops)
 dropsFolder.ChildRemoved:Connect(listDrops)
 
 local function tweenTP(pos, speed)
-    local time = (pos - player.Character.HumanoidRootPart.Position).Magnitude / 200
+    local time = (pos - player.Character.HumanoidRootPart.Position).Magnitude / 100
 
 	local tween = game:GetService("TweenService"):Create(player.Character.HumanoidRootPart, TweenInfo.new(time, Enum.EasingStyle.Linear), {
 		Position = pos
